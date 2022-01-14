@@ -12,10 +12,10 @@ int main(int argc, char* argv[])
     Uint32 frameStart;
     unsigned int frameTime;
 
+    SDL_Init(SDL_INIT_EVERYTHING);
+
     // create window and renderer
     Window window;
-
-    SDL_Init(SDL_INIT_EVERYTHING);
 
     // event handler
     SDL_Event e;
