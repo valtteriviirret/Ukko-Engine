@@ -1,5 +1,7 @@
 #include "SDL.h"
 #include "globals.hh"
+#include "ScreenSize.hh"
+#include "iostream"
 
 #define FPS 60
 
@@ -13,10 +15,21 @@ int main(int argc, char* argv[]) {
 
     SDL_Window* window;
     SDL_Init(SDL_INIT_EVERYTHING);
+
+    window = SDL_CreateWindow("Chess", 0, 0, width, height, SDL_WINDOW_FULLSCREEN);
+
+    if (window) {
+        applicationShouldClose = false;
+        std::cout << "Window created successfully. \n";
+    } else {
+        applicationShouldClose = true;
+        std::cout << "Error creating window. Closing application. \n";
+    }
+
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
 
     // Game loop:
-    while (!applicationShouldClose)
+    while (applicationShouldClose)
     {
         frameStart = SDL_GetTicks();
 
