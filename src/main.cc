@@ -13,32 +13,15 @@ int main(int argc, char* argv[])
 
     Uint32 frameStart;
     unsigned int frameTime;
+	
+	// create window and renderer
 	Window window;
 
     SDL_Init(SDL_INIT_EVERYTHING);
-<<<<<<< HEAD
-
-    window = SDL_CreateWindow("Chess", 0, 0, width, height, SDL_WINDOW_FULLSCREEN);
-
-    if (window) {
-        applicationShouldClose = false;
-        std::cout << "Window created successfully. \n";
-    } else {
-        applicationShouldClose = true;
-        std::cout << "Error creating window. Closing application. \n";
-    }
-
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
-
-    // Game loop:
-    while (applicationShouldClose)
-    {
-        frameStart = SDL_GetTicks();
-=======
 
 	// event handler
 	SDL_Event e;
->>>>>>> valtteri-dev
+
 
 	// Game loop:
 	while (!applicationShouldClose)
@@ -72,7 +55,8 @@ int main(int argc, char* argv[])
 	// close SDL
 	SDL_Quit();
 
-    return 0;
+   	return 0;
+
 }
 
 void Update()
