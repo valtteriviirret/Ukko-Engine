@@ -3,9 +3,12 @@
 #include "Window.hh"
 #include "Texture.hh"
 #include "Renderer.hh"
-#include "globals.hh"
+#include "Globals.hh"
+#include "Board.hh"
 
 #define FPS 60
+
+void Quit();
 
 int main(int argc, char* argv[])
 {
@@ -23,6 +26,9 @@ int main(int argc, char* argv[])
 	int imgFlags = IMG_INIT_PNG;
 	if(!(IMG_Init(imgFlags) &imgFlags))
 		std::cout << "SDL_image could not initialize! " << IMG_GetError() << "\n";
+
+	// initialize board
+	Board board;
 
     // event handler
     SDL_Event e;
@@ -49,9 +55,9 @@ int main(int argc, char* argv[])
 
     }
 
-    // close SDL
-	IMG_Quit();
-    SDL_Quit();
+	SDL_DestroyTexture(board.getBoard());
+	Quit();
+
 
     return 0;
 
@@ -64,4 +70,12 @@ void Update()
     SDL_RenderClear(Renderer::get());
     // update screen
     SDL_RenderPresent(Renderer::get());
+}
+
+
+void Quit()
+{
+	// close SDL
+	IMG_Quit();
+    SDL_Quit();
 }

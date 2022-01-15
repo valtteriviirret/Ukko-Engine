@@ -10,7 +10,7 @@ namespace Texture
 		// load image
 		SDL_Surface* loadedSurface = IMG_Load(path.c_str());
 		if(!loadedSurface)
-			std::cout << "Unable to load image: " << path.c_str() << IMG_GetError() << "\n";
+			std::cout << "Unable to load image: " << path.c_str() << " " <<IMG_GetError() << "\n";
 		else
 		{
 			// color key image
@@ -20,7 +20,7 @@ namespace Texture
 			texture = SDL_CreateTextureFromSurface(Renderer::get(), loadedSurface);
 
 			if(!texture)
-				std::cout << "Unable to create texture: " << path.c_str() << SDL_GetError() << "\n";
+				std::cout << "Unable to create texture: " << path.c_str() << " " <<  SDL_GetError() << "\n";
 
 			// get rid of loaded surface
 			SDL_FreeSurface(loadedSurface);
@@ -31,4 +31,3 @@ namespace Texture
 }
 
 // SDL_DestroyTexture(texture)
-
