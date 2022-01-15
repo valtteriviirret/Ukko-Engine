@@ -1,5 +1,7 @@
 #include "SDL2/SDL.h"
+#include "SDL2/SDL_image.h"
 #include "Window.hh"
+#include "Texture.hh"
 #include "Renderer.hh"
 #include "globals.hh"
 
@@ -17,9 +19,13 @@ int main(int argc, char* argv[])
     // create window and renderer
     Window window;
 
+	// initialize PNG loading
+	int imgFlags = IMG_INIT_PNG;
+	if(!(IMG_Init(imgFlags) &imgFlags))
+		std::cout << "SDL_image could not initialize! " << IMG_GetError() << "\n";
+
     // event handler
     SDL_Event e;
-
 
     // Game loop:
     while (!applicationShouldClose)
@@ -44,6 +50,7 @@ int main(int argc, char* argv[])
     }
 
     // close SDL
+	IMG_Quit();
     SDL_Quit();
 
     return 0;
