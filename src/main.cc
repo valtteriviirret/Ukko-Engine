@@ -4,6 +4,7 @@
 #include "Renderer.hh"
 #include "Globals.hh"
 #include "Board.hh"
+#include "ScreenSize.hh"
 
 #define FPS 60
 
@@ -25,7 +26,7 @@ int main(int argc, char* argv[])
 		std::cout << "SDL_image could not initialize! " << IMG_GetError() << "\n";
 
 	// initialize board
-	Board board;
+	board = new Board;
 
     // event handler
     SDL_Event e;
@@ -52,7 +53,7 @@ int main(int argc, char* argv[])
 
     }
 
-	SDL_DestroyTexture(board.getBoard());
+	SDL_DestroyTexture(board->getBoard());
 	Quit();
 
 
@@ -70,6 +71,10 @@ void Render(SDL_Renderer* ren)
     // draw white screen
     SDL_SetRenderDrawColor(ren, 0xFF, 0xFF, 0xFF, 0xFF);
     SDL_RenderClear(ren);
+    // Draw board
+    // Draw Background
+    SDL_SetRenderDrawColor(ren, 0, 0, 0, 0);
+    SDL_RenderCopy(ren, board->getBoard(), nullptr, (const SDL_Rect *) Screen::width);
     // update screen
     SDL_RenderPresent(ren);
 }
