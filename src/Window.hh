@@ -13,7 +13,7 @@ class Window
 		~Window();
 		void resize(SDL_Event e);
 	private:
-		void setSizes();
+		void setSizes() const;
 		SDL_Window* window;
 		SDL_Renderer* renderer;
 		int width;

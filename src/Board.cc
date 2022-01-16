@@ -2,7 +2,7 @@
 
 Board::Board()
 {
-	board = Texture::load("Assets/board.png");
+	board = Texture::load("../Assets/board.png");
 
 	if(!board)	
 		std::cout << "Failed to load board\n";

@@ -2,7 +2,7 @@
 
 namespace Screen
 {
-	// the screensizes
+	// the screen sizes
 	int width;
 	int height;
 

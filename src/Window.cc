@@ -3,12 +3,12 @@
 Window::Window()
 {
 	// get monitor resolution
-	SDL_DisplayMode mode;
-	SDL_GetCurrentDisplayMode(0, &mode);
+	// SDL_DisplayMode mode;
+	// SDL_GetCurrentDisplayMode(0, &mode);
 
 	// Set width and height
-	width = mode.w / 2;
-	height = mode.h / 2;
+	width = 1280;
+	height = 1024;
 
 	// store screen sizes
 	setSizes();
@@ -48,7 +48,7 @@ void Window::resize(SDL_Event e)
 	}
 }
 
-void Window::setSizes()
+void Window::setSizes() const
 {
 	Screen::setWidth(width);
 	Screen::setHeight(height);
