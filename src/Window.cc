@@ -3,7 +3,7 @@
 Window::Window()
 {
 	// create fixed size window (could change to fullscreen later), and other settings
-	window = SDL_CreateWindow("Chess", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, Screen::width, Screen::height, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("Chess", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, Screen::width, Screen::height, SDL_WINDOW_RESIZABLE);
 	
 	// if could not create window
 	if(!window)

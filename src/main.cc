@@ -67,17 +67,14 @@ void Update()
 void Render()
 {
     // draw white screen
-    SDL_SetRenderDrawColor(Renderer::get(), 0xFF, 0xFF, 0xFF, 0xFF);
-    SDL_RenderClear(Renderer::get());
-    
-	// Draw Background
-    SDL_SetRenderDrawColor(Renderer::get(), 0, 0, 0, 0);
+	Renderer::setColor(0xFF, 0xFF, 0xFF);
+	Renderer::clear();
 
 	// draw board
     SDL_RenderCopy(Renderer::get(), board->getBoard(), nullptr, nullptr);
 
 	// update screen
-    SDL_RenderPresent(Renderer::get());
+	Renderer::render();
 }
 
 
