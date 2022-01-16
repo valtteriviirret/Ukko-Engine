@@ -1,14 +1,11 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "Window.hh"
-#include "Texture.hh"
 #include "Renderer.hh"
 #include "Globals.hh"
 #include "Board.hh"
 
 #define FPS 60
-
-void Quit();
 
 int main(int argc, char* argv[])
 {
@@ -65,11 +62,16 @@ int main(int argc, char* argv[])
 
 void Update()
 {
+    Render(Renderer::get());
+}
+
+void Render(SDL_Renderer* ren)
+{
     // draw white screen
-    SDL_SetRenderDrawColor(Renderer::get(), 0xFF, 0xFF, 0xFF, 0xFF);
-    SDL_RenderClear(Renderer::get());
+    SDL_SetRenderDrawColor(ren, 0xFF, 0xFF, 0xFF, 0xFF);
+    SDL_RenderClear(ren);
     // update screen
-    SDL_RenderPresent(Renderer::get());
+    SDL_RenderPresent(ren);
 }
 
 
