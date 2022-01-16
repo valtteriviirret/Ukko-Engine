@@ -2,9 +2,20 @@
 
 Window::Window()
 {
-	// create fixed size window (could change to fullscreen later), and other settings
-	window = SDL_CreateWindow("Chess", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, Screen::width, Screen::height, SDL_WINDOW_RESIZABLE);
+	// get monitor resolution
+	SDL_DisplayMode mode;
+	SDL_GetCurrentDisplayMode(0, &mode);
+
+	// Set width and height
+	width = mode.w / 2;
+	height = mode.h / 2;
+
+	// store screen sizes
+	setSizes();
 	
+	// create window
+	window = SDL_CreateWindow("Chess", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE);
+
 	// if could not create window
 	if(!window)
 		std::cout << "Could not create window! " << SDL_GetError() << "\n";
@@ -20,6 +31,27 @@ Window::Window()
 			Renderer::set(renderer);
 		}
 	}
+}
+
+void Window::resize(SDL_Event e)
+{
+	switch(e.type)
+	{
+		case SDL_WINDOWEVENT:
+			if(e.window.event == SDL_WINDOWEVENT_RESIZED)
+			{
+				// get new screensize and set it accordingly
+				SDL_GetWindowSize(window, &width, &height);
+				setSizes();
+			}
+		break;
+	}
+}
+
+void Window::setSizes()
+{
+	Screen::setWidth(width);
+	Screen::setHeight(height);
 }
 
 Window::~Window()

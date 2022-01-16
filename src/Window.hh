@@ -2,8 +2,8 @@
 #define WINDOW_H
 
 #include <SDL2/SDL.h>
-#include "ScreenSize.hh"
 #include "Renderer.hh"
+#include "ScreenSize.hh"
 #include <iostream>
 
 class Window
@@ -11,9 +11,13 @@ class Window
 	public:
 		Window();
 		~Window();
+		void resize(SDL_Event e);
 	private:
+		void setSizes();
 		SDL_Window* window;
 		SDL_Renderer* renderer;
+		int width;
+		int height;
 };
 
 

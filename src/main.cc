@@ -35,11 +35,14 @@ int main(int argc, char* argv[])
     while (!applicationShouldClose)
     {
         // handle events on queue
-        while(SDL_PollEvent(&e) != 0)
+        while(SDL_PollEvent(&e))
         {
             // user requests quit
             if(e.type == SDL_QUIT)
                 applicationShouldClose = true;
+			
+			// rezise window accordingly
+			window.resize(e);
         }
 
         frameStart = SDL_GetTicks();
@@ -71,7 +74,7 @@ void Render()
 	Renderer::clear();
 
 	// draw board
-    SDL_RenderCopy(Renderer::get(), board->getBoard(), nullptr, nullptr);
+	board->render();
 
 	// update screen
 	Renderer::render();

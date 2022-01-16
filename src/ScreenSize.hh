@@ -1,10 +1,15 @@
-#ifndef SCREENSIZE_H
-#define SCREENSIZE_H
+#ifndef SCREENSIZE_HH
+#define SCREENSIZE_HH
 
-enum Screen
+namespace Screen
 {
-	width = 600,
-	height = 400
-};
+	// setters
+	void setWidth(int w);
+	void setHeight(int h);
+
+	// getters
+	int getWidth();
+	int getHeight();
+}
 
 #endif
