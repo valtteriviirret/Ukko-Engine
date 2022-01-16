@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 	if(!(IMG_Init(imgFlags) &imgFlags))
 		std::cout << "SDL_image could not initialize! " << IMG_GetError() << "\n";
 
-	// initialize board
+	// create new board
 	board = new Board;
 
     // event handler
@@ -44,44 +44,47 @@ int main(int argc, char* argv[])
 
         frameStart = SDL_GetTicks();
 
-        Update();
+		Update();
 
         frameTime = SDL_GetTicks() - frameStart;
 
         if(frameDelay > frameTime)
             SDL_Delay(frameDelay - frameTime);
-
     }
 
 	SDL_DestroyTexture(board->getBoard());
 	Quit();
 
-
     return 0;
-
 }
+
 
 void Update()
 {
-    Render(Renderer::get());
+    Render();
 }
 
-void Render(SDL_Renderer* ren)
+void Render()
 {
     // draw white screen
-    SDL_SetRenderDrawColor(ren, 0xFF, 0xFF, 0xFF, 0xFF);
-    SDL_RenderClear(ren);
-    // Draw board
-    // Draw Background
-    SDL_SetRenderDrawColor(ren, 0, 0, 0, 0);
-    SDL_RenderCopy(ren, board->getBoard(), nullptr, (const SDL_Rect *) Screen::width);
-    // update screen
-    SDL_RenderPresent(ren);
+    SDL_SetRenderDrawColor(Renderer::get(), 0xFF, 0xFF, 0xFF, 0xFF);
+    SDL_RenderClear(Renderer::get());
+    
+	// Draw Background
+    SDL_SetRenderDrawColor(Renderer::get(), 0, 0, 0, 0);
+
+	// draw board
+    SDL_RenderCopy(Renderer::get(), board->getBoard(), nullptr, nullptr);
+
+	// update screen
+    SDL_RenderPresent(Renderer::get());
 }
 
 
 void Quit()
 {
+	board = nullptr;
+	
 	// close SDL
 	IMG_Quit();
     SDL_Quit();

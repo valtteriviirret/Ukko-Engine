@@ -10,6 +10,7 @@ Board::Board()
 
 Board::~Board()
 {
+	SDL_DestroyTexture(board);
 	board = nullptr;
 }
 
