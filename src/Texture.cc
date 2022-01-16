@@ -30,4 +30,3 @@ namespace Texture
 	}
 }
 
-// SDL_DestroyTexture(texture)

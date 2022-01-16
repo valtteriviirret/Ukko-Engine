@@ -5,7 +5,7 @@
 #include "Board.hh"
 
 static void Update();
-static void Render(SDL_Renderer* ren);
+static void Render();
 static void Quit();
 
 static bool applicationShouldClose;

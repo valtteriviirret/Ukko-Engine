@@ -1,5 +1,13 @@
+# ignore cmake stuff
 CMakeCache.txt
 CMakeFiles
 cmake_install.cmake
+
+# ignore Makefile created by cmake
 Makefile
+
+# ignore executable
 UkkoShakki
+
+# ignore metadata from valgrind
+vgcore.*
