@@ -5,8 +5,6 @@
 #include "ScreenSize.hh"
 #include "Texture.hh"
 #include "Renderer.hh"
-#include "Window.hh"
-#include "PieceFactory.hh"
 
 class Board
 {
@@ -15,10 +13,15 @@ class Board
 		~Board();
 		void render();
 		SDL_Texture* getBoard();
-		bool getDotDot();
+		SDL_Rect getSquare(int x, int y);
 	private:
+		// source and destination for texture
+		SDL_Rect srcrect;
+		SDL_Rect dstrect;
+		void makeSquares();
+		void makeRects();
 		SDL_Texture* board;
-		bool dotdot;
+		SDL_Rect squares[8][8];
 };
 
 #endif

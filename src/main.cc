@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
 	board = new Board;
 	
 	// create pieces
-	pieces = new PieceFactory(board->getDotDot());
+	pieces = new PieceFactory;
 
     // event handler
     SDL_Event e;
@@ -72,7 +72,7 @@ void Update()
 void Render()
 {
     // draw white screen
-	Renderer::setColor(0xFF, 0xFF, 0xFF);
+	Renderer::setColor(255, 255, 255);
 	Renderer::clear();
 
 	// draw board

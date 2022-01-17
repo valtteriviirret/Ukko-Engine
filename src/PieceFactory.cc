@@ -1,13 +1,14 @@
 #include "PieceFactory.hh"
 
-PieceFactory::PieceFactory(bool dotdot) : _dotdot(dotdot)
+PieceFactory::PieceFactory() 
 {
-	if(!_dotdot)
-		for(int i = 0; i < ARRSIZE(p); i++)
+	for(int i = 0; i < ARRSIZE(p); i++)
+	{
+		if(Texture::load(c[i]))
 			p[i] = Texture::load(c[i]);
-	else
-		for(int i = 0; i < ARRSIZE(p); i++)
+		else
 			p[i] = Texture::load("../" + c[i]);
+	}
 }
 
 

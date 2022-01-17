@@ -10,7 +10,7 @@
 class PieceFactory
 {
 	public:
-		PieceFactory(bool dotdot);
+		PieceFactory();
 		~PieceFactory();
 		SDL_Texture* getPiece(int n);
 	private:

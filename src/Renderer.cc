@@ -11,5 +11,6 @@ namespace Renderer
 	void setColor(int r, int g, int b) { SDL_SetRenderDrawColor(renderer, r, g, b, 255); }
 	void clear() { SDL_RenderClear(renderer); }
 	void render() { SDL_RenderPresent(renderer); }
+	void fillRect(SDL_Rect r) { SDL_RenderFillRect(renderer, &r); }
 }
 

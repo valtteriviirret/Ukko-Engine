@@ -2,22 +2,51 @@
 
 Board::Board()
 {
-	board = Texture::load("../Assets/board.png");
+}
 
-	if(board)
-		dotdot = true;
+void Board::makeSquares()
+{
+	// width and height of single tile
+	auto width = srcrect.w / 10 / 8 * 0.8f;
+	auto height = srcrect.h / 10 / 8;
 
-	// for some reason different paths for us
-	else
+	for(int i = 0; i < 8; i++)
 	{
-		dotdot = false;
-		std::cout << "Attempting to reload board\n";
-		board = Texture::load("Assets/board.png");
+		for(int j = 0; j < 8; j++)
+		{
+			// make all squares
+			squares[i][j].x = i * width;
+			squares[i][j].y = j * height;
+			squares[i][j].w = width;
+			squares[i][j].h = height;
+
+			// set rendering color to black
+			Renderer::setColor(0, 0, 0);
+			
+			// render black squares
+			if((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0))
+			{
+				Renderer::fillRect(squares[i][j]);
+			}
+		}
 	}
+}
 
-	if(!board)
-		std::cout << "Failed to load board\n";
+void Board::makeRects()
+{
+	srcrect.x = 0;
+	srcrect.y = 0;
 
+	// make source bigger than screen size so the source will be the size of the window
+	srcrect.w = Screen::getWidth() * 10;
+	srcrect.h = Screen::getHeight() * 10;
+    
+	dstrect.x = 0;
+    dstrect.y = 0;
+
+	// leave space on the right
+    dstrect.w = Screen::getWidth() * 0.8f; 
+	dstrect.h = Screen::getHeight();
 }
 
 Board::~Board()
@@ -26,21 +55,24 @@ Board::~Board()
 	board = nullptr;
 }
 
-SDL_Texture* Board::getBoard() { return board; }
-bool Board::getDotDot() { return dotdot; }
-
 void Board::render()
 {
-	SDL_Rect srcrect;
-	srcrect.x = 0;
-	srcrect.y = 0;
-	srcrect.w = Screen::getWidth();
-	srcrect.h = Screen::getHeight();
-	SDL_Rect dstrect;
-    dstrect.x = 0;
-    dstrect.y = 0;
-    dstrect.w = Screen::getWidth() * 0.8f;
-    dstrect.h = Screen::getHeight();
-	SDL_RenderCopy(Renderer::get(), board, nullptr, &dstrect);
+	// set the rendering color to red (testing)
+	Renderer::setColor(255, 0, 0);
+
+	// FUTURE PERFORMANCE UPGRADE, ONLY UPDATE THESE IF SCREENSIZE IS CHANGED
+	// also then initialize in constructor
+
+	// update rects
+	makeRects();
+
+	// update squares
+	makeSquares();
 }
+
+// return board
+SDL_Texture* Board::getBoard() { return board; }
+
+// return square if the board
+SDL_Rect Board::getSquare(int x, int y) { return squares[x][y]; }
 

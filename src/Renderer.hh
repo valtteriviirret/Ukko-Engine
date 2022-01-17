@@ -13,6 +13,7 @@ namespace Renderer
 	void setColor(int r, int g, int b);
 	void clear();
 	void render();
+	void fillRect(SDL_Rect r);
 }
 
 #endif
