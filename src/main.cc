@@ -27,6 +27,9 @@ int main(int argc, char* argv[])
 
 	// create new board
 	board = new Board;
+	
+	// create pieces
+	pieces = new PieceFactory(board->getDotDot());
 
     // event handler
     SDL_Event e;
@@ -37,9 +40,9 @@ int main(int argc, char* argv[])
         // handle events on queue
         while(SDL_PollEvent(&e))
         {
-            // user requests quit
-            if(e.type == SDL_QUIT)
-                applicationShouldClose = true;
+			// quit the program with esc or traditionally
+			if((e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) || e.type == SDL_QUIT)
+    			applicationShouldClose = true;
 			
 			// rezise window accordingly
 			window.resize(e);
@@ -83,7 +86,8 @@ void Render()
 
 void Quit()
 {
-	board = nullptr;
+	delete board;
+	delete pieces;
 	
 	// close SDL
 	IMG_Quit();

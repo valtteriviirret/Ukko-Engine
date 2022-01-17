@@ -6,6 +6,7 @@
 #include "Texture.hh"
 #include "Renderer.hh"
 #include "Window.hh"
+#include "PieceFactory.hh"
 
 class Board
 {
@@ -14,8 +15,10 @@ class Board
 		~Board();
 		void render();
 		SDL_Texture* getBoard();
+		bool getDotDot();
 	private:
 		SDL_Texture* board;
+		bool dotdot;
 };
 
 #endif
