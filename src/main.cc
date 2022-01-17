@@ -4,7 +4,6 @@
 #include "Renderer.hh"
 #include "Globals.hh"
 #include "Board.hh"
-#include "ScreenSize.hh"
 
 #define FPS 60
 

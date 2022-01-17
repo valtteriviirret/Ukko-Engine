@@ -28,9 +28,13 @@ void Board::render()
 	SDL_Rect srcrect;
 	srcrect.x = 0;
 	srcrect.y = 0;
-	srcrect.w = Screen::getWidth() * 10;
-	srcrect.h = Screen::getHeight() * 10;
-	SDL_Rect dstrect = srcrect;
-	SDL_RenderCopy(Renderer::get(), board, &srcrect, nullptr);
+	srcrect.w = Screen::getWidth();
+	srcrect.h = Screen::getHeight();
+	SDL_Rect dstrect;
+    dstrect.x = 0;
+    dstrect.y = 0;
+    dstrect.w = Screen::getWidth() * 0.8f;
+    dstrect.h = Screen::getHeight();
+	SDL_RenderCopy(Renderer::get(), board, nullptr, &dstrect);
 }
 
