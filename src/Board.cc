@@ -3,16 +3,21 @@
 Board::Board()
 {
 	board = Texture::load("../Assets/board.png");
-	
+
+	if(board)
+		dotdot = true;
+
 	// for some reason different paths for us
-	if(!board)
+	else
 	{
+		dotdot = false;
 		std::cout << "Attempting to reload board\n";
 		board = Texture::load("Assets/board.png");
 	}
 
 	if(!board)
 		std::cout << "Failed to load board\n";
+
 }
 
 Board::~Board()
@@ -22,6 +27,7 @@ Board::~Board()
 }
 
 SDL_Texture* Board::getBoard() { return board; }
+bool Board::getDotDot() { return dotdot; }
 
 void Board::render()
 {
