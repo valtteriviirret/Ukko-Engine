@@ -3,8 +3,15 @@
 Board::Board()
 {
 	board = Texture::load("../Assets/board.png");
+	
+	// for some reason different paths for us
+	if(!board)
+	{
+		std::cout << "Attempting to reload board\n";
+		board = Texture::load("Assets/board.png");
+	}
 
-	if(!board)	
+	if(!board)
 		std::cout << "Failed to load board\n";
 }
 
