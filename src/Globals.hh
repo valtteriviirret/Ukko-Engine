@@ -6,6 +6,8 @@
 #include "PieceFactory.hh"
 #include "Game.hh"
 
+#define FPS 60
+
 static void Update();
 static void Render();
 static void Quit();
