@@ -2,9 +2,11 @@
 
 Board::Board()
 {
+	makeRects();
+	makeBoard();
 }
 
-void Board::makeSquares()
+void Board::makeBoard()
 {
 	// width and height of single tile
 	auto width = srcrect.w / 10 / 8 * 0.8f;
@@ -49,30 +51,18 @@ void Board::makeRects()
 	dstrect.h = Screen::getHeight();
 }
 
-Board::~Board()
-{
-	SDL_DestroyTexture(board);
-	board = nullptr;
-}
-
 void Board::render()
 {
-	// set the rendering color to red (testing)
-	Renderer::setColor(255, 0, 0);
-
-	// FUTURE PERFORMANCE UPGRADE, ONLY UPDATE THESE IF SCREENSIZE IS CHANGED
-	// also then initialize in constructor
-
 	// update rects
 	makeRects();
 
-	// update squares
-	makeSquares();
+	// update board
+	makeBoard();
 }
 
 // return board
 SDL_Texture* Board::getBoard() { return board; }
 
 // return square if the board
-SDL_Rect Board::getSquare(int x, int y) { return squares[x][y]; }
+SDL_Rect* Board::getSquare(int x, int y) { return &squares[x][y]; }
 
