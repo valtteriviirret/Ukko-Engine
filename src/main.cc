@@ -7,7 +7,6 @@
 #include "Move.hh"
 #include "Game.hh"
 
-#define FPS 60
 
 int main(int argc, char* argv[])
 {
@@ -28,7 +27,7 @@ int main(int argc, char* argv[])
 
 	// create new board
 	board = new Board;
-	
+
 	// create pieces
 	pieces = new PieceFactory;
 
@@ -88,7 +87,7 @@ void Render()
 
 	// update positions of the pieces
 	game->update();
-		
+
 	// update screen
 	Renderer::render();
 }
