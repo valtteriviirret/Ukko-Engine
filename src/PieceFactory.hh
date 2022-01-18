@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <string>
 #include "Texture.hh"
+#include "Board.hh"
 
 #define ARRSIZE(arr) (int)(sizeof(arr)/sizeof(arr[0]))
 

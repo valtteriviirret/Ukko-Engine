@@ -2,9 +2,10 @@
 #define WINDOW_H
 
 #include <SDL2/SDL.h>
+#include <iostream>
 #include "Renderer.hh"
 #include "ScreenSize.hh"
-#include <iostream>
+#include "Board.hh"
 
 class Window
 {
