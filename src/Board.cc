@@ -1,4 +1,5 @@
 #include "Board.hh"
+#include "Renderer.hh"
 
 Board::Board()
 {

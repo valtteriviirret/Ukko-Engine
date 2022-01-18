@@ -3,8 +3,8 @@
 #include "Window.hh"
 #include "Renderer.hh"
 #include "Globals.hh"
-#include "MovePiece.hh"
 #include "Board.hh"
+#include "Move.hh"
 
 #define FPS 60
 
@@ -31,7 +31,8 @@ int main(int argc, char* argv[])
 	// create pieces
 	pieces = new PieceFactory;
 
-	move = new MovePiece(board, pieces);
+	// initialize 
+	Move::init(board, pieces);
 
     // event handler
     SDL_Event e;
@@ -80,11 +81,11 @@ void Render()
 
 	// draw board
 	board->render();
+		
+	Move::initBoard();
 
 	// update screen
 	Renderer::render();
-
-	move->render();
 }
 
 
@@ -92,7 +93,6 @@ void Quit()
 {
 	delete board;
 	delete pieces;
-	delete move;
 	
 	// close SDL
 	IMG_Quit();
