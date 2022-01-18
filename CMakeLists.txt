@@ -22,5 +22,7 @@ add_executable(UkkoShakki
 	src/PieceFactory.hh 
 	src/Move.cc 
 	src/Move.hh
+	src/Game.hh
+	src/Game.cc
 	)
 target_link_libraries(UkkoShakki ${SDL2_LIBRARIES} -lSDL2_image)

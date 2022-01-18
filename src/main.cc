@@ -5,6 +5,7 @@
 #include "Globals.hh"
 #include "Board.hh"
 #include "Move.hh"
+#include "Game.hh"
 
 #define FPS 60
 
@@ -31,8 +32,11 @@ int main(int argc, char* argv[])
 	// create pieces
 	pieces = new PieceFactory;
 
-	// initialize 
+	// initialize move namespace
 	Move::init(board, pieces);
+
+	// create game
+	game = new Game;
 
     // event handler
     SDL_Event e;
@@ -81,9 +85,10 @@ void Render()
 
 	// draw board
 	board->render();
-		
-	Move::initBoard();
 
+	// update positions of the pieces
+	game->update();
+		
 	// update screen
 	Renderer::render();
 }
@@ -93,6 +98,7 @@ void Quit()
 {
 	delete board;
 	delete pieces;
+	delete game;
 	
 	// close SDL
 	IMG_Quit();

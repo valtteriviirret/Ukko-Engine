@@ -10,7 +10,7 @@
 namespace Move
 {
 	void init(Board* board, PieceFactory* factory);
-	void initBoard();
+	void setPosition(int x, int y);
 };
 
 #endif
