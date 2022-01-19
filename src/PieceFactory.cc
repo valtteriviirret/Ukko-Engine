@@ -13,10 +13,10 @@ PieceFactory::PieceFactory()
 
 PieceFactory::~PieceFactory()
 {
-	for(int i = 0; i < ARRSIZE(p); i++)
+	for(auto & i : p)
 	{
-		SDL_DestroyTexture(p[i]);
-		p[i] = nullptr;
+		SDL_DestroyTexture(i);
+		i = nullptr;
 	}
 }
 
