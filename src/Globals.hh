@@ -8,7 +8,6 @@
 
 #define FPS 60
 
-static void Update();
 static void Render();
 static void Quit();
 
@@ -17,6 +16,5 @@ static bool applicationShouldClose;
 Board* board = nullptr;
 PieceFactory* pieces = nullptr;
 Game* game = nullptr;
-
 
 #endif //UKKOSHAKKI_GLOBALS_HH
