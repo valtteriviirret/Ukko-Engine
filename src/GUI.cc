@@ -2,7 +2,7 @@
 // Created by valiant on 19.1.2022.
 //
 
-#include "GUI.h"
+#include "GUI.hh"
 
 bool GUI::onMouseRollOver(SDL_Rect& square) {
 

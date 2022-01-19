@@ -24,5 +24,6 @@ add_executable(UkkoShakki
 	src/PieceRenderer.cc
 	src/Game.hh
 	src/Game.cc
-        src/GUI.cpp src/GUI.h)
+	src/GUI.cc
+	src/GUI.hh)
 target_link_libraries(UkkoShakki ${SDL2_LIBRARIES} -lSDL2_image)

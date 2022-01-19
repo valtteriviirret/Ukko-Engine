@@ -2,8 +2,8 @@
 // Created by valiant on 19.1.2022.
 //
 
-#ifndef UKKOSHAKKI_GUI_H
-#define UKKOSHAKKI_GUI_H
+#ifndef UKKOSHAKKI_GUI_HH
+#define UKKOSHAKKI_GUI_HH
 
 #include "SDL2/SDL.h"
 #include "Board.hh"
@@ -19,4 +19,4 @@ public:
 };
 
 
-#endif //UKKOSHAKKI_GUI_H
+#endif //UKKOSHAKKI_GUI_HH
