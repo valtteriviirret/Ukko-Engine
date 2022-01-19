@@ -2,8 +2,6 @@
 
 Board::Board()
 {
-	makeRects();
-	makeBoard();
 }
 
 void Board::makeBoard()
@@ -17,10 +15,10 @@ void Board::makeBoard()
 		for(int j = 0; j < 8; j++)
 		{
 			// make all squares
-			squares[i][j].x = i * width;
-			squares[i][j].y = j * height;
-			squares[i][j].w = width;
-			squares[i][j].h = height;
+			Sqr::getSquare(i, j).rect.x = i * width;
+			Sqr::getSquare(i, j).rect.y = j * height;
+			Sqr::getSquare(i, j).rect.w = width;
+			Sqr::getSquare(i, j).rect.h = height;
 
 			// set rendering color to black
 			Renderer::setColor(0, 0, 0);
@@ -28,7 +26,7 @@ void Board::makeBoard()
 			// render black squares
 			if((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0))
 			{
-				Renderer::fillRect(squares[i][j]);
+				Renderer::fillRect(Sqr::getSquare(i, j).rect);
 			}
 		}
 	}
@@ -59,7 +57,4 @@ void Board::render()
 	// update board
 	makeBoard();
 }
-
-// return square if the board
-SDL_Rect* Board::getSquare(int x, int y) { return &squares[x][y]; }
 

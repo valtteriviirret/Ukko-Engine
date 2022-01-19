@@ -3,6 +3,8 @@
 
 #include "Piece.hh"
 #include "PieceRenderer.hh"
+#include "SquareManager.hh"
+#include "Square.hh"
 
 #define ARRSIZE(arr) (int)(sizeof(arr)/sizeof(arr[0]))
 

@@ -13,9 +13,12 @@ class PieceFactory
 	public:
 		PieceFactory();
 		~PieceFactory();
+
+		// get texture
 		SDL_Texture* getPiece(int n);
 	private:
-		bool _dotdot{};
+		
+		// the textures
 		SDL_Texture* p[12]{};
 
 		std::string c[12] = 

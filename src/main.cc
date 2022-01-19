@@ -6,6 +6,7 @@
 #include "Board.hh"
 #include "PieceRenderer.hh"
 #include "Game.hh"
+#include "SquareManager.hh"
 
 
 int main(int argc, char* argv[])
@@ -31,8 +32,8 @@ int main(int argc, char* argv[])
 	// create pieces
 	pieces = new PieceFactory;
 
-	// initialize move namespace
-	PieceRenderer::init(board, pieces);
+	// initilize rendering pieces
+	PieceRenderer::init(pieces);
 
 	// create game
 	game = new Game;
