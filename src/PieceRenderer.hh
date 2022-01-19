@@ -1,5 +1,5 @@
-#ifndef MOVEPIECE_HH
-#define MOVEPIECE_HH
+#ifndef PIECERENDERER_HH
+#define PIECERENDERER_HH
 
 #include <SDL2/SDL.h>
 #include <iostream>
@@ -8,7 +8,7 @@
 #include "PieceFactory.hh"
 #include "Piece.hh"
 
-namespace Move
+namespace PieceRenderer
 {
 	void init(Board* board, PieceFactory* factory);
 	void renderInPosition(Piece piece);

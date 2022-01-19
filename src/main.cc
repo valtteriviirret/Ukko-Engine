@@ -4,7 +4,7 @@
 #include "Renderer.hh"
 #include "Globals.hh"
 #include "Board.hh"
-#include "Move.hh"
+#include "PieceRenderer.hh"
 #include "Game.hh"
 
 
@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
 	pieces = new PieceFactory;
 
 	// initialize move namespace
-	Move::init(board, pieces);
+	PieceRenderer::init(board, pieces);
 
 	// create game
 	game = new Game;
@@ -64,7 +64,6 @@ int main(int argc, char* argv[])
             SDL_Delay(frameDelay - frameTime);
     }
 
-	SDL_DestroyTexture(board->getBoard());
 	Quit();
 
     return 0;

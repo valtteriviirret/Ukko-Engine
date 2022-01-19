@@ -8,8 +8,6 @@ Game::Game()
 	pieces[0].type = "test";
 	pieces[0].x = 0;
 	pieces[0].y = 0;
-
-
 }
 
 void Game::initPieces()
@@ -23,17 +21,13 @@ void Game::initPieces()
 			pieces[i].color = true;
 		else
 			pieces[i].color = false;
-
 	}
-
 }
 
 void Game::update()
 {
-	Move::renderInPosition(pieces[0]);
+	PieceRenderer::renderInPosition(pieces[0]);
 
-	/*
 	for(int i = 0; i < ARRSIZE(pieces); i++)
-		Move::renderInPosition(pieces[i]);
-	*/
+		PieceRenderer::renderInPosition(pieces[i]);
 }
