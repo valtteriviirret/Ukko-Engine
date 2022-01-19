@@ -12,8 +12,8 @@ class Game
 		Game();
 		void update();
 	private:
-		void initPieces();
-		Piece pieces[32];
+		void initPieces(bool whiteBottom);
+		Piece p[32];
 };
 
 #endif

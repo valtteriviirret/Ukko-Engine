@@ -3,16 +3,17 @@
 
 #include <string>
 
+typedef enum { PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING } Type;
+typedef enum { BLACK, WHITE } Color;
+
 typedef struct Piece
 {
-	std::string type;
-	bool color;
+	Type type;
+	Color color;
 	bool alive;
-	// location
     int x, y;
 } Piece;
 
-typedef enum { PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING } Type;
 
 #endif
 
