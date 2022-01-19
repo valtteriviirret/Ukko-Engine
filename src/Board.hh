@@ -16,9 +16,9 @@ class Board
 	
 	private:
 		// source and destination for texture
-		SDL_Rect srcrect;
-		SDL_Rect dstrect;
-		SDL_Rect squares[8][8];
+		SDL_Rect srcrect{};
+		SDL_Rect dstrect{};
+		SDL_Rect squares[8][8]{};
 };
 
 #endif
