@@ -20,8 +20,8 @@ add_executable(UkkoShakki
 	src/Board.cc 
 	src/PieceFactory.cc 
 	src/PieceFactory.hh 
-	src/Move.cc 
-	src/Move.hh
+	src/PieceRenderer.hh 
+	src/PieceRenderer.cc
 	src/Game.hh
 	src/Game.cc
 	)

@@ -2,7 +2,7 @@
 #define GAME_HH
 
 #include "Piece.hh"
-#include "Move.hh"
+#include "PieceRenderer.hh"
 
 #define ARRSIZE(arr) (int)(sizeof(arr)/sizeof(arr[0]))
 

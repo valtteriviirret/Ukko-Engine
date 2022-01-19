@@ -1,15 +1,15 @@
-#include "Move.hh"
+#include "PieceRenderer.hh"
 
 Board* _board = nullptr;
 PieceFactory* _factory = nullptr;
 
-void Move::init(Board* board, PieceFactory* factory)
+void PieceRenderer::init(Board* board, PieceFactory* factory)
 {
 	_board = board;
 	_factory = factory;
 }
 
-void Move::renderInPosition(Piece piece)
+void PieceRenderer::renderInPosition(Piece piece)
 {
 	if(piece.alive)
 	{
