@@ -7,6 +7,7 @@
 
 #include "SDL2/SDL.h"
 #include "Renderer.hh"
+#include "Square.hh"
 
 class GUI {
 private:

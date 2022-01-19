@@ -1,4 +1,5 @@
 #include "Game.hh"
+#include "SquareManager.hh"
 
 Game::Game()
 {
@@ -27,6 +28,7 @@ void Game::initPieces(bool whiteBottom)
 			p[i].y = bp;
 			p[i].type = PAWN;
 			p[i].color = Color::BLACK;
+			Sqr::getSquare(i, bp).piece = PAWN;
 		}
 
 		else if(i >= 8 && i < 16)
@@ -41,6 +43,7 @@ void Game::initPieces(bool whiteBottom)
 			p[i].y = wp;
 			p[i].type = PAWN;
 			p[i].color = Color::WHITE;
+			Sqr::getSquare(i - 16, wp).piece = PAWN;
 		}
 		else
 		{

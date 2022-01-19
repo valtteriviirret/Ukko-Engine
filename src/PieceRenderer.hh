@@ -3,14 +3,14 @@
 
 #include <SDL2/SDL.h>
 #include <iostream>
-#include "Board.hh"
 #include "Renderer.hh"
 #include "PieceFactory.hh"
 #include "Piece.hh"
+#include "SquareManager.hh"
 
 namespace PieceRenderer
 {
-	void init(Board* board, PieceFactory* factory);
+	void init(PieceFactory* factory);
 	void renderInPosition(Piece piece);
 };
 

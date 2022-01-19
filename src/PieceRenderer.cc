@@ -1,11 +1,10 @@
 #include "PieceRenderer.hh"
+#include "SquareManager.hh"
 
-Board* _board = nullptr;
 PieceFactory* _factory = nullptr;
 
-void PieceRenderer::init(Board* board, PieceFactory* factory)
+void PieceRenderer::init(PieceFactory* factory)
 {
-	_board = board;
 	_factory = factory;
 }
 
@@ -27,7 +26,7 @@ void PieceRenderer::renderInPosition(Piece piece)
 		}
 		
 		// render the piece
-		SDL_RenderCopy(Renderer::get(), _factory->getPiece(n), nullptr, _board->getSquare(piece.x, piece.y));
+		SDL_RenderCopy(Renderer::get(), _factory->getPiece(n), nullptr, &Sqr::getSquare(piece.x, piece.y).rect);
 	}
 }
 
