@@ -6,11 +6,12 @@
 #include "Board.hh"
 #include "Renderer.hh"
 #include "PieceFactory.hh"
+#include "Piece.hh"
 
 namespace Move
 {
 	void init(Board* board, PieceFactory* factory);
-	void setPosition(int x, int y);
+	void renderInPosition(Piece piece);
 };
 
 #endif

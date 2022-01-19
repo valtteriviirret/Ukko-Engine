@@ -61,9 +61,6 @@ void Board::render()
 	makeBoard();
 }
 
-// return board
-SDL_Texture* Board::getBoard() { return board; }
-
 // return square if the board
 SDL_Rect* Board::getSquare(int x, int y) { return &squares[x][y]; }
 

@@ -3,7 +3,6 @@
 
 #include <SDL2/SDL.h>
 #include "ScreenSize.hh"
-#include "Texture.hh"
 #include "Renderer.hh"
 
 class Board
@@ -13,7 +12,6 @@ class Board
 		void render();
 		void makeBoard();
 		void makeRects();
-		SDL_Texture* getBoard();
 		SDL_Rect* getSquare(int x, int y);
 	
 	private:
