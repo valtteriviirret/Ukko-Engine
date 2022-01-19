@@ -64,7 +64,6 @@ int main(int argc, char* argv[])
             SDL_Delay(frameDelay - frameTime);
     }
 
-	SDL_DestroyTexture(board->getBoard());
 	Quit();
 
     return 0;

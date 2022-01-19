@@ -18,7 +18,6 @@ class Board
 		// source and destination for texture
 		SDL_Rect srcrect;
 		SDL_Rect dstrect;
-		SDL_Texture* board;
 		SDL_Rect squares[8][8];
 };
 
