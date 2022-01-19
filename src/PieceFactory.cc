@@ -13,7 +13,7 @@ PieceFactory::PieceFactory()
 
 PieceFactory::~PieceFactory()
 {
-	for(auto & i : p)
+	for(auto& i : p)
 	{
 		SDL_DestroyTexture(i);
 		i = nullptr;

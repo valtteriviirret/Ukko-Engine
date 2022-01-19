@@ -11,10 +11,10 @@ void Game::initPieces(bool whiteBottom)
 
 	if(!whiteBottom)
 	{
-		bp = wp;
-		b = w;
-		wp = bp;
-		w = b;
+		bp = 6;
+		b = 7;
+		wp = 1;
+		w = 0;
 	}
 
 	for(int i = 0; i < ARRSIZE(p); i++)
@@ -81,6 +81,6 @@ void Game::initPieces(bool whiteBottom)
 
 void Game::update()
 {
-	for(int i = 0; i < ARRSIZE(p); i++)
-		PieceRenderer::renderInPosition(p[i]);
+	for(auto& i : p)
+		PieceRenderer::renderInPosition(i);
 }
