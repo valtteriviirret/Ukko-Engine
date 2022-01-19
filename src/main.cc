@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 
         frameStart = SDL_GetTicks();
 
-		Update();
+        Render();
 
         frameTime = SDL_GetTicks() - frameStart;
 
@@ -67,12 +67,6 @@ int main(int argc, char* argv[])
 	Quit();
 
     return 0;
-}
-
-
-void Update()
-{
-    Render();
 }
 
 void Render()
