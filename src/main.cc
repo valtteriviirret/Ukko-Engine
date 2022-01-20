@@ -52,6 +52,9 @@ int main(int argc, char* argv[])
 			if((e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) || e.type == SDL_QUIT)
     			applicationShouldClose = true;
 
+            // resize window accordingly
+            window.resize(e);
+
             // draw white screen
             Renderer::setColor(255, 255, 255);
             Renderer::clear();
@@ -61,13 +64,10 @@ int main(int argc, char* argv[])
 
             // update positions of the pieces
             game->update(e);
-
-            // update screen
-            Renderer::render();
-			
-			// resize window accordingly
-			window.resize(e);
         }
+
+        // update screen
+        Renderer::render();
 
         frameTime = SDL_GetTicks() - frameStart;
 
