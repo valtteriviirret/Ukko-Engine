@@ -89,15 +89,15 @@ void Game::initPieces(bool whiteBottom)
 	}
 	
 	// info of pieces saved into squares
-	for(int i = 0; i < ARRSIZE(p); i++)
+	for(auto & i : p)
 	{
-		int y = (p[i].color == BLACK) ? bp : wp;
-		Sqr::getSquare(p[i].x, y).piece = p[i].type;
+		int y = (i.color == BLACK) ? bp : wp;
+		Sqr::getSquare(i.x, y).piece = i.type;
 	}
 
 }
 
-// render pieces in their currect positions
+// render pieces in their current positions
 void Game::update()
 {
 	for(auto& i : p)

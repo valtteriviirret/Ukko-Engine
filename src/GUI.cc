@@ -1,7 +1,3 @@
-//
-// Created by valiant on 19.1.2022.
-//
-
 #include "GUI.hh"
 
 void GUI::MouseEvent(SDL_Event &e) {

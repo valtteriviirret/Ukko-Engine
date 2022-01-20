@@ -16,7 +16,7 @@ Window::Window()
 	// create window
 	window = SDL_CreateWindow("Chess", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE);
 
-	// if could not create window
+	// if window creation fails
 	if(!window)
 		std::cout << "Could not create window! " << SDL_GetError() << "\n";
 	else
