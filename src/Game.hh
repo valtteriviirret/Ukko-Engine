@@ -12,7 +12,7 @@ class Game
 {
 	public:
 		Game();
-		void update();
+		void update(SDL_Event& e);
 	private:
 		void initPieces(bool whiteBottom);
 		Piece p[32];

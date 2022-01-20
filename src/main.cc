@@ -6,7 +6,6 @@
 #include "Board.hh"
 #include "PieceRenderer.hh"
 #include "Game.hh"
-#include "SquareManager.hh"
 
 
 int main(int argc, char* argv[])
@@ -44,20 +43,31 @@ int main(int argc, char* argv[])
     // Game loop:
     while (!applicationShouldClose)
     {
+        frameStart = SDL_GetTicks();
+
         // handle events on queue
         while(SDL_PollEvent(&e))
         {
 			// quit the program with esc or traditionally
 			if((e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) || e.type == SDL_QUIT)
     			applicationShouldClose = true;
+
+            // draw white screen
+            Renderer::setColor(255, 255, 255);
+            Renderer::clear();
+
+            // render board
+            board->render();
+
+            // update positions of the pieces
+            game->update(e);
+
+            // update screen
+            Renderer::render();
 			
 			// resize window accordingly
 			window.resize(e);
         }
-
-        frameStart = SDL_GetTicks();
-
-        Render();
 
         frameTime = SDL_GetTicks() - frameStart;
 
@@ -68,22 +78,6 @@ int main(int argc, char* argv[])
 	Quit();
 
     return 0;
-}
-
-void Render()
-{
-    // draw white screen
-	Renderer::setColor(255, 255, 255);
-	Renderer::clear();
-
-	// render board
-	board->render();
-
-	// update positions of the pieces
-	game->update();
-
-	// update screen
-	Renderer::render();
 }
 
 

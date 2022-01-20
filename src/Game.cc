@@ -100,11 +100,9 @@ void Game::initPieces(bool whiteBottom)
 }
 
 // render pieces in their current positions
-void Game::update()
+void Game::update(SDL_Event& e)
 {
-    SDL_Event* e;
-
-    SDL_Point mousePosition = GUI::mousePos(*e);
+    SDL_Point mousePosition = GUI::mousePos(e);
     // std::cout << "Mouse X: " << GUI::mousePos(*e).x << ", Mouse Y: " << GUI::mousePos(*e).y << "\n";
 
     for(int x = 0; x < 8; x++)

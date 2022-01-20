@@ -8,7 +8,6 @@
 
 #define FPS 60
 
-static void Render();
 static void Quit();
 
 static bool applicationShouldClose;
