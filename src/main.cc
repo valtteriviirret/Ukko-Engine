@@ -1,6 +1,7 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "Game.hh"
+#include "Renderer.hh"
 
 #define FPS 60
 
@@ -20,6 +21,8 @@ int main(int argc, char* argv[])
 
 	// create new game
 	Game game;
+
+	SDL_SetRenderDrawBlendMode(Renderer::get(), SDL_BLENDMODE_NONE);
 
     // Game loop:
     while(!game.ApplicationShouldClose)
