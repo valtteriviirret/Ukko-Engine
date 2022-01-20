@@ -11,7 +11,7 @@ class Board
 	public: 
 		Board();
 		void render();
-		void makeBoard();
+		void makeBoard() const;
 		void makeRects();
 	
 	private:

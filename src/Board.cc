@@ -1,10 +1,8 @@
 #include "Board.hh"
 
-Board::Board()
-{
-}
+Board::Board() = default;
 
-void Board::makeBoard()
+void Board::makeBoard() const
 {
 	// width and height of single tile
 	auto width = srcrect.w / 10 / 8 * 0.8f;
