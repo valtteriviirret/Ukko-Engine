@@ -1,12 +1,51 @@
 #include "Game.hh"
-#include "SquareManager.hh"
-#include "GUI.hh"
-#include "iostream"
 
 Game::Game()
 {
+	// create new window and renderer
+	window = new Window;
+
+	// make board
+	board = new Board;
+
+	// create pieces
+	pieces = new PieceFactory;
+
+	// initialize helping namespace
+	PieceRenderer::init(pieces);
+
+	// put pieces in correct places
 	initPieces(true);
+
+	Engine::PlayMove();
 }
+
+Game::~Game()
+{
+	delete window;
+	delete pieces;
+	delete board;
+}
+
+void Game::updateGame()
+{
+	eventHandler();
+	update();
+	render();
+}
+
+void Game::eventHandler()
+{
+	while(SDL_PollEvent(&e))
+	{
+		window->resize(e);
+
+		if((e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) || e.type == SDL_QUIT)
+			ApplicationShouldClose = true;
+
+	}
+}
+
 
 // initialize pieces into correct places and save information of pieces to squares
 void Game::initPieces(bool whiteBottom)
@@ -90,18 +129,26 @@ void Game::initPieces(bool whiteBottom)
 	}
 	
 	// info of pieces saved into squares
-	for(auto & i : p)
+	for(auto& i : p)
 	{
 		int y = (i.color == BLACK) ? bp : wp;
 		Sqr::getSquare(i.x, y).piece = i.type;
 	}
+}
+
+void Game::update()
+{
 
 }
 
 // render pieces in their current positions
-void Game::update(SDL_Event& e)
+void Game::render()
 {
-    SDL_Point mousePosition = GUI::mousePos(e);
+
+	/*
+    SDL_Event* e;
+
+    SDL_Point mousePosition = GUI::mousePos(*e);
     // std::cout << "Mouse X: " << GUI::mousePos(*e).x << ", Mouse Y: " << GUI::mousePos(*e).y << "\n";
 
     for(int x = 0; x < 8; x++)
@@ -114,7 +161,20 @@ void Game::update(SDL_Event& e)
             }
         }
     }
+	*/
+	
+	// make white background
+	Renderer::setColor(255, 255, 255);
+	Renderer::clear();
 
+	// render board
+	board->render();
+
+	// render pieces
 	for(auto& i : p)
 		PieceRenderer::renderInPosition(i);
+	
+
+	// main rendering
+	Renderer::render();
 }
