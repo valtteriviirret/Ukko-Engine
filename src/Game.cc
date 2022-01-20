@@ -17,7 +17,6 @@ Game::Game()
 	// put pieces in correct places
 	initPieces(true);
 
-	Engine::PlayMove();
 }
 
 Game::~Game()

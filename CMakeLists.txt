@@ -7,7 +7,6 @@ find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS})
 add_executable(UkkoShakki 
 	src/main.cc 
-	src/Globals.hh
 	src/Window.cc
 	src/Window.hh
 	src/Renderer.cc
