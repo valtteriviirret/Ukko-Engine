@@ -1,7 +1,3 @@
-//
-// Created by valiant on 19.1.2022.
-//
-
 #ifndef UKKOSHAKKI_GUI_HH
 #define UKKOSHAKKI_GUI_HH
 
@@ -17,6 +13,7 @@ class GUI
 		~GUI();
     	void MouseEvent(SDL_Event& e);
 	private:
+        static bool onMouseRollOver(SDL_Rect& square);
     	static SDL_Point mousePos;
 };
 

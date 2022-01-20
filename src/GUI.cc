@@ -4,6 +4,10 @@
 
 #include "GUI.hh"
 
+void GUI::MouseEvent(SDL_Event &e) {
+
+}
+
 bool GUI::onMouseRollOver(SDL_Rect& square) {
 
     SDL_PumpEvents();
