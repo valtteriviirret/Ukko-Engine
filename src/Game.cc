@@ -1,11 +1,24 @@
 #include "Game.hh"
-#include "SquareManager.hh"
-#include "GUI.hh"
-#include "iostream"
 
 Game::Game()
 {
+	// make board
+	board = new Board;
+
+	// create pieces
+	pieces = new PieceFactory;
+
+	// initialize helping namespace
+	PieceRenderer::init(pieces);
+
+	// put pieces in correct places
 	initPieces(true);
+}
+
+Game::~Game()
+{
+	delete pieces;
+	delete board;
 }
 
 
@@ -96,12 +109,13 @@ void Game::initPieces(bool whiteBottom)
 		int y = (i.color == BLACK) ? bp : wp;
 		Sqr::getSquare(i.x, y).piece = i.type;
 	}
-
 }
 
 // render pieces in their current positions
-void Game::update()
+void Game::render()
 {
+
+	/*
     SDL_Event* e;
 
     SDL_Point mousePosition = GUI::mousePos(*e);
@@ -117,7 +131,10 @@ void Game::update()
             }
         }
     }
+	*/
+	board->render();
 
 	for(auto& i : p)
 		PieceRenderer::renderInPosition(i);
+
 }
