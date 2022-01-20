@@ -1,5 +1,7 @@
 #include "Game.hh"
 #include "SquareManager.hh"
+#include "GUI.hh"
+#include "iostream"
 
 Game::Game()
 {
@@ -100,6 +102,11 @@ void Game::initPieces(bool whiteBottom)
 // render pieces in their current positions
 void Game::update()
 {
+    SDL_Event* e;
+
+    GUI::mousePos(*e);
+    std::cout << "Mouse X: " << GUI::mousePos(*e).x << ", Mouse Y: " << GUI::mousePos(*e).y << "\n";
+
 	for(auto& i : p)
 		PieceRenderer::renderInPosition(i);
 }
