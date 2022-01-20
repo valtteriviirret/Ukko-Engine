@@ -42,6 +42,12 @@ void Game::eventHandler()
 		if((e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) || e.type == SDL_QUIT)
 			ApplicationShouldClose = true;
 
+        if(e.type == SDL_MOUSEMOTION)
+        {
+            // Get mouse position
+            e.type = SDL_MOUSEMOTION;
+            SDL_GetMouseState(&mousePos.x, &mousePos.y);
+        }
 	}
 }
 
@@ -143,36 +149,26 @@ void Game::update()
 // render pieces in their current positions
 void Game::render()
 {
+    // make white background
+    Renderer::setColor(255, 255, 255);
+    Renderer::clear();
 
-	/*
-    SDL_Event* e;
-
-    SDL_Point mousePosition = GUI::mousePos(*e);
-    // std::cout << "Mouse X: " << GUI::mousePos(*e).x << ", Mouse Y: " << GUI::mousePos(*e).y << "\n";
+    // render board
+    board->render();
 
     for(int x = 0; x < 8; x++)
     {
         for(int y = 0; y < 8; y++)
         {
-            if (GUI::onMouseRollOver(mousePosition, Sqr::getSquare(x, y).rect)) {
+            if (GUI::onMouseRollOver(mousePos, Sqr::getSquare(x, y).rect)) {
                 Renderer::setColor(0, 255, 0);
                 Renderer::fillRect(Sqr::getSquare(x, y).rect);
             }
         }
     }
-	*/
-	
-	// make white background
-	Renderer::setColor(255, 255, 255);
-	Renderer::clear();
 
-	// render board
-	board->render();
-
-	// render pieces
 	for(auto& i : p)
 		PieceRenderer::renderInPosition(i);
-	
 
 	// main rendering
 	Renderer::render();

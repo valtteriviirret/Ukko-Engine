@@ -6,6 +6,7 @@
 #include "PieceRenderer.hh"
 #include "SquareManager.hh"
 #include "Square.hh"
+#include "GUI.hh"
 #include "Board.hh"
 #include "PieceFactory.hh"
 #include "Engine/Engine.hh"
@@ -30,6 +31,7 @@ class Game
 		PieceFactory* pieces = nullptr;
 		Window* window = nullptr;
 		SDL_Event e;
+        SDL_Point mousePos;
 };
 
 #endif

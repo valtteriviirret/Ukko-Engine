@@ -6,7 +6,6 @@
 class GUI 
 {
 	public:
-        static SDL_Point mousePos(SDL_Event& e);
         static bool onMouseRollOver(SDL_Point& mousePos, SDL_Rect& square);
 };
 
