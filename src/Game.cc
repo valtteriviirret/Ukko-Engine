@@ -1,15 +1,17 @@
 #include "Game.hh"
-#include "SquareManager.hh"
 
 Game::Game()
 {
 	initPieces(true);
 }
 
+
+// initialize pieces into correct places and save information of pieces to squares
 void Game::initPieces(bool whiteBottom)
 {
 	int bp = 1, b = 0, wp = 6, w = 7;
 
+	// white and black change places
 	if(!whiteBottom)
 	{
 		bp = 6;
@@ -18,6 +20,7 @@ void Game::initPieces(bool whiteBottom)
 		w = 0;
 	}
 
+	// pawns into places
 	for(int i = 0; i < ARRSIZE(p); i++)
 	{
 		p[i].alive = true;
@@ -52,12 +55,15 @@ void Game::initPieces(bool whiteBottom)
 		}
 	}
 
+
+	// rest of pieces into places
 	for(int i = 0; i < ARRSIZE(p); i++)
 	{
 		if(i == 8 || i == 9 || i == 24 || i == 25)
 		{
 			p[i].type = ROOK;
 			p[i].x = (i == 8 || i == 24) ? 0 : 7;
+
 		}
 		else if(i == 10 || i == 11 || i == 26 || i == 27)
 		{
@@ -80,8 +86,17 @@ void Game::initPieces(bool whiteBottom)
 			p[i].x = 4;
 		}
 	}
+	
+	// info of pieces saved into squares
+	for(int i = 0; i < ARRSIZE(p); i++)
+	{
+		int y = (p[i].color == BLACK) ? bp : wp;
+		Sqr::getSquare(p[i].x, y).piece = p[i].type;
+	}
+
 }
 
+// render pieces in their currect positions
 void Game::update()
 {
 	for(auto& i : p)
