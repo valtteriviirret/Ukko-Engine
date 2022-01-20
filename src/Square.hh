@@ -8,6 +8,7 @@ typedef struct Square
 {
 	SDL_Rect rect;
 	Type piece = NONE;
+	int x, y;
 
 } Square;
 

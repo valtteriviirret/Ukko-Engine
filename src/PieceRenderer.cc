@@ -1,5 +1,4 @@
 #include "PieceRenderer.hh"
-#include "SquareManager.hh"
 
 PieceFactory* _factory = nullptr;
 
@@ -23,6 +22,7 @@ void PieceRenderer::renderInPosition(Piece piece)
 			case KNIGHT: n = (piece.color == BLACK) ? 1 : 7; break;
 			case QUEEN: n = (piece.color == BLACK) ? 4 : 10; break;
 			case BISHOP: n = (piece.color == BLACK) ? 0 : 6; break;
+			case NONE: n = -1; break;
 		}
 		
 		// render the piece

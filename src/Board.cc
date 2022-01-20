@@ -20,6 +20,11 @@ void Board::makeBoard()
 			Sqr::getSquare(i, j).rect.w = width;
 			Sqr::getSquare(i, j).rect.h = height;
 
+			// x and y positions to squares
+			// I don't know if we need this, I don't even know if this makes any sense.
+			Sqr::getSquare(i, j).x = i;
+			Sqr::getSquare(i, j).y = j;
+
 			// set rendering color to black
 			Renderer::setColor(0, 0, 0);
 			

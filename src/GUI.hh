@@ -8,12 +8,16 @@
 #include "SDL2/SDL.h"
 #include "Renderer.hh"
 #include "Square.hh"
+#include "SquareManager.hh"
 
-class GUI {
-private:
-    static SDL_Point mousePos;
-public:
-    static bool onMouseRollOver(SDL_Rect& square);
+class GUI 
+{
+	public:
+		GUI();
+		~GUI();
+    	void MouseEvent(SDL_Event& e);
+	private:
+    	static SDL_Point mousePos;
 };
 
 
