@@ -104,8 +104,19 @@ void Game::update()
 {
     SDL_Event* e;
 
-    GUI::mousePos(*e);
-    std::cout << "Mouse X: " << GUI::mousePos(*e).x << ", Mouse Y: " << GUI::mousePos(*e).y << "\n";
+    SDL_Point mousePosition = GUI::mousePos(*e);
+    // std::cout << "Mouse X: " << GUI::mousePos(*e).x << ", Mouse Y: " << GUI::mousePos(*e).y << "\n";
+
+    for(int x = 0; x < 8; x++)
+    {
+        for(int y = 0; y < 8; y++)
+        {
+            if (GUI::onMouseRollOver(mousePosition, Sqr::getSquare(x, y).rect)) {
+                Renderer::setColor(0, 255, 0);
+                Renderer::fillRect(Sqr::getSquare(x, y).rect);
+            }
+        }
+    }
 
 	for(auto& i : p)
 		PieceRenderer::renderInPosition(i);

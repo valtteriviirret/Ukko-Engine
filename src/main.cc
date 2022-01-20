@@ -50,12 +50,6 @@ int main(int argc, char* argv[])
 			// quit the program with esc or traditionally
 			if((e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) || e.type == SDL_QUIT)
     			applicationShouldClose = true;
-
-			// handle events on squares
-			for(int i = 0; i < 8; i++)
-				for(int j = 0; j < 8; j++)
-					Sqr::handleEvent(Sqr::getSquare(i, j), e);
-
 			
 			// resize window accordingly
 			window.resize(e);

@@ -1,9 +1,5 @@
 #include "GUI.hh"
 
-GUI::GUI() = default;
-
-GUI::~GUI() = default;
-
 SDL_Point GUI::mousePos(SDL_Event &e) {
 
     int x, y;
