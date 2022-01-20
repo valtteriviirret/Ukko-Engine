@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
 					Sqr::handleEvent(Sqr::getSquare(i, j), e);
 
 			
-			// rezise window accordingly
+			// resize window accordingly
 			window.resize(e);
         }
 
