@@ -11,10 +11,9 @@ class GUI
 	public:
 		GUI();
 		~GUI();
-    	void MouseEvent(SDL_Event& e);
+        static SDL_Point mousePos(SDL_Event& e);
 	private:
-        static bool onMouseRollOver(SDL_Rect& square);
-    	static SDL_Point mousePos;
+        static bool onMouseRollOver(SDL_Point& mousePos, SDL_Rect& square);
 };
 
 
