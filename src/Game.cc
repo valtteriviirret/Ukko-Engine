@@ -2,6 +2,9 @@
 
 Game::Game()
 {
+	// create new window and renderer
+	window = new Window;
+
 	// make board
 	board = new Board;
 
@@ -13,12 +16,34 @@ Game::Game()
 
 	// put pieces in correct places
 	initPieces(true);
+
+	Engine::PlayMove();
 }
 
 Game::~Game()
 {
+	delete window;
 	delete pieces;
 	delete board;
+}
+
+void Game::updateGame()
+{
+	eventHandler();
+	update();
+	render();
+}
+
+void Game::eventHandler()
+{
+	while(SDL_PollEvent(&e))
+	{
+		window->resize(e);
+
+		if((e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) || e.type == SDL_QUIT)
+			ApplicationShouldClose = true;
+
+	}
 }
 
 
@@ -104,11 +129,16 @@ void Game::initPieces(bool whiteBottom)
 	}
 	
 	// info of pieces saved into squares
-	for(auto & i : p)
+	for(auto& i : p)
 	{
 		int y = (i.color == BLACK) ? bp : wp;
 		Sqr::getSquare(i.x, y).piece = i.type;
 	}
+}
+
+void Game::update()
+{
+
 }
 
 // render pieces in their current positions
@@ -132,9 +162,19 @@ void Game::render()
         }
     }
 	*/
+	
+	// make white background
+	Renderer::setColor(255, 255, 255);
+	Renderer::clear();
+
+	// render board
 	board->render();
 
+	// render pieces
 	for(auto& i : p)
 		PieceRenderer::renderInPosition(i);
+	
 
+	// main rendering
+	Renderer::render();
 }
