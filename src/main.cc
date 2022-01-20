@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
 	// create pieces
 	pieces = new PieceFactory;
 
-	// initilize rendering pieces
+	// initialize rendering pieces
 	PieceRenderer::init(pieces);
 
 	// create game
