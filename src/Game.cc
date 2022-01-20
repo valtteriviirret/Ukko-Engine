@@ -8,6 +8,7 @@ Game::Game()
 	initPieces(true);
 }
 
+
 // initialize pieces into correct places and save information of pieces to squares
 void Game::initPieces(bool whiteBottom)
 {

@@ -7,8 +7,6 @@
 #include "PieceRenderer.hh"
 #include "Game.hh"
 #include "SquareManager.hh"
-#include "Engine/Engine.hh"
-#include "Engine/Init.hh"
 
 
 int main(int argc, char* argv[])
@@ -39,8 +37,6 @@ int main(int argc, char* argv[])
 
 	// create game
 	game = new Game;
-
-	Engine::MakeMove();
 
     // event handler
     SDL_Event e;

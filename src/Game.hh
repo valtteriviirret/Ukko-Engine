@@ -13,7 +13,6 @@ class Game
 	public:
 		Game();
 		void update();
-		Piece* getPieces();
 	private:
 		void initPieces(bool whiteBottom);
 		Piece p[32];
