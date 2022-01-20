@@ -9,7 +9,6 @@
 #include "GUI.hh"
 #include "Board.hh"
 #include "PieceFactory.hh"
-#include "Engine/Engine.hh"
 #include <SDL2/SDL.h>
 
 #define ARRSIZE(arr) (int)(sizeof(arr)/sizeof(arr[0]))
