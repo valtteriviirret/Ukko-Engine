@@ -101,6 +101,11 @@ void Game::initPieces(bool whiteBottom)
 		}
 	}
 
+	p[5].x = 2;
+	p[5].y = 2;
+	p[5].type = QUEEN;
+	p[5].color = BLACK;
+
 
 	// rest of pieces into places
 	for(int i = 0; i < ARRSIZE(p); i++)
@@ -168,7 +173,10 @@ void Game::render()
     }
 
 	for(auto& i : p)
+	{
+		SDL_SetRenderDrawBlendMode(Renderer::get(), SDL_BLENDMODE_BLEND);
 		PieceRenderer::renderInPosition(i);
+	}
 
 	// main rendering
 	Renderer::render();

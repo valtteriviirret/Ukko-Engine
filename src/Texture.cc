@@ -1,9 +1,12 @@
 #include "Texture.hh"
+#include "Renderer.hh"
 
 namespace Texture
 {
 	SDL_Texture* load(std::string path)
 	{
+		Renderer::clear();		
+
 		// the actual texture
 		SDL_Texture* texture = nullptr;
 
