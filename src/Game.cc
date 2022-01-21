@@ -1,5 +1,8 @@
 #include "Game.hh"
 
+// initialize starting variable
+bool Game::whiteBottom = true;
+
 Game::Game()
 {
 	// create new window and renderer
@@ -16,6 +19,7 @@ Game::Game()
 
 	// put pieces in correct places
 	initPieces(whiteBottom);
+
 
 }
 

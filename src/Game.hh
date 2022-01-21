@@ -9,6 +9,7 @@
 #include "GUI.hh"
 #include "Board.hh"
 #include "PieceFactory.hh"
+#include "LegalMoves.hh"
 #include <SDL2/SDL.h>
 
 #define ARRSIZE(arr) (int)(sizeof(arr)/sizeof(arr[0]))
@@ -20,7 +21,7 @@ class Game
 		~Game();
 		void updateGame();
 		bool ApplicationShouldClose = false;
-		bool whiteBottom = true;
+		static bool whiteBottom;
 	private:
 		void render();
 		void update();

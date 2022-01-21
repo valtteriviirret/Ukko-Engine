@@ -2,11 +2,14 @@
 #define LEGALMOVES_HH
 
 #include "Square.hh"
+#include "SquareManager.hh"
 #include "Piece.hh"
+#include "Game.hh"
+#include <vector>
 
 namespace LegalMove
 {
-	Square* show(Square square);
+	std::vector<Square> show(Piece piece);
 }
 
 #endif
