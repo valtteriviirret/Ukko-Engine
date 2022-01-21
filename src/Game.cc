@@ -101,11 +101,6 @@ void Game::initPieces(bool whiteBottom)
 		}
 	}
 
-	p[5].x = 2;
-	p[5].y = 2;
-	p[5].type = QUEEN;
-	p[5].color = BLACK;
-
 
 	// rest of pieces into places
 	for(int i = 0; i < ARRSIZE(p); i++)
