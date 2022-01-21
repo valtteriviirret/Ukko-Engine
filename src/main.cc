@@ -22,8 +22,6 @@ int main(int argc, char* argv[])
 	// create new game
 	Game game;
 
-	SDL_SetRenderDrawBlendMode(Renderer::get(), SDL_BLENDMODE_NONE);
-
     // Game loop:
     while(!game.ApplicationShouldClose)
 	{

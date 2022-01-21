@@ -20,6 +20,7 @@ class Game
 		~Game();
 		void updateGame();
 		bool ApplicationShouldClose = false;
+		bool whiteBottom = true;
 	private:
 		void render();
 		void update();

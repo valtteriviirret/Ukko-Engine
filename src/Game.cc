@@ -15,7 +15,7 @@ Game::Game()
 	PieceRenderer::init(pieces);
 
 	// put pieces in correct places
-	initPieces(true);
+	initPieces(whiteBottom);
 
 }
 
@@ -156,6 +156,7 @@ void Game::render()
     // render board
     board->render();
 
+	// color the square where to mouse is
     for(int x = 0; x < 8; x++)
     {
         for(int y = 0; y < 8; y++)
@@ -166,12 +167,10 @@ void Game::render()
             }
         }
     }
-
+	
+	// render pieces
 	for(auto& i : p)
-	{
-		SDL_SetRenderDrawBlendMode(Renderer::get(), SDL_BLENDMODE_BLEND);
 		PieceRenderer::renderInPosition(i);
-	}
 
 	// main rendering
 	Renderer::render();
