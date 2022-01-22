@@ -3,6 +3,7 @@
 
 typedef enum { PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING, NONE } Type;
 typedef enum { BLACK, WHITE } Color;
+typedef enum { PLAYER, OPPONENT } User; 
 
 typedef struct Piece
 {
@@ -10,6 +11,8 @@ typedef struct Piece
 	Color color;
 	bool alive;
     int x, y;
+	User user;
+
 } Piece;
 
 

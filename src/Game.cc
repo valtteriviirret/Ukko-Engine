@@ -1,7 +1,6 @@
 #include "Game.hh"
-
-// initialize starting variable
-bool Game::whiteBottom = true;
+#include "LegalMoves.hh"
+#include "SquareManager.hh"
 
 Game::Game()
 {
@@ -18,8 +17,23 @@ Game::Game()
 	PieceRenderer::init(pieces);
 
 	// put pieces in correct places
-	initPieces(whiteBottom);
+	initPieces(Settings::PlayerColor);
 
+	
+	// example of legalmove recognition
+	Sqr::getSquare(1, 3).piece = ROOK;
+	std::vector<Square> v (LegalMove::show(p[1]));
+
+	std::cout << p[1].color;
+	std::cout << p[1].x;
+	std::cout << p[1].y;
+	std::cout << p[1].type;
+	std::cout << p[1].user;
+
+	for(int i = 0; i < (int)v.size(); i++)
+	{
+		std::cout << v.at(i).piece;
+	}
 
 }
 
@@ -43,6 +57,7 @@ void Game::eventHandler()
 	{
 		window->resize(e);
 
+		// close application
 		if((e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) || e.type == SDL_QUIT)
 			ApplicationShouldClose = true;
 
@@ -64,12 +79,12 @@ void Game::eventHandler()
 
 
 // initialize pieces into correct places and save information of pieces to squares
-void Game::initPieces(bool whiteBottom)
+void Game::initPieces(int playerColor)
 {
 	int bp = 1, b = 0, wp = 6, w = 7;
 
 	// white and black change places
-	if(!whiteBottom)
+	if(playerColor != Color::WHITE)
 	{
 		bp = 6;
 		b = 7;
@@ -84,6 +99,7 @@ void Game::initPieces(bool whiteBottom)
 
 		if(i < 8)
 		{
+			// black pawns
 			p[i].x = i;
 			p[i].y = bp;
 			p[i].type = PAWN;
@@ -93,6 +109,7 @@ void Game::initPieces(bool whiteBottom)
 
 		else if(i >= 8 && i < 16)
 		{
+			// x is defined in second loop
 			p[i].y = b;
 			p[i].color = Color::BLACK;
 		}
@@ -149,6 +166,15 @@ void Game::initPieces(bool whiteBottom)
 	{
 		int y = (i.color == BLACK) ? bp : wp;
 		Sqr::getSquare(i.x, y).piece = i.type;
+	}
+
+	// initialise user for piece
+	for(int i = 0; i < ARRSIZE(p); i++)
+	{
+		if(i < 16)
+			p[i].user = OPPONENT;
+		else
+			p[i].user = PLAYER;
 	}
 }
 

@@ -1,6 +1,5 @@
 #include "LegalMoves.hh"
 
-
 namespace LegalMove
 {
 	// vector type might need to be pointer
@@ -13,9 +12,7 @@ namespace LegalMove
 		{
 			case PAWN:
 
-				// 
-				// does this make any sense?
-				if(Game::whiteBottom && piece.color == WHITE)
+				if(piece.user == PLAYER)
 				{	
 					// first row is special
 					if(piece.y == 6)
@@ -27,29 +24,30 @@ namespace LegalMove
 						sqrs.push_back(Sqr::getSquare((piece.x - 1), (piece.y - 1)));
 
 					// center
-					if(Sqr::getSquare((piece.x), (piece.y - 1)).piece == NONE)
-						sqrs.push_back(Sqr::getSquare((piece.x), (piece.y - 1)));
+					if(Sqr::getSquare(piece.x, (piece.y - 1)).piece == NONE)
+						sqrs.push_back(Sqr::getSquare(piece.x, (piece.y - 1)));
 
 					// right
-					if(Sqr::getSquare((piece.x - 1), (piece.y + 1)).piece != NONE)
-						sqrs.push_back(Sqr::getSquare((piece.x - 1), (piece.y + 1)));
-
-				}
-				else if((!Game::whiteBottom) && piece.color == WHITE)
-				{
-
-				}
-				else if(Game::whiteBottom && piece.color == BLACK)
-				{
+					if(Sqr::getSquare((piece.x + 1), (piece.y - 1)).piece != NONE)
+						sqrs.push_back(Sqr::getSquare((piece.x + 1), (piece.y - 1)));
 
 				}
 
-				// (!Game::whiteBottom) && piece.color == BLACK
+				// same for upside
 				else
 				{
 					if(piece.y == 1)
 						if(Sqr::getSquare(piece.x, 3).piece == NONE)
 							sqrs.push_back(Sqr::getSquare(piece.x, 3));
+				
+					if(Sqr::getSquare((piece.x + 1), piece.y + 1).piece != NONE)
+						sqrs.push_back(Sqr::getSquare((piece.x + 1), (piece.y + 1)));
+ 					
+					if(Sqr::getSquare(piece.x, (piece.y + 1)).piece == NONE)
+						sqrs.push_back(Sqr::getSquare(piece.x, (piece.y + 1)));
+
+					if(Sqr::getSquare((piece.x - 1), (piece.y + 1)).piece != NONE)
+						sqrs.push_back(Sqr::getSquare((piece.x - 1), (piece.y + 1)));
 				}
 
 			break;

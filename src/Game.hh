@@ -9,8 +9,10 @@
 #include "GUI.hh"
 #include "Board.hh"
 #include "PieceFactory.hh"
-#include "LegalMoves.hh"
 #include <SDL2/SDL.h>
+#include "Settings.hh"
+#include "LegalMoves.hh"
+#include <vector>
 
 #define ARRSIZE(arr) (int)(sizeof(arr)/sizeof(arr[0]))
 
@@ -21,12 +23,11 @@ class Game
 		~Game();
 		void updateGame();
 		bool ApplicationShouldClose = false;
-		static bool whiteBottom;
 	private:
 		void render();
 		void update();
 		void eventHandler();
-		void initPieces(bool whiteBottom);
+		void initPieces(int playerColor);
 		Piece p[32];
 		Board* board = nullptr;
 		PieceFactory* pieces = nullptr;
