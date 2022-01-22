@@ -11,8 +11,8 @@ bool GUI::onMouseRollOver(SDL_Point& mousePos, SDL_Rect& square)
 
 Square GUI::onSelect(SDL_Point& mousePos) {
 
-    int x = mousePos.x / 80;
-    int y = mousePos.y / 75;
+    int x = mousePos.x / 80; // These values must be relative to screen size.
+    int y = mousePos.y / 75; // Can be possibly fixed with Screen::getWidth() and Screen::getHeight()
 
     // TODO: Fix the bug when window size is changed
 
