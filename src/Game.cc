@@ -34,6 +34,7 @@ Game::Game()
 	{
 		std::cout << v.at(i).piece;
 	}
+
 }
 
 Game::~Game()
@@ -72,7 +73,6 @@ void Game::eventHandler()
             e.type = SDL_MOUSEBUTTONDOWN;
             SDL_GetMouseState(&mousePos.x, &mousePos.y);
             selectedSquare = GUI::onSelect(mousePos);
-            isSquareSelected = true;
         }
 	}
 }
@@ -202,10 +202,8 @@ void Game::render()
                 Renderer::setColor(0, 255, 0);
                 Renderer::fillRect(Sqr::getSquare(x, y).rect);
             }
-            if (isSquareSelected) {
-                Renderer::setColor(0, 0, 255);
-                Renderer::fillRect(selectedSquare.rect);
-            }
+            Renderer::setColor(0, 0, 255);
+            Renderer::fillRect(selectedSquare.rect);
         }
     }
 	

@@ -7,7 +7,7 @@
 typedef struct Square
 {
 	SDL_Rect rect;
-	Type piece = NONE;
+	Piece piece;
 	int x, y;
 
 } Square;
