@@ -67,6 +67,13 @@ void Game::eventHandler()
             e.type = SDL_MOUSEMOTION;
             SDL_GetMouseState(&mousePos.x, &mousePos.y);
         }
+
+        if(e.type == SDL_MOUSEBUTTONDOWN)
+        {
+            e.type = SDL_MOUSEBUTTONDOWN;
+            SDL_GetMouseState(&mousePos.x, &mousePos.y);
+            selectedSquare = GUI::onSelect(mousePos);
+        }
 	}
 }
 
@@ -195,6 +202,8 @@ void Game::render()
                 Renderer::setColor(0, 255, 0);
                 Renderer::fillRect(Sqr::getSquare(x, y).rect);
             }
+            Renderer::setColor(0, 0, 255);
+            Renderer::fillRect(selectedSquare.rect);
         }
     }
 	
