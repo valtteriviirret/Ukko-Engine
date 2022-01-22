@@ -1,4 +1,5 @@
 #include "GUI.hh"
+#include "iostream"
 
 bool GUI::onMouseRollOver(SDL_Point& mousePos, SDL_Rect& square)
 {
@@ -9,10 +10,15 @@ bool GUI::onMouseRollOver(SDL_Point& mousePos, SDL_Rect& square)
     return false;
 }
 
-Square GUI::onSelect(SDL_Point& mousePos) {
+Square& GUI::onSelect(SDL_Point& mousePos) {
 
     int x = mousePos.x * 10 / Screen::getWidth();
     int y = mousePos.y * 8 / Screen::getHeight();
+
+    if (x > 8)
+        y = 0;
+
+    std::cout << "X: " << x << ", Y: " << y << "\n";
 
     return Sqr::getSquare(x, y);
 }
