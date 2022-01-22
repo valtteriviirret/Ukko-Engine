@@ -1,6 +1,4 @@
 #include "Game.hh"
-#include "LegalMoves.hh"
-#include "SquareManager.hh"
 
 Game::Game()
 {
@@ -18,22 +16,6 @@ Game::Game()
 
 	// put pieces in correct places
 	initPieces(Settings::PlayerColor);
-
-	
-	// example of legalmove recognition
-	Sqr::getSquare(1, 3).piece = ROOK;
-	std::vector<Square> v (LegalMove::show(p[1]));
-
-	std::cout << p[1].color;
-	std::cout << p[1].x;
-	std::cout << p[1].y;
-	std::cout << p[1].type;
-	std::cout << p[1].user;
-
-	for(int i = 0; i < (int)v.size(); i++)
-	{
-		std::cout << v.at(i).piece;
-	}
 
 }
 
@@ -62,10 +44,9 @@ void Game::eventHandler()
 			ApplicationShouldClose = true;
 
         if(e.type == SDL_MOUSEMOTION)
-        {
+        
             // Get mouse position
-            e.type = SDL_MOUSEMOTION;
-            SDL_GetMouseState(&mousePos.x, &mousePos.y);
+           SDL_GetMouseState(&mousePos.x, &mousePos.y);
         }
 
         if(e.type == SDL_MOUSEBUTTONDOWN)
@@ -75,7 +56,18 @@ void Game::eventHandler()
             selectedSquare = GUI::onSelect(mousePos);
         }
 	}
-}
+
+			/*
+			if(selectedSquare.piece->type != NONE)
+			{
+				std::vector<Square> test = LegalMove::show(*selectedSquare.piece);
+				for(int i = 0; i < (int)test.size(); i++)
+				{
+					std::cout << test.at(i).piece;	
+				}
+
+			}
+			*/
 
 
 // initialize pieces into correct places and save information of pieces to squares
@@ -104,7 +96,9 @@ void Game::initPieces(int playerColor)
 			p[i].y = bp;
 			p[i].type = PAWN;
 			p[i].color = Color::BLACK;
-			Sqr::getSquare(i, bp).piece = PAWN;
+			// into to Sqr
+			Sqr::getSquare(i, bp).piece = p[i];
+			p[i].user = OPPONENT;
 		}
 
 		else if(i >= 8 && i < 16)
@@ -112,6 +106,7 @@ void Game::initPieces(int playerColor)
 			// x is defined in second loop
 			p[i].y = b;
 			p[i].color = Color::BLACK;
+			p[i].user = OPPONENT;
 		}
 		
 		else if(i >= 16 && i < 24)
@@ -120,12 +115,14 @@ void Game::initPieces(int playerColor)
 			p[i].y = wp;
 			p[i].type = PAWN;
 			p[i].color = Color::WHITE;
-			Sqr::getSquare(i - 16, wp).piece = PAWN;
+			Sqr::getSquare(i - 16, wp).piece = p[i];
+			p[i].user = PLAYER;
 		}
 		else
 		{
 			p[i].y = w;
 			p[i].color = Color::WHITE;
+			p[i].user = PLAYER;
 		}
 	}
 
@@ -137,7 +134,6 @@ void Game::initPieces(int playerColor)
 		{
 			p[i].type = ROOK;
 			p[i].x = (i == 8 || i == 24) ? 0 : 7;
-
 		}
 		else if(i == 10 || i == 11 || i == 26 || i == 27)
 		{
@@ -160,12 +156,13 @@ void Game::initPieces(int playerColor)
 			p[i].x = 4;
 		}
 	}
-	
+
+
 	// info of pieces saved into squares
 	for(auto& i : p)
 	{
-		int y = (i.color == BLACK) ? bp : wp;
-		Sqr::getSquare(i.x, y).piece = i.type;
+		int y = (i.color == BLACK) ? b : w;
+		Sqr::getSquare(i.x, y).piece = i;
 	}
 
 	// initialise user for piece
@@ -176,6 +173,13 @@ void Game::initPieces(int playerColor)
 		else
 			p[i].user = PLAYER;
 	}
+
+	// initialize empty squares as empty
+	for(int i = 0; i < 8; i++)
+		for(int j = 2; j < 4; j++)
+			Sqr::getSquare(i, j).piece.type = NONE;
+
+
 }
 
 void Game::update()

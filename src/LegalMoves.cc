@@ -16,19 +16,19 @@ namespace LegalMove
 				{	
 					// first row is special
 					if(piece.y == 6)
-						if(Sqr::getSquare(piece.x, 4).piece == NONE)
+						if(Sqr::getSquare(piece.x, 4).piece.type == NONE)
 							sqrs.push_back(Sqr::getSquare(piece.x, 4));
 
 					// left
-					if(Sqr::getSquare((piece.x - 1), (piece.y - 1)).piece != NONE)
+					if(Sqr::getSquare((piece.x - 1), (piece.y - 1)).piece.type != NONE)
 						sqrs.push_back(Sqr::getSquare((piece.x - 1), (piece.y - 1)));
 
 					// center
-					if(Sqr::getSquare(piece.x, (piece.y - 1)).piece == NONE)
+					if(Sqr::getSquare(piece.x, (piece.y - 1)).piece.type == NONE)
 						sqrs.push_back(Sqr::getSquare(piece.x, (piece.y - 1)));
 
 					// right
-					if(Sqr::getSquare((piece.x + 1), (piece.y - 1)).piece != NONE)
+					if(Sqr::getSquare((piece.x + 1), (piece.y - 1)).piece.type != NONE)
 						sqrs.push_back(Sqr::getSquare((piece.x + 1), (piece.y - 1)));
 
 				}
@@ -37,17 +37,18 @@ namespace LegalMove
 				else
 				{
 					if(piece.y == 1)
-						if(Sqr::getSquare(piece.x, 3).piece == NONE)
+						if(Sqr::getSquare(piece.x, 3).piece.type == NONE)
 							sqrs.push_back(Sqr::getSquare(piece.x, 3));
 				
-					if(Sqr::getSquare((piece.x + 1), piece.y + 1).piece != NONE)
+					if(Sqr::getSquare((piece.x + 1), piece.y + 1).piece.type != NONE)
 						sqrs.push_back(Sqr::getSquare((piece.x + 1), (piece.y + 1)));
  					
-					if(Sqr::getSquare(piece.x, (piece.y + 1)).piece == NONE)
+					if(Sqr::getSquare(piece.x, (piece.y + 1)).piece.type == NONE)
 						sqrs.push_back(Sqr::getSquare(piece.x, (piece.y + 1)));
 
-					if(Sqr::getSquare((piece.x - 1), (piece.y + 1)).piece != NONE)
+					if(Sqr::getSquare((piece.x - 1), (piece.y + 1)).piece.type != NONE)
 						sqrs.push_back(Sqr::getSquare((piece.x - 1), (piece.y + 1)));
+
 				}
 
 			break;
