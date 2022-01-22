@@ -19,16 +19,18 @@ Game::Game()
 	// put pieces in correct places
 	initPieces(Settings::PlayerColor);
 
-	
-	// example of legal move recognition
-	Sqr::getSquare(1, 3).piece.type = ROOK;
-	std::vector<Square> v (LegalMove::show(p[1]));
+	p[6].x = 2;
+	p[6].y = 2;
+	p[6].type = BISHOP;
+	Sqr::getSquare(2, 2).piece = p[6];
 
-	std::cout << p[1].color;
-	std::cout << p[1].x;
-	std::cout << p[1].y;
-	std::cout << p[1].type;
-	std::cout << p[1].user;
+	std::vector<Square> v = LegalMove::show(p[1]);
+
+	for(int i = 0; i < (int)v.size(); i++)
+	{
+		std::cout << v.at(i).piece.type;
+	}
+
 
 }
 
@@ -172,6 +174,11 @@ void Game::initPieces(int playerColor)
 		else
 			p[i].user = PLAYER;
 	}
+
+	// initialize empty squares as empty
+	for(int i = 0; i < 8; i++)
+		for(int j = 2; j < 4; j++)
+			Sqr::getSquare(i, j).piece.type = NONE;
 }
 
 void Game::update()
