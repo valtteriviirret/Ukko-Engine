@@ -4,6 +4,7 @@
 #include "SDL2/SDL.h"
 #include "Square.hh"
 #include "SquareManager.hh"
+#include "ScreenSize.hh"
 
 class GUI 
 {
