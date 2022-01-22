@@ -2,6 +2,7 @@
 #include "SDL2/SDL_image.h"
 #include "Game.hh"
 #include "Renderer.hh"
+#include "LegalMoves.hh"
 
 #define FPS 60
 

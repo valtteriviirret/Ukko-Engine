@@ -4,7 +4,7 @@
 #include "Square.hh"
 #include "SquareManager.hh"
 #include "Piece.hh"
-#include "Game.hh"
+#include "Settings.hh"
 #include <vector>
 
 namespace LegalMove
