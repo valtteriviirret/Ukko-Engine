@@ -14,5 +14,7 @@ Square GUI::onSelect(SDL_Point& mousePos) {
     int x = mousePos.x / 80;
     int y = mousePos.y / 75;
 
+    // TODO: Fix the bug when window size is changed
+
     return Sqr::getSquare(x, y);
 }
