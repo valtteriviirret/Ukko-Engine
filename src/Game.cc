@@ -20,8 +20,8 @@ Game::Game()
 	initPieces(Settings::PlayerColor);
 
 	
-	// example of legalmove recognition
-	Sqr::getSquare(1, 3).piece = ROOK;
+	// example of legal move recognition
+	Sqr::getSquare(1, 3).piece.type = ROOK;
 	std::vector<Square> v (LegalMove::show(p[1]));
 
 	std::cout << p[1].color;
@@ -29,11 +29,6 @@ Game::Game()
 	std::cout << p[1].y;
 	std::cout << p[1].type;
 	std::cout << p[1].user;
-
-	for(int i = 0; i < (int)v.size(); i++)
-	{
-		std::cout << v.at(i).piece;
-	}
 
 }
 
@@ -73,6 +68,7 @@ void Game::eventHandler()
             e.type = SDL_MOUSEBUTTONDOWN;
             SDL_GetMouseState(&mousePos.x, &mousePos.y);
             selectedSquare = GUI::onSelect(mousePos);
+            isSquareSelected = true;
         }
 	}
 }
@@ -104,7 +100,7 @@ void Game::initPieces(int playerColor)
 			p[i].y = bp;
 			p[i].type = PAWN;
 			p[i].color = Color::BLACK;
-			Sqr::getSquare(i, bp).piece = PAWN;
+			Sqr::getSquare(i, bp).piece.type = PAWN;
 		}
 
 		else if(i >= 8 && i < 16)
@@ -120,7 +116,7 @@ void Game::initPieces(int playerColor)
 			p[i].y = wp;
 			p[i].type = PAWN;
 			p[i].color = Color::WHITE;
-			Sqr::getSquare(i - 16, wp).piece = PAWN;
+			Sqr::getSquare(i - 16, wp).piece.type = PAWN;
 		}
 		else
 		{
@@ -165,7 +161,7 @@ void Game::initPieces(int playerColor)
 	for(auto& i : p)
 	{
 		int y = (i.color == BLACK) ? bp : wp;
-		Sqr::getSquare(i.x, y).piece = i.type;
+		Sqr::getSquare(i.x, y).piece.type = i.type;
 	}
 
 	// initialise user for piece
@@ -202,8 +198,10 @@ void Game::render()
                 Renderer::setColor(0, 255, 0);
                 Renderer::fillRect(Sqr::getSquare(x, y).rect);
             }
-            Renderer::setColor(0, 0, 255);
-            Renderer::fillRect(selectedSquare.rect);
+            if (isSquareSelected) {
+                Renderer::setColor(0, 0, 255);
+                Renderer::fillRect(selectedSquare.rect);
+            }
         }
     }
 	
