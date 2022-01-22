@@ -35,6 +35,7 @@ class Game
 		SDL_Event e;
         SDL_Point mousePos;
         Square selectedSquare;
+        bool isSquareSelected = false;
 };
 
 #endif
