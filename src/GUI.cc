@@ -15,7 +15,6 @@ Square& GUI::onSelect(SDL_Point& mousePos) {
     int x = mousePos.x * 10 / Screen::getWidth();
     int y = mousePos.y * 8 / Screen::getHeight();
 
-    // Kkona
     if (x > 8)
         y = 0;
 

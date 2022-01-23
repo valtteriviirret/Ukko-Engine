@@ -20,17 +20,20 @@ void Board::makeBoard() const
 
 			// x and y positions to squares
 			// I don't know if we need this, I don't even know if this makes any sense.
-			Sqr::getSquare(i, j).x = i;
-			Sqr::getSquare(i, j).y = j;
+			// Sqr::getSquare(i, j).x = i;
+			// Sqr::getSquare(i, j).y = j;
 
 			// set rendering color to black
-			Renderer::setColor(0, 0, 0);
+			Renderer::setColor(64, 48, 0);
 			
 			// render black squares
 			if((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0))
 			{
 				Renderer::fillRect(Sqr::getSquare(i, j).rect);
-			}
+			} else {
+                Renderer::setColor(128, 64, 0);
+                Renderer::fillRect(Sqr::getSquare(i, j).rect);
+            }
 		}
 	}
 }
