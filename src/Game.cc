@@ -23,6 +23,23 @@ Game::Game()
 		std::cout << v.at(i).piece.type;
 	}
 	*/
+
+/*
+	p[15].x = 3;
+	p[15].y = 3;
+	p[15].type = ROOK;
+	p[15].color = WHITE;
+	Sqr::getSquare(5, 5).piece = p[15];
+
+
+	std::vector<Square> x = LegalMove::show(p[15]);
+
+	for(int i = 0; i < (int)x.size(); i++)
+	{
+		std::cout << x.at(i).piece.type;
+	}
+*/
+
 }
 
 Game::~Game()
@@ -206,7 +223,7 @@ void Game::render()
                 Renderer::setColor(0, 0, 255);
                 Renderer::fillRect(selectedSquare->rect);
             }
-        }
+       }
     }
 	
 	// render pieces

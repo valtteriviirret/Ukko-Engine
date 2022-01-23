@@ -1,20 +1,41 @@
 #include "LegalMoves.hh"
+#include "SquareManager.hh"
+#include <iostream>
 
 namespace LegalMove
 {
 	// the vector to be returned
 	std::vector<Square> sqrs;
 
-	void KnightFunc(Piece piece, int x, int y)
+	// knight, king
+	void HandyFunc(Piece p, int x, int y)
 	{
 		// add if free square
-		if(Sqr::getSquare((piece.x + x), (piece.y + y)).piece.type == NONE)
-			LegalMove::AddMe(Sqr::getSquare((piece.x + x), (piece.y + y)));
+		if(Sqr::getSquare((p.x + x), (p.y + y)).piece.type == NONE)
+			LegalMove::AddMe(Sqr::getSquare((p.x + x), (p.y + y)));
 		
 		// add if enemy is on square, why does this work???
 		else
-			if(Sqr::getSquare((piece.x + x), (piece.y + y)).piece.color == piece.color)
-				LegalMove::AddMe(Sqr::getSquare((piece.x + x), (piece.y + y)));
+			if(Sqr::getSquare((p.x + x), (p.y + y)).piece.color == p.color)
+				LegalMove::AddMe(Sqr::getSquare((p.x + x), (p.y + y)));
+	}
+
+	// rook, 
+	void LooperFunc(Piece p, int x, int y)
+	{
+		// max distance
+		for(int i = 0; i < 8; i++)
+		{	
+			if(Sqr::getSquare((p.x += x), (p.y += y)).piece.type == NONE)
+				LegalMove::AddMe(Sqr::getSquare((p.x += x), (p.y += y)));
+			else
+			{
+				if(Sqr::getSquare((p.x += x), (p.y += y)).piece.color == p.color)
+					LegalMove::AddMe(Sqr::getSquare((p.x += x), (p.y += y)));
+				else
+					break;
+			}
+		}
 	}
 
 	// input sanitation
@@ -81,18 +102,33 @@ namespace LegalMove
 			for(int i = -2; i < 3; i++)
 				for(int j = -2; j < 3; j++)
 					if((i != 0 && j != 0) && abs(i) != abs(j))
-						KnightFunc(piece, i, j);
+						HandyFunc(piece, i, j);
 	
 			break;
-			
 			case QUEEN: 
-					
 				
 			break;
-			case KING: break;
+			case KING:
+
+			for(int i = -1; i < 2; i++)
+				for(int j = -1; j < 2; j++)
+					if(!(i == 0 && j == 0))
+						HandyFunc(piece, i, j);
+			
+			break;
+
 			case BISHOP: break;
 
-			case ROOK: break;
+			case ROOK: 
+
+				// might be correct, dunno, cannot test rn
+
+				LooperFunc(piece, 1, 0);
+				LooperFunc(piece, -1, 0);
+				LooperFunc(piece, 0, 1);
+				LooperFunc(piece, 0, -1);
+				
+			break;
 			case NONE: break;
 		}
 
