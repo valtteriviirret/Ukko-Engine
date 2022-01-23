@@ -24,13 +24,11 @@ Game::Game()
 	}
 	*/
 
-/*
 	p[15].x = 3;
 	p[15].y = 3;
 	p[15].type = ROOK;
 	p[15].color = WHITE;
-	Sqr::getSquare(5, 5).piece = p[15];
-
+	Sqr::getSquare(3, 3).piece = p[15];
 
 	std::vector<Square> x = LegalMove::show(p[15]);
 
@@ -38,7 +36,6 @@ Game::Game()
 	{
 		std::cout << x.at(i).piece.type;
 	}
-*/
 
 }
 
