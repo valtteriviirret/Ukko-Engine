@@ -10,7 +10,8 @@
 namespace LegalMove
 {
 	std::vector<Square> show(Piece piece);
-	void KnightFunc(Piece piece, int x, int y);
+	void HandyFunc(Piece p, int x, int y);
+	void LooperFunc(Piece p, int x, int y);
 	void AddMe(Square square);
 }
 
