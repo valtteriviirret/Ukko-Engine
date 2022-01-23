@@ -1,4 +1,5 @@
 #include "Game.hh"
+#include "LegalMoves.hh"
 
 Game::Game()
 {
@@ -17,18 +18,21 @@ Game::Game()
 	// put pieces in correct places
 	initPieces(Settings::PlayerColor);
 
-	/*
+	p[15].x = 6;
+	p[15].y = 6;
+	p[15].type = KNIGHT;
+	p[15].color = WHITE;
+	Sqr::getSquare(6, 6).piece = p[15];
+
+
+	std::vector<Square> v = LegalMove::show(p[15]);
+
 	for(int i = 0; i < (int)v.size(); i++)
 	{
 		std::cout << v.at(i).piece.type;
 	}
-	*/
 
-	p[15].x = 3;
-	p[15].y = 3;
-	p[15].type = ROOK;
-	p[15].color = WHITE;
-	Sqr::getSquare(3, 3).piece = p[15];
+
 
 }
 

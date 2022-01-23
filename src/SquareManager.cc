@@ -7,10 +7,10 @@ namespace Sqr
 
 	Square* squareHelper(int x, int y)
 	{
-		if((x >= 0) && (x < 8) && (y >= 0) && (y < 8))
-			return &getSquare(x, y);
-		else
+		if(x < 0 || x > 7 || y < 0 || y > 7)
 			return nullptr;
+		else
+			return &getSquare(x, y);
 	}
 
 	// getting individual square

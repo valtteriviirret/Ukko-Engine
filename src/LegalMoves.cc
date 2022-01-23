@@ -18,7 +18,7 @@ namespace LegalMove
 			
 			// add if enemy is on square, why does this work??? somewhere booleans are wrong
 			else
-				if(Sqr::squareHelper((p.x + x), (p.y + y))->piece.color == p.color)
+				if(Sqr::squareHelper((p.x + x), (p.y + y))->piece.color != p.color)
 					sqrs.push_back(*Sqr::squareHelper((p.x + x), (p.y + y)));
 		}
 	}
