@@ -1,6 +1,5 @@
 #include "LegalMoves.hh"
 #include "SquareManager.hh"
-#include <iostream>
 
 namespace LegalMove
 {
@@ -10,14 +9,18 @@ namespace LegalMove
 	// knight, king
 	void HandyFunc(Piece p, int x, int y)
 	{
-		// add if free square
-		if(Sqr::getSquare((p.x + x), (p.y + y)).piece.type == NONE)
-			LegalMove::AddMe(Sqr::getSquare((p.x + x), (p.y + y)));
-		
-		// add if enemy is on square, why does this work???
-		else
-			if(Sqr::getSquare((p.x + x), (p.y + y)).piece.color == p.color)
-				LegalMove::AddMe(Sqr::getSquare((p.x + x), (p.y + y)));
+		// if square is not on board
+		if(Sqr::squareHelper((p.x + x), (p.y + y)) != nullptr)
+		{
+			// if square is empty
+			if(Sqr::squareHelper((p.x + x), (p.y + y))->piece.type == NONE)
+				sqrs.push_back(*Sqr::squareHelper((p.x + x), (p.y + y)));
+			
+			// add if enemy is on square, why does this work??? somewhere booleans are wrong
+			else
+				if(Sqr::squareHelper((p.x + x), (p.y + y))->piece.color == p.color)
+					sqrs.push_back(*Sqr::squareHelper((p.x + x), (p.y + y)));
+		}
 	}
 
 	// rook, 
@@ -25,25 +28,24 @@ namespace LegalMove
 	{
 		// max distance
 		for(int i = 0; i < 8; i++)
-		{	
-			if(Sqr::getSquare((p.x += x), (p.y += y)).piece.type == NONE)
-				LegalMove::AddMe(Sqr::getSquare((p.x += x), (p.y += y)));
-			else
+		{
+			if(Sqr::squareHelper((p.x + i * x), (p.y + i * y)) != nullptr)
 			{
-				if(Sqr::getSquare((p.x += x), (p.y += y)).piece.color == p.color)
-					LegalMove::AddMe(Sqr::getSquare((p.x += x), (p.y += y)));
+				if(Sqr::squareHelper((p.x + i * x), (p.y + i * y))->piece.type == NONE)
+					sqrs.push_back(*Sqr::squareHelper((p.x + i * x), (p.y + i * y)));
 				else
-					break;
+				{
+					if(Sqr::squareHelper((p.x + i * x), (p.y + i * y))->piece.color == p.color)
+						sqrs.push_back(*Sqr::squareHelper((p.x + i * x), (p.y + i * y)));
+					else
+						break;
+				}
 			}
+			else
+				break;
 		}
 	}
 
-	// input sanitation
-	void AddMe(Square square)
-	{
-		if((square.x >= 0) && (square.x < 8) && (square.y >= 0) && (square.y < 8))
-			sqrs.push_back(square);
-	}
 
 	// vector type might need to be pointer
 	std::vector<Square> show(Piece piece)
@@ -55,26 +57,27 @@ namespace LegalMove
 		{
 			case PAWN:
 
+				// no need to use squareHelper because PAWN can never escape board
 				if(piece.user == PLAYER)
 				{	
 					// first row is special
 					if(piece.y == 6)
 						if(Sqr::getSquare(piece.x, 4).piece.type == NONE)
-							AddMe(Sqr::getSquare(piece.x, 4));
+							sqrs.push_back(Sqr::getSquare(piece.x, 4));
 
 					// left
 					if(Sqr::getSquare((piece.x - 1), (piece.y - 1)).piece.type != NONE)
 						if(Sqr::getSquare((piece.x - 1), (piece.y - 1)).piece.color != piece.color)
-							AddMe(Sqr::getSquare((piece.x - 1), (piece.y - 1)));
+							sqrs.push_back(Sqr::getSquare((piece.x - 1), (piece.y - 1)));
 
 					// center
 					if(Sqr::getSquare(piece.x, (piece.y - 1)).piece.type == NONE)
-						AddMe(Sqr::getSquare(piece.x, (piece.y - 1)));
+						sqrs.push_back(Sqr::getSquare(piece.x, (piece.y - 1)));
 
 					// right
 					if(Sqr::getSquare((piece.x + 1), (piece.y - 1)).piece.type != NONE)
 						if(Sqr::getSquare((piece.x + 1), (piece.y - 1)).piece.color != piece.color)
-							AddMe(Sqr::getSquare((piece.x + 1), (piece.y - 1)));
+							sqrs.push_back(Sqr::getSquare((piece.x + 1), (piece.y - 1)));
 
 				}
 
@@ -83,19 +86,20 @@ namespace LegalMove
 				{
 					if(piece.y == 1)
 						if(Sqr::getSquare(piece.x, 3).piece.type == NONE)
-							AddMe(Sqr::getSquare(piece.x, 3));
+							sqrs.push_back(Sqr::getSquare(piece.x, 3));
 				
 					if(Sqr::getSquare((piece.x + 1), piece.y + 1).piece.type != NONE)
 						if(Sqr::getSquare((piece.x + 1), piece.y + 1).piece.color != piece.color)
-							AddMe(Sqr::getSquare((piece.x + 1), (piece.y + 1)));
+							sqrs.push_back(Sqr::getSquare((piece.x + 1), (piece.y + 1)));
  					
 					if(Sqr::getSquare(piece.x, (piece.y + 1)).piece.type == NONE)
-						AddMe(Sqr::getSquare(piece.x, (piece.y + 1)));
+						sqrs.push_back(Sqr::getSquare(piece.x, (piece.y + 1)));
 
 					if(Sqr::getSquare((piece.x - 1), (piece.y + 1)).piece.type != NONE)
 						if(Sqr::getSquare((piece.x - 1), (piece.y + 1)).piece.color != piece.color)
-							AddMe(Sqr::getSquare((piece.x - 1), (piece.y + 1)));
+							sqrs.push_back(Sqr::getSquare((piece.x - 1), (piece.y + 1)));
 				}
+
 			break;
 			case KNIGHT:
 			
@@ -120,8 +124,6 @@ namespace LegalMove
 			case BISHOP: break;
 
 			case ROOK: 
-
-				// might be correct, dunno, cannot test rn
 
 				LooperFunc(piece, 1, 0);
 				LooperFunc(piece, -1, 0);
