@@ -1,6 +1,4 @@
 #include "Game.hh"
-#include "LegalMoves.hh"
-#include "SquareManager.hh"
 
 Game::Game()
 {
@@ -19,18 +17,27 @@ Game::Game()
 	// put pieces in correct places
 	initPieces(Settings::PlayerColor);
 
-	p[6].x = 2;
-	p[6].y = 2;
-	p[6].type = BISHOP;
-	Sqr::getSquare(2, 2).piece = p[6];
+	p[6].x = 5;
+	p[6].y = 6;
+	p[6].type = KNIGHT;
+	p[6].color = WHITE;
+	Sqr::getSquare(3, 3).piece = p[6];
 
-	std::vector<Square> v = LegalMove::show(p[1]);
+	//std::vector<Square> v = LegalMove::show(p[1]);
+	std::vector<Square> r = LegalMove::show(p[6]);
 
+
+	/*
 	for(int i = 0; i < (int)v.size(); i++)
 	{
 		std::cout << v.at(i).piece.type;
 	}
+	*/
 
+	for(int i = 0; i < (int)r.size(); i++)
+	{
+		std::cout << r.at(i).piece.type;
+	}
 
 }
 
@@ -105,14 +112,14 @@ void Game::initPieces(int playerColor)
 			Sqr::getSquare(i, bp).piece.type = PAWN;
 		}
 
-		else if(i >= 8 && i < 16)
+		if(i >= 8 && i < 16)
 		{
 			// x is defined in second loop
 			p[i].y = b;
 			p[i].color = Color::BLACK;
 		}
 		
-		else if(i >= 16 && i < 24)
+		if(i >= 16 && i < 24)
 		{
 			p[i].x = i - 16;
 			p[i].y = wp;
@@ -120,7 +127,7 @@ void Game::initPieces(int playerColor)
 			p[i].color = Color::WHITE;
 			Sqr::getSquare(i - 16, wp).piece.type = PAWN;
 		}
-		else
+		if(i >= 24)	
 		{
 			p[i].y = w;
 			p[i].color = Color::WHITE;
@@ -137,22 +144,26 @@ void Game::initPieces(int playerColor)
 			p[i].x = (i == 8 || i == 24) ? 0 : 7;
 
 		}
-		else if(i == 10 || i == 11 || i == 26 || i == 27)
+
+		if(i == 10 || i == 11 || i == 26 || i == 27)
 		{
 			p[i].type = KNIGHT;
 			p[i].x = (i == 10 || i == 26) ? 1 : 6;
 		}
-		else if(i == 12 || i == 13 || i == 28 || i == 29)
+
+		if(i == 12 || i == 13 || i == 28 || i == 29)
 		{
 			p[i].type = BISHOP;
 			p[i].x = (i == 13 || i == 28) ? 2 : 5;
 		}
-		else if(i == 14 || i == 30)
+
+		if(i == 14 || i == 30)
 		{
 			p[i].type = QUEEN;
 			p[i].x = 3;
 		}
-		else if(i == 15 || i == 31)
+
+		if(i == 15 || i == 31)
 		{
 			p[i].type = KING;
 			p[i].x = 4;
@@ -162,7 +173,7 @@ void Game::initPieces(int playerColor)
 	// info of pieces saved into squares
 	for(auto& i : p)
 	{
-		int y = (i.color == BLACK) ? bp : wp;
+		int y = (i.color == BLACK) ? b : w;
 		Sqr::getSquare(i.x, y).piece.type = i.type;
 	}
 
@@ -176,9 +187,9 @@ void Game::initPieces(int playerColor)
 	}
 
 	// initialize empty squares as empty
-	for(int i = 0; i < 8; i++)
-		for(int j = 2; j < 4; j++)
-			Sqr::getSquare(i, j).piece.type = NONE;
+	for(int y = 2; y < 6; y++)
+		for(int x = 0; x < 8; x++)
+			Sqr::getSquare(x, y).piece.type = NONE;
 }
 
 void Game::update()
