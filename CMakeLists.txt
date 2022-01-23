@@ -17,8 +17,8 @@ add_executable(UkkoShakki
 	src/Texture.hh 
 	src/Board.hh 
 	src/Board.cc 
-	src/PieceFactory.cc 
-	src/PieceFactory.hh 
+	src/PieceFactory.cc
+	src/PieceFactory.hh
 	src/PieceRenderer.hh 
 	src/PieceRenderer.cc
 	src/Game.hh
@@ -28,8 +28,8 @@ add_executable(UkkoShakki
 	src/Piece.hh
 	src/SquareManager.cc
 	src/SquareManager.hh
-	src/LegalMoves.cc
-	src/LegalMoves.hh
+	#src/LegalMoves.cc
+	#src/LegalMoves.hh
 	src/Settings.cc
 	src/Settings.hh
 	)

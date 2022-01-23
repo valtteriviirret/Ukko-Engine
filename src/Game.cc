@@ -17,28 +17,12 @@ Game::Game()
 	// put pieces in correct places
 	initPieces(Settings::PlayerColor);
 
-	p[6].x = 5;
-	p[6].y = 6;
-	p[6].type = KNIGHT;
-	p[6].color = WHITE;
-	Sqr::getSquare(3, 3).piece = p[6];
-
-	//std::vector<Square> v = LegalMove::show(p[1]);
-	std::vector<Square> r = LegalMove::show(p[6]);
-
-
 	/*
 	for(int i = 0; i < (int)v.size(); i++)
 	{
 		std::cout << v.at(i).piece.type;
 	}
 	*/
-
-	for(int i = 0; i < (int)r.size(); i++)
-	{
-		std::cout << r.at(i).piece.type;
-	}
-
 }
 
 Game::~Game()
@@ -76,7 +60,7 @@ void Game::eventHandler()
         {
             e.type = SDL_MOUSEBUTTONDOWN;
             SDL_GetMouseState(&mousePos.x, &mousePos.y);
-            selectedSquare = GUI::onSelect(mousePos);
+            selectedSquare = &GUI::onSelect(mousePos);
             isSquareSelected = true;
         }
 	}
@@ -127,11 +111,13 @@ void Game::initPieces(int playerColor)
 			p[i].color = Color::WHITE;
 			Sqr::getSquare(i - 16, wp).piece.type = PAWN;
 		}
+
 		if(i >= 24)	
 		{
 			p[i].y = w;
 			p[i].color = Color::WHITE;
 		}
+
 	}
 
 
@@ -218,7 +204,7 @@ void Game::render()
             }
             if (isSquareSelected) {
                 Renderer::setColor(0, 0, 255);
-                Renderer::fillRect(selectedSquare.rect);
+                Renderer::fillRect(selectedSquare->rect);
             }
         }
     }

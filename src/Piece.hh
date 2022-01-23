@@ -12,7 +12,6 @@ typedef struct Piece
 	bool alive;
     int x, y;
 	User user;
-
 } Piece;
 
 

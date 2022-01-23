@@ -34,7 +34,7 @@ class Game
 		Window* window = nullptr;
 		SDL_Event e;
         SDL_Point mousePos;
-        Square selectedSquare;
+        Square* selectedSquare = nullptr;
         bool isSquareSelected = false;
 };
 
