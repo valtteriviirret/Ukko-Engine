@@ -18,22 +18,6 @@ Game::Game()
 	// put pieces in correct places
 	initPieces(Settings::PlayerColor);
 
-	p[15].x = 6;
-	p[15].y = 6;
-	p[15].type = KNIGHT;
-	p[15].color = WHITE;
-	Sqr::getSquare(6, 6).piece = p[15];
-
-
-	std::vector<Square> v = LegalMove::show(p[15]);
-
-	for(int i = 0; i < (int)v.size(); i++)
-	{
-		std::cout << v.at(i).piece.type;
-	}
-
-
-
 }
 
 Game::~Game()
@@ -197,8 +181,8 @@ void Game::update()
 // render pieces in their current positions
 void Game::render()
 {
-    // make white background
-    Renderer::setColor(255, 255, 255);
+    // make gray background
+    Renderer::setColor(64, 64, 64);
     Renderer::clear();
 
     // render board
