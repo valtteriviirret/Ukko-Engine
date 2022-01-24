@@ -1,5 +1,5 @@
 #include "PieceRenderer.hh"
-#include "Renderer.hh"
+#include "SquareManager.hh"
 
 PieceFactory* _factory = nullptr;
 
@@ -14,7 +14,7 @@ void PieceRenderer::renderInPosition(Piece piece)
 	{
 		int n;
 
-		// correlating value from PieceFactory
+		// corresponding value from PieceFactory
 		switch(piece.type)
 		{
 			case KING: n = (piece.color == BLACK) ? 2 : 8; break;
@@ -30,4 +30,5 @@ void PieceRenderer::renderInPosition(Piece piece)
 		SDL_RenderCopy(Renderer::get(), _factory->getPiece(n), nullptr, &Sqr::getSquare(piece.x, piece.y).rect);
 	}
 }
+
 
