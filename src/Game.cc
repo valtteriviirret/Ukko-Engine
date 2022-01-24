@@ -1,5 +1,5 @@
 #include "Game.hh"
-#include "LegalMoves.hh"
+#include "SquareManager.hh"
 
 Game::Game()
 {
@@ -17,6 +17,13 @@ Game::Game()
 
 	// put pieces in correct places
 	initPieces(Settings::PlayerColor);
+
+	p[5].color = WHITE;
+	p[5].type = ROOK;
+	p[5].x = 3;
+	p[5].y = 3;
+
+	Sqr::getSquare(3, 3).piece = p[5];
 
 }
 
@@ -55,7 +62,7 @@ void Game::eventHandler()
         {
             e.type = SDL_MOUSEBUTTONDOWN;
             SDL_GetMouseState(&mousePos.x, &mousePos.y);
-            selectedSquare = &GUI::onSelect(mousePos);
+            selectedSquare = GUI::onSelect(mousePos);
             isSquareSelected = true;
         }
 	}
@@ -193,13 +200,31 @@ void Game::render()
     {
         for(int y = 0; y < 8; y++)
         {
-            if (GUI::onMouseRollOver(mousePos, Sqr::getSquare(x, y).rect)) {
+            if (GUI::onMouseRollOver(mousePos, Sqr::getSquare(x, y).rect)) 
+			{
                 Renderer::setColor(0, 255, 0);
                 Renderer::fillRect(Sqr::getSquare(x, y).rect);
             }
-            if (isSquareSelected) {
-                Renderer::setColor(0, 0, 255);
-                Renderer::fillRect(selectedSquare->rect);
+            if (isSquareSelected) 
+			{
+				// selected square must be on board
+				if(selectedSquare != nullptr)
+				{
+					// get legal moves of the piece in the square
+					std::vector<Square> v = LegalMove::show(selectedSquare->piece);
+
+                	Renderer::setColor(0, 0, 255);
+					
+					// color the selected square
+                	//Renderer::fillRect(selectedSquare->rect);
+					
+					// color legal moves of the piece in the selected square
+					for(int i = 0; i < (int)v.size(); i++)
+					{
+                		Renderer::fillRect(v.at(i).rect);
+					}
+
+				}
             }
        }
     }

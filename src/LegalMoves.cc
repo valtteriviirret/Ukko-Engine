@@ -1,5 +1,4 @@
 #include "LegalMoves.hh"
-#include "SquareManager.hh"
 
 namespace LegalMove
 {
@@ -35,7 +34,7 @@ namespace LegalMove
 					sqrs.push_back(*Sqr::squareHelper((p.x + i * x), (p.y + i * y)));
 				else
 				{
-					if(Sqr::squareHelper((p.x + i * x), (p.y + i * y))->piece.color == p.color)
+					if(Sqr::squareHelper((p.x + i * x), (p.y + i * y))->piece.color != p.color)
 						sqrs.push_back(*Sqr::squareHelper((p.x + i * x), (p.y + i * y)));
 					else
 						break;
