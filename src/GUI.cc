@@ -18,8 +18,4 @@ Square* GUI::onSelect(SDL_Point& mousePos) {
         return &Sqr::getSquare(x, y);
     else
         return nullptr;
-
-		// if doesn't work
-		// return &Sqr::getSquare(7, y);
-
 }

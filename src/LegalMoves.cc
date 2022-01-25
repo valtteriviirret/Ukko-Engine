@@ -159,5 +159,3 @@ namespace LegalMove
 		return sqrs;
 	}
 }
-
-

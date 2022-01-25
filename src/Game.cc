@@ -62,45 +62,29 @@ void Game::eventHandler()
 
 void Game::update()
 {
-    /*
-    Piece* selected = nullptr;
-    std::vector<Square> v;
-    Square* movingPosition = nullptr;
+    if (playerTurn) {
+        if (isPieceSelected) {
+            Type selectedPiece = selectedSquare->piece.type;
+            originalSquare = selectedSquare;
 
-     * TODO: Game logic. And moving the pieces
-     * TODO: Implement checking algorithm that the selected square is a valid move. (not needed!)
-     * TODO: Implement logic for capturing opponent's pieces.
-     *
-     *
-     * Game logic might resemble something like this:
-     *
-    if (isSquareSelected) {
+            std::cout << "Piece ID:" << selectedPiece << " is currently selected.\n";
 
-        v = LegalMove::show(selectedSquare->piece);
+            legalMoves = LegalMove::show(selectedSquare->piece);
 
-        for (auto &i: v) {
-            if (GUI::onSelect(mousePos) == Sqr::squareHelper(mousePos.x, mousePos.y))
-            {
-                movingPosition = Sqr::squareHelper(mousePos.x, mousePos.y);
-
-                if (Sqr::squareHelper(mousePos.x, mousePos.y)->piece.color != Settings::PlayerColor)
-                    Sqr::squareHelper(mousePos.x, mousePos.y)->piece.alive = false;
-
-                if (selectedSquare->piece.x > movingPosition->x)
-                    selectedSquare->piece.x--;
-                if (selectedSquare->piece.y > movingPosition->y)
-                    selectedSquare->piece.y--;
-                if (selectedSquare->piece.x < movingPosition->x)
-                    selectedSquare->piece.x++;
-                if (selectedSquare->piece.y < movingPosition->y)
-                    selectedSquare->piece.y++;
-                else
-                    playerTurn = false;
+            for (auto &legalMove: legalMoves) {
+                if (selectedSquare == &legalMove) {
+                    selectedSquare->piece.x = legalMove.x;
+                    selectedSquare->piece.y = legalMove.y;
+                    selectedSquare->piece.type = selectedPiece;
+                    originalSquare->piece.type = NONE;
+                    isPieceSelected = false;
+                }
             }
         }
+        if (selectedSquare->piece.type != NONE && selectedSquare->piece.user)
+            isPieceSelected = true;
+        else isPieceSelected = false;
     }
-     */
-
 }
 
 // render pieces in their current positions

@@ -35,7 +35,10 @@ class Game
 		SDL_Event e;
         SDL_Point mousePos;
         Square* selectedSquare = nullptr;
+        Square* originalSquare = nullptr;
+        std::vector<Square> legalMoves;
         bool isSquareSelected = false;
+        bool isPieceSelected = false;
         bool playerTurn;
 };
 
