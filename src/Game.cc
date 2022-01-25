@@ -166,6 +166,24 @@ void Game::initPieces(int playerColor)
 		p[i].alive = true;
 	}
 
+	// initializing enemy's pieces colors
+	for(int i = 0; i < 16; i++)
+	{
+		if(playerColor == Color::WHITE)
+			p[i].color = Color::BLACK;
+		else
+			p[i].color = Color::WHITE;
+	}
+
+	// initializing player's pieces colors
+	for(int i = 16; i < 32; i++)
+	{
+		if(playerColor == Color::WHITE)
+			p[i].color = Color::WHITE;
+		else
+			p[i].color = Color::BLACK;
+	}
+
 	// engine pawns
 	for(int i = 0; i < 8; i++)
 	{
@@ -185,6 +203,7 @@ void Game::initPieces(int playerColor)
 		p[i].user = PLAYER;
 		Sqr::getSquare((i - 16), 6).piece = p[i];
 	}
+
 
 	// ENGINE PIECES
 	for(int i = 8; i < 16; i++)
@@ -266,30 +285,12 @@ void Game::initPieces(int playerColor)
 	Sqr::getSquare(4, 7).piece = p[31];
 
 
-	// initializing enemy's pieces colors
-	for(int i = 0; i < 16; i++)
-	{
-		if(playerColor == Color::WHITE)
-			p[i].color = Color::BLACK;
-		else
-			p[i].color = Color::WHITE;
-	}
-
-	// initializing player's pieces colors
-	for(int i = 16; i < 32; i++)
-	{
-		if(playerColor == Color::WHITE)
-			p[i].color = Color::WHITE;
-		else
-			p[i].color = Color::BLACK;
-	}
-
 	// initialize empty squares as empty
 	for(int y = 2; y < 6; y++)
 		for(int x = 0; x < 8; x++)
 			Sqr::getSquare(x, y).piece.type = NONE;
 
-
+	
     if (playerColor == WHITE)
         playerTurn = true;
     else

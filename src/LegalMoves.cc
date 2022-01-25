@@ -17,7 +17,7 @@ namespace LegalMove
 			
 			// add if enemy is on square
 			else
-				if(Sqr::squareHelper((p.x + x), (p.y + y))->piece.color == p.color)
+				if(Sqr::squareHelper((p.x + x), (p.y + y))->piece.color != p.color)
 					sqrs.push_back(*Sqr::squareHelper((p.x + x), (p.y + y)));
 		}
 	}
@@ -45,6 +45,50 @@ namespace LegalMove
 		}
 	}
 
+	void PawnFunc(Piece p, bool player)
+	{
+		int m = -1;
+		if(player)
+		{
+			// first row is special
+			if(p.y == 6)
+				if(Sqr::squareHelper(p.x, 4)->piece.type == NONE)
+					sqrs.push_back(*Sqr::squareHelper(p.x, 4));
+		}
+		else
+		{
+			if(p.y == 1)
+				if(Sqr::squareHelper(p.x, 3)->piece.type == NONE)
+					sqrs.push_back(*Sqr::squareHelper(p.x, 3));
+
+			m = 1;
+		}
+		
+		// left
+		Square* l = Sqr::squareHelper(p.x + 1 * m, p.y + 1 * m);
+		// check that square is on the screen
+		if(l != nullptr)
+			// check if square is empty
+			if(l->piece.type != NONE)
+				// check that the square color is different to piece
+				if(l->piece.color != p.color)
+					// add square
+					sqrs.push_back(*l);
+
+		// center
+		Square* c = Sqr::squareHelper(p.x, p.y + 1 * m);
+		if(c != nullptr)
+			if(c->piece.type == NONE)
+				sqrs.push_back(*c);
+
+		// right
+		Square* r = Sqr::squareHelper(p.x - 1 * m, p.y + 1 * m);
+		if(r != nullptr)
+			if(r->piece.type != NONE)
+				if(r->piece.color != p.color)
+					sqrs.push_back(*r);
+	}
+
 
 	// vector type might need to be pointer
 	std::vector<Square> show(Piece piece)
@@ -56,48 +100,11 @@ namespace LegalMove
 		{
 			case PAWN:
 
-				// TODO make this with squareHelper
-				if(piece.user == PLAYER)
-				{	
-					// first row is special
-					if(piece.y == 6)
-						if(Sqr::getSquare(piece.x, 4).piece.type == NONE)
-							sqrs.push_back(Sqr::getSquare(piece.x, 4));
+			if(piece.user == PLAYER)
+				PawnFunc(piece, true);
 
-					// left
-					if(Sqr::getSquare((piece.x - 1), (piece.y - 1)).piece.type != NONE)
-						if(Sqr::getSquare((piece.x - 1), (piece.y - 1)).piece.color != piece.color)
-							sqrs.push_back(Sqr::getSquare((piece.x - 1), (piece.y - 1)));
-
-					// center
-					if(Sqr::getSquare(piece.x, (piece.y - 1)).piece.type == NONE)
-						sqrs.push_back(Sqr::getSquare(piece.x, (piece.y - 1)));
-
-					// right
-					if(Sqr::getSquare((piece.x + 1), (piece.y - 1)).piece.type != NONE)
-						if(Sqr::getSquare((piece.x + 1), (piece.y - 1)).piece.color != piece.color)
-							sqrs.push_back(Sqr::getSquare((piece.x + 1), (piece.y - 1)));
-
-				}
-
-				// same for upside
-				else
-				{
-					if(piece.y == 1)
-						if(Sqr::getSquare(piece.x, 3).piece.type == NONE)
-							sqrs.push_back(Sqr::getSquare(piece.x, 3));
-				
-					if(Sqr::getSquare((piece.x + 1), piece.y + 1).piece.type != NONE)
-						if(Sqr::getSquare((piece.x + 1), piece.y + 1).piece.color != piece.color)
-							sqrs.push_back(Sqr::getSquare((piece.x + 1), (piece.y + 1)));
- 					
-					if(Sqr::getSquare(piece.x, (piece.y + 1)).piece.type == NONE)
-						sqrs.push_back(Sqr::getSquare(piece.x, (piece.y + 1)));
-
-					if(Sqr::getSquare((piece.x - 1), (piece.y + 1)).piece.type != NONE)
-						if(Sqr::getSquare((piece.x - 1), (piece.y + 1)).piece.color != piece.color)
-							sqrs.push_back(Sqr::getSquare((piece.x - 1), (piece.y + 1)));
-				}
+			else
+				PawnFunc(piece, false);
 
 			break;
 			case KNIGHT:
@@ -124,11 +131,11 @@ namespace LegalMove
 
 			case ROOK: 
 
-				LooperFunc(piece, 1, 0);
-				LooperFunc(piece, -1, 0);
-				LooperFunc(piece, 0, 1);
-				LooperFunc(piece, 0, -1);
-				
+			LooperFunc(piece, 1, 0);
+			LooperFunc(piece, -1, 0);
+			LooperFunc(piece, 0, 1);
+			LooperFunc(piece, 0, -1);
+			
 			break;
 			case NONE: break;
 		}
