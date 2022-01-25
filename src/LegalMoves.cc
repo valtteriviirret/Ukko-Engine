@@ -8,17 +8,18 @@ namespace LegalMove
 	// knight, king
 	void HandyFunc(Piece p, int x, int y)
 	{
+		Square* s = Sqr::squareHelper((p.x + x), (p.y + y));
 		// if square is not on board
-		if(Sqr::squareHelper((p.x + x), (p.y + y)) != nullptr)
+		if(s != nullptr)
 		{
 			// if square is empty
-			if(Sqr::squareHelper((p.x + x), (p.y + y))->piece.type == NONE)
-				sqrs.push_back(*Sqr::squareHelper((p.x + x), (p.y + y)));
+			if(s->piece.type == NONE)
+				sqrs.push_back(*s);
 			
 			// add if enemy is on square
 			else
-				if(Sqr::squareHelper((p.x + x), (p.y + y))->piece.color != p.color)
-					sqrs.push_back(*Sqr::squareHelper((p.x + x), (p.y + y)));
+				if(s->piece.color != p.color)
+					sqrs.push_back(*s);
 		}
 	}
 
@@ -28,16 +29,20 @@ namespace LegalMove
 		// max distance
 		for(int i = 0; i < 8; i++)
 		{
-			if(Sqr::squareHelper((p.x + i * x), (p.y + i * y)) != nullptr)
+			Square* s = Sqr::squareHelper(p.x + i * x, p.y + i * y);
+
+			// if square is not in board
+			if(s != nullptr)
 			{
-				if(Sqr::squareHelper((p.x + i * x), (p.y + i * y))->piece.type == NONE)
-					sqrs.push_back(*Sqr::squareHelper((p.x + i * x), (p.y + i * y)));
+				// add if square is empty
+				if(s->piece.type == NONE)
+					sqrs.push_back(*s);
 				else
 				{
-					if(Sqr::squareHelper((p.x + i * x), (p.y + i * y))->piece.color != p.color)
-						sqrs.push_back(*Sqr::squareHelper((p.x + i * x), (p.y + i * y)));
-					else
-						break;
+					// break the loop if see piece, add if enemy
+					if(s->piece.color != p.color)
+						sqrs.push_back(*s);
+					break;
 				}
 			}
 			else
