@@ -56,6 +56,11 @@ void Game::eventHandler()
             SDL_GetMouseState(&mousePos.x, &mousePos.y);
             selectedSquare = GUI::onSelect(mousePos);
             isSquareSelected = true;
+            if (selectedSquare->piece.type != NONE && selectedSquare->piece.user) {
+                isPieceSelected = true;
+                originalSquare = selectedSquare;
+            }
+            else isPieceSelected = false;
         }
 	}
 }
@@ -63,9 +68,9 @@ void Game::eventHandler()
 void Game::update()
 {
     if (playerTurn) {
-        if (isPieceSelected) {
+        if (isPieceSelected || selectedSquare == originalSquare) {
+
             Type selectedPiece = selectedSquare->piece.type;
-            originalSquare = selectedSquare;
 
             std::cout << "Piece ID:" << selectedPiece << " is currently selected.\n";
 
@@ -81,9 +86,6 @@ void Game::update()
                 }
             }
         }
-        if (selectedSquare->piece.type != NONE && selectedSquare->piece.user)
-            isPieceSelected = true;
-        else isPieceSelected = false;
     }
 }
 
