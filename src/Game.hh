@@ -36,6 +36,7 @@ class Game
         SDL_Point mousePos;
         Square* selectedSquare = nullptr;
         bool isSquareSelected = false;
+        bool playerTurn;
 };
 
 #endif

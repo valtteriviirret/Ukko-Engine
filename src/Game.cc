@@ -62,7 +62,44 @@ void Game::eventHandler()
 
 void Game::update()
 {
+    Piece* selected = nullptr;
+    std::vector<Square> v;
+    Square* movingPosition = nullptr;
 
+    /*
+     * TODO: Game logic. And moving the pieces
+     * TODO: Implement checking algorithm that the selected square is a valid move.
+     * TODO: Implement logic for capturing opponent's pieces.
+     *
+     *
+     * Game logic might resemble something like this:
+     *
+    if (isSquareSelected) {
+
+        v = LegalMove::show(selectedSquare->piece);
+
+        for (auto &i: v) {
+            if (GUI::onSelect(mousePos) == Sqr::squareHelper(mousePos.x, mousePos.y))
+            {
+                movingPosition = Sqr::squareHelper(mousePos.x, mousePos.y);
+
+                if (Sqr::squareHelper(mousePos.x, mousePos.y)->piece.color != Settings::PlayerColor)
+                    Sqr::squareHelper(mousePos.x, mousePos.y)->piece.alive = false;
+
+                if (selectedSquare->piece.x > movingPosition->x)
+                    selectedSquare->piece.x--;
+                if (selectedSquare->piece.y > movingPosition->y)
+                    selectedSquare->piece.y--;
+                if (selectedSquare->piece.x < movingPosition->x)
+                    selectedSquare->piece.x++;
+                if (selectedSquare->piece.y < movingPosition->y)
+                    selectedSquare->piece.y++;
+                else
+                    playerTurn = false;
+            }
+        }
+    }
+     */
 }
 
 // render pieces in their current positions
@@ -96,12 +133,13 @@ void Game::render()
                 	Renderer::setColor(0, 0, 255);
 					
 					// color the selected square
-                	//Renderer::fillRect(selectedSquare->rect);
+                	Renderer::fillRect(selectedSquare->rect);
 					
 					// color legal moves of the piece in the selected square
-					for(int i = 0; i < (int)v.size(); i++)
+					for(auto & i : v)
 					{
-                		Renderer::fillRect(v.at(i).rect);
+                        Renderer::setColor(255, 0, 0 );
+                		Renderer::fillRect(i.rect);
 					}
 
 				}
@@ -249,6 +287,11 @@ void Game::initPieces(int playerColor)
 		else
 			p[i].color = Color::BLACK;
 	}
+
+    if (playerColor == WHITE)
+        playerTurn = true;
+    else
+        playerTurn = false;
 }
 
 
