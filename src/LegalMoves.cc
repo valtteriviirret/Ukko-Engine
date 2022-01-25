@@ -15,9 +15,9 @@ namespace LegalMove
 			if(Sqr::squareHelper((p.x + x), (p.y + y))->piece.type == NONE)
 				sqrs.push_back(*Sqr::squareHelper((p.x + x), (p.y + y)));
 			
-			// add if enemy is on square, why does this work??? somewhere booleans are wrong
+			// add if enemy is on square
 			else
-				if(Sqr::squareHelper((p.x + x), (p.y + y))->piece.color != p.color)
+				if(Sqr::squareHelper((p.x + x), (p.y + y))->piece.color == p.color)
 					sqrs.push_back(*Sqr::squareHelper((p.x + x), (p.y + y)));
 		}
 	}
@@ -56,7 +56,7 @@ namespace LegalMove
 		{
 			case PAWN:
 
-				// no need to use squareHelper because PAWN can never escape board
+				// TODO make this with squareHelper
 				if(piece.user == PLAYER)
 				{	
 					// first row is special

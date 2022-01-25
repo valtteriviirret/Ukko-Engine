@@ -17,7 +17,9 @@ Square* GUI::onSelect(SDL_Point& mousePos) {
     if (Sqr::squareHelper(x, y) != nullptr)
         return &Sqr::getSquare(x, y);
     else
-        return &Sqr::getSquare(7, y);
+        return nullptr;
 
-    // Returning a nullpointer is not safe. Causes SIGSEGV.
+		// if doesn't work
+		// return &Sqr::getSquare(7, y);
+
 }
