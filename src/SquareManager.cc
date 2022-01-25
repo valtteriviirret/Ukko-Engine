@@ -7,6 +7,7 @@ namespace Sqr
 
 	Square* squareHelper(int x, int y)
 	{
+		// return nullpointer if value is not on board
 		if(x < 0 || x > 7 || y < 0 || y > 7)
 			return nullptr;
 		else
@@ -14,8 +15,5 @@ namespace Sqr
 	}
 
 	// getting individual square
-	Square& getSquare(int x, int y) 
-	{
-		return squares[x][y];
-	}
+	Square& getSquare(int x, int y) { return squares[x][y]; }
 }

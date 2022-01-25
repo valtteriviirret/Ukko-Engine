@@ -1,5 +1,4 @@
 #include "PieceRenderer.hh"
-#include "SquareManager.hh"
 
 PieceFactory* _factory = nullptr;
 

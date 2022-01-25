@@ -19,7 +19,7 @@ void Board::makeBoard() const
 			Sqr::getSquare(i, j).rect.h = height;
 
 			// x and y positions to squares
-			// I don't know if we need this, I don't even know if this makes any sense.
+			// we dont't need these but here just to be sure
 			// Sqr::getSquare(i, j).x = i;
 			// Sqr::getSquare(i, j).y = j;
 			
@@ -27,7 +27,9 @@ void Board::makeBoard() const
 			{
                 Renderer::setColor(64, 48, 0);
 				Renderer::fillRect(Sqr::getSquare(i, j).rect);
-			} else {
+			} 
+			else 
+			{
                 Renderer::setColor(128, 64, 0);
                 Renderer::fillRect(Sqr::getSquare(i, j).rect);
             }

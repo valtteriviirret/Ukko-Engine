@@ -5,8 +5,8 @@ namespace LegalMove
 	// the vector to be returned
 	std::vector<Square> sqrs;
 
-	// knight, king
-	void HandyFunc(Piece p, int x, int y)
+	// KNIGHT, KING
+	void xyFindFunc(Piece p, int x, int y)
 	{
 		Square* s = Sqr::squareHelper((p.x + x), (p.y + y));
 		// if square is not on board
@@ -23,7 +23,7 @@ namespace LegalMove
 		}
 	}
 
-	// rook, bishop, queen
+	// ROOK, BISHOP, QUEEN
 	void LooperFunc(Piece p, int x, int y)
 	{
 		// max distance
@@ -71,9 +71,9 @@ namespace LegalMove
 		
 		// left
 		Square* l = Sqr::squareHelper(p.x + 1 * m, p.y + 1 * m);
-		// check that square is on the screen
+		// check that square is on the board
 		if(l != nullptr)
-			// check if square is empty
+			// check if square is empty of pieces
 			if(l->piece.type != NONE)
 				// check that the square color is different to piece
 				if(l->piece.color != p.color)
@@ -94,20 +94,19 @@ namespace LegalMove
 					sqrs.push_back(*r);
 	}
 
-
-	// vector type might need to be pointer
+	
+	// get legal moves
 	std::vector<Square> show(Piece piece)
 	{
 		// clear vector to be sure
 		sqrs.clear();
-
+		
 		switch(piece.type)
 		{
 			case PAWN:
 
 			if(piece.user == PLAYER)
 				PawnFunc(piece, true);
-
 			else
 				PawnFunc(piece, false);
 
@@ -117,7 +116,7 @@ namespace LegalMove
 			for(int i = -2; i < 3; i++)
 				for(int j = -2; j < 3; j++)
 					if((i != 0 && j != 0) && abs(i) != abs(j))
-						HandyFunc(piece, i, j);
+						xyFindFunc(piece, i, j);
 	
 			break;
 			case QUEEN:
@@ -133,29 +132,29 @@ namespace LegalMove
 			for(int i = -1; i < 2; i++)
 				for(int j = -1; j < 2; j++)
 					if(!(i == 0 && j == 0))
-						HandyFunc(piece, i, j);
+						xyFindFunc(piece, i, j);
 			
 			break;
-
 			case BISHOP:
 
 			LooperFunc(piece, 1, 1);
 			LooperFunc(piece, 1, -1);
 			LooperFunc(piece, -1, 1);
 			LooperFunc(piece, -1, -1);
-			break;
 
+			break;
 			case ROOK: 
 
 			LooperFunc(piece, 1, 0);
-			LooperFunc(piece, -1, 0);
 			LooperFunc(piece, 0, 1);
+			LooperFunc(piece, -1, 0);
 			LooperFunc(piece, 0, -1);
+			
 			break;
-
 			case NONE: break;
 		}
-
+		
+		// return legal moves for the piece
 		return sqrs;
 	}
 }
