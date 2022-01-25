@@ -1,5 +1,4 @@
 #include "Game.hh"
-#include "SquareManager.hh"
 
 Game::Game()
 {
@@ -50,38 +49,31 @@ void Game::eventHandler()
             SDL_GetMouseState(&mousePos.x, &mousePos.y);
         }
 
-        if(e.type == SDL_MOUSEBUTTONDOWN)
-        {
+        if(e.type == SDL_MOUSEBUTTONDOWN) {
             e.type = SDL_MOUSEBUTTONDOWN;
             SDL_GetMouseState(&mousePos.x, &mousePos.y);
             selectedSquare = GUI::onSelect(mousePos);
             isSquareSelected = true;
-            if (selectedSquare->piece.type != NONE && selectedSquare->piece.user) {
-                isPieceSelected = true;
+            if (selectedSquare->piece.type != NONE && selectedSquare->piece.user == PLAYER) {
                 originalSquare = selectedSquare;
+                isPieceSelected = true;
             }
-            else isPieceSelected = false;
         }
 	}
 }
 
-void Game::update()
-{
-    if (playerTurn) {
-        if (isPieceSelected || selectedSquare == originalSquare) {
-
-            Type selectedPiece = selectedSquare->piece.type;
-
-            std::cout << "Piece ID:" << selectedPiece << " is currently selected.\n";
-
-            legalMoves = LegalMove::show(selectedSquare->piece);
-
-            for (auto &legalMove: legalMoves) {
-                if (selectedSquare == &legalMove) {
-                    selectedSquare->piece.x = legalMove.x;
-                    selectedSquare->piece.y = legalMove.y;
-                    selectedSquare->piece.type = selectedPiece;
-                    originalSquare->piece.type = NONE;
+void Game::update() {
+    if (playerTurn && isPieceSelected) {
+        std::vector<Square> legalMoves = LegalMove::show(originalSquare->piece);
+        if (selectedSquare != originalSquare) {
+            for (int i = 0; i < (int) legalMoves.size(); i++) {
+                if (selectedSquare->x == legalMoves.at(i).x && selectedSquare->y == legalMoves.at(i).y) {
+                    std::cout << "Legal move.\n";
+                    originalSquare->x = legalMoves.at(i).x;
+                    originalSquare->y = legalMoves.at(i).y;
+                    originalSquare->piece = legalMoves.at(i).piece;
+                } else {
+                    std::cout << "Illegal move.\n";
                     isPieceSelected = false;
                 }
             }
@@ -104,7 +96,7 @@ void Game::render()
     {
         for(int y = 0; y < 8; y++)
         {
-            if (GUI::onMouseRollOver(mousePos, Sqr::getSquare(x, y).rect)) 
+            if (GUI::onMouseRollOver(mousePos, Sqr::getSquare(x, y).rect))
 			{
                 Renderer::setColor(0, 255, 0);
                 Renderer::fillRect(Sqr::getSquare(x, y).rect);
@@ -121,7 +113,7 @@ void Game::render()
 					
 					// color the selected square
                 	Renderer::fillRect(selectedSquare->rect);
-					
+
 					// color legal moves of the piece in the selected square
                     Renderer::setColor(255, 0, 0 );
 					for(auto & i : v)
