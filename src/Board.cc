@@ -19,9 +19,8 @@ void Board::makeBoard() const
 			Sqr::getSquare(i, j).rect.h = height;
 
 			// x and y positions to squares
-			// we dont't need these but here just to be sure
-			// Sqr::getSquare(i, j).x = i;
-			// Sqr::getSquare(i, j).y = j;
+			Sqr::getSquare(i, j).x = i;
+			Sqr::getSquare(i, j).y = j;
 			
 			if((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0))
 			{

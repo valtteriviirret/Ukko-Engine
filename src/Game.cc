@@ -45,16 +45,21 @@ void Game::eventHandler()
 		if(e.type == SDL_MOUSEMOTION)
         {
             // Get mouse position
-            e.type = SDL_MOUSEMOTION;
             SDL_GetMouseState(&mousePos.x, &mousePos.y);
         }
 
-        if(e.type == SDL_MOUSEBUTTONDOWN) {
-            e.type = SDL_MOUSEBUTTONDOWN;
+        if(e.type == SDL_MOUSEBUTTONDOWN) 
+		{
+			// get mouse position
             SDL_GetMouseState(&mousePos.x, &mousePos.y);
             selectedSquare = GUI::onSelect(mousePos);
+
+			// render possible moves
             isSquareSelected = true;
-            if (selectedSquare->piece.type != NONE && selectedSquare->piece.user == PLAYER) {
+
+			// only allowed for player
+			if(selectedSquare->piece.user == PLAYER) 
+			{
                 originalSquare = selectedSquare;
                 isPieceSelected = true;
             }
@@ -62,23 +67,43 @@ void Game::eventHandler()
 	}
 }
 
-void Game::update() {
-    if (playerTurn && isPieceSelected) {
-        std::vector<Square> legalMoves = LegalMove::show(originalSquare->piece);
-        if (selectedSquare != originalSquare) {
-            for (int i = 0; i < (int) legalMoves.size(); i++) {
-                if (selectedSquare->x == legalMoves.at(i).x && selectedSquare->y == legalMoves.at(i).y) {
-                    std::cout << "Legal move.\n";
-                    originalSquare->x = legalMoves.at(i).x;
-                    originalSquare->y = legalMoves.at(i).y;
-                    originalSquare->piece = legalMoves.at(i).piece;
-                } else {
-                    std::cout << "Illegal move.\n";
-                    isPieceSelected = false;
-                }
-            }
-        }
+void Game::update() 
+{
+    if(playerTurn)
+	{
+		// if selected in eventhandler
+		if(isPieceSelected)
+		{
+			// get legal moves
+			std::vector<Square> legalMoves = LegalMove::get(originalSquare->piece);
+
+			// if selected new square
+			if(selectedSquare != originalSquare) 
+			{
+				for(int i = 0; i < (int) legalMoves.size(); i++) 
+				{
+					// if new click is in legal moves
+					if(selectedSquare->x == legalMoves.at(i).x && selectedSquare->y == legalMoves.at(i).y) 
+					{
+						// TODO make Game::Move function
+						originalSquare->x = legalMoves.at(i).x;
+						originalSquare->y = legalMoves.at(i).y;
+						originalSquare->piece = legalMoves.at(i).piece;
+					}
+					else 
+					{
+						isPieceSelected = false;
+					}
+				}
+			}
+		}
     }
+
+	// engine's turn, why do I get warnings here?
+	else
+	{
+
+	}
 }
 
 // render pieces in their current positions
@@ -107,7 +132,7 @@ void Game::render()
 				if(selectedSquare != nullptr)
 				{
 					// get legal moves of the piece in the square
-					std::vector<Square> v = LegalMove::show(selectedSquare->piece);
+					std::vector<Square> v = LegalMove::get(selectedSquare->piece);
 
                 	Renderer::setColor(0, 0, 255);
 					

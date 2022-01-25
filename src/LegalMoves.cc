@@ -96,7 +96,7 @@ namespace LegalMove
 
 	
 	// get legal moves
-	std::vector<Square> show(Piece piece)
+	std::vector<Square> get(Piece piece)
 	{
 		// clear vector to be sure
 		sqrs.clear();
