@@ -17,20 +17,6 @@ Game::Game()
 
 	// put pieces in correct places
 	initPieces(Settings::PlayerColor);
-
-	// testpiece
-	p[0].x = 3;
-	p[0].y = 3;
-	p[0].type = PAWN;
-
-	Piece pi;
-	pi.x = 0;
-	pi.y = 1;
-	pi.type = NONE;
-
-	Sqr::getSquare(0, 1).piece = pi;
-	Sqr::getSquare(3, 3).piece = p[0];
-
 }
 
 Game::~Game()
@@ -153,7 +139,9 @@ void Game::render()
 					// color legal moves of the piece in the selected square
                     Renderer::setColor(255, 0, 0 );
 					for(auto & i : v)
+					{
                 		Renderer::fillRect(i.rect);
+					}
 				}
             }
        }
@@ -300,17 +288,6 @@ void Game::initPieces(int playerColor)
 	p[31].x = 4;
 	Sqr::getSquare(4, 7).piece = p[31];
 
-
-	Piece pi;
-	pi.x = 0;
-	pi.y = 1;
-	pi.type = NONE;
-
-	Sqr::getSquare(0, 1).piece = pi;
-	Sqr::getSquare(3, 3).piece = p[0];
-
-
-
 	// initialize empty squares as empty
 	for(int y = 2; y < 6; y++)
 		for(int x = 0; x < 8; x++)
@@ -321,8 +298,6 @@ void Game::initPieces(int playerColor)
 			piece.type = NONE;
 			Sqr::getSquare(x, y).piece = piece;
 		}
-			//Sqr::getSquare(x, y).piece.type = NONE;
-
 	
     if (playerColor == WHITE)
         playerTurn = true;

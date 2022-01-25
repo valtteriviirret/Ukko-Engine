@@ -1,5 +1,4 @@
 #include "Texture.hh"
-#include "Renderer.hh"
 
 namespace Texture
 {

@@ -23,11 +23,11 @@ namespace LegalMove
 		}
 	}
 
-	// rook, 
+	// rook, bishop, queen
 	void LooperFunc(Piece p, int x, int y)
 	{
 		// max distance
-		for(int i = 0; i < 8; i++)
+		for(int i = 1; i < 8; i++)
 		{
 			Square* s = Sqr::squareHelper(p.x + i * x, p.y + i * y);
 
@@ -120,7 +120,12 @@ namespace LegalMove
 						HandyFunc(piece, i, j);
 	
 			break;
-			case QUEEN: 
+			case QUEEN:
+
+			for(int i = -1; i < 2; i++)
+				for(int j = -1; j < 2; j++)
+					if(!(i == 0 && j == 0))
+						LooperFunc(piece, i, j);
 				
 			break;
 			case KING:
@@ -132,7 +137,13 @@ namespace LegalMove
 			
 			break;
 
-			case BISHOP: break;
+			case BISHOP:
+
+			LooperFunc(piece, 1, 1);
+			LooperFunc(piece, 1, -1);
+			LooperFunc(piece, -1, 1);
+			LooperFunc(piece, -1, -1);
+			break;
 
 			case ROOK: 
 
@@ -140,8 +151,8 @@ namespace LegalMove
 			LooperFunc(piece, -1, 0);
 			LooperFunc(piece, 0, 1);
 			LooperFunc(piece, 0, -1);
-			
 			break;
+
 			case NONE: break;
 		}
 
