@@ -23,7 +23,7 @@ class Game
 		~Game();
 		void updateGame();
 		bool ApplicationShouldClose = false;
-		void Move(Square* source, Square* target);
+		void Move(Piece& source, Square target);
 	private:
 		void render();
 		void update();

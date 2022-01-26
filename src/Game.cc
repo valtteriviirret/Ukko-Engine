@@ -81,19 +81,21 @@ void Game::update()
 			// if selected new square
 			if(selectedSquare != originalSquare) 
 			{
-				for(int i = 0; i < (int) legalMoves.size(); i++) 
+				for(int i = 0; i < (int)legalMoves.size(); i++) 
 				{
 					// if new click is in legal moves
 					if(selectedSquare->x == legalMoves.at(i).x && selectedSquare->y == legalMoves.at(i).y) 
 					{
-						// TODO make Game::Move function
-						//originalSquare->x = legalMoves.at(i).x;
-						//originalSquare->y = legalMoves.at(i).y;
-						//originalSquare->piece = legalMoves.at(i).piece;
-						Move(originalSquare, &legalMoves.at(i));
-
-						// engine's turn after player
-						//playerTurn = false;
+						// loop all pieces to find the correct one
+						for(auto& j : p)
+						{
+							// loop pieces and find correct one
+							if(originalSquare->x == j.x && originalSquare->y == j.y)
+							{
+								// make the move
+								Move(j, legalMoves.at(i));
+							}
+						}
 					}
 					else 
 					{
@@ -111,27 +113,27 @@ void Game::update()
 
 }
 
-void Game::Move(Square* source, Square* target)
+void Game::Move(Piece& source, Square target)
 {
-	// change source values
-	source->piece.x = target->x;
-	source->piece.y = target->y;
-	
-	// updateting the value to squares
-	Sqr::getSquare(target->x, target->y).piece = source->piece;
+	// get square of source piece
+	Square srcSquare = Sqr::getSquare(source.x, source.y);
 
+	// change source values (updating graphics)
+	source.x = target.x;
+	source.y = target.y;
+	
 	// creating new empty piece for source's place
 	Piece piece;
-	piece.x = source->x;
-	piece.y = source->y;
+	piece.x = srcSquare.x;
+	piece.y = srcSquare.y;
 	piece.type = NONE;
-	source->piece = piece;
 
-	// updating the value to squares
-	Sqr::getSquare(source->x, source->y).piece = piece;
+	// updating squares
+	Sqr::getSquare(target.x, target.y).piece = source;
+	Sqr::getSquare(srcSquare.x, srcSquare.y).piece = piece;
 	
 	// if moving to enemy's square
-	if(target->piece.type != 6)
+	if(target.piece.type != 6)
 	{
 	}
 
