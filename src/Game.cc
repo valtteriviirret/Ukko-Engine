@@ -1,5 +1,4 @@
 #include "Game.hh"
-#include "SquareManager.hh"
 
 Game::Game()
 {
