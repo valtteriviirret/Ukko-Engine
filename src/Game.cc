@@ -96,7 +96,9 @@ void Game::update()
 							}
 						}
 					}
-					else 
+
+					// player selects wrong piece
+					else
 					{
 						isPieceSelected = false;
 					}
@@ -114,33 +116,38 @@ void Game::update()
 
 void Game::Move(Piece& source, Square target)
 {
-	// get square of source piece
+	// get square of source and destination
 	Square srcSquare = Sqr::getSquare(source.x, source.y);
+	Square dstSquare = Sqr::getSquare(target.x, target.y);
 
-	// change source values (updating graphics)
-	source.x = target.x;
-	source.y = target.y;
-	
 	// creating new empty piece for source's place
 	Piece piece;
 	piece.x = srcSquare.x;
 	piece.y = srcSquare.y;
 	piece.type = NONE;
 
+	// change source values (updating graphics)
+	source.x = target.x;
+	source.y = target.y;
+
 	// updating squares
-	Sqr::getSquare(target.x, target.y).piece = source;
 	Sqr::getSquare(srcSquare.x, srcSquare.y).piece = piece;
-	
+	Sqr::getSquare(dstSquare.x, dstSquare.y).piece = piece;
+	Sqr::getSquare(target.x, target.y).piece = source;
+
 	// if moving to enemy's square
 	if(target.piece.type != 6)
 	{
+		for(auto&i : p)
+		{
+			if(selectedSquare->x == i.x && selectedSquare->y == dstSquare.y)
+			{
+			}
+		}
+		// why this does not work?
+		target.piece.alive = false;
+		dstSquare.piece = piece;
 	}
-
-	// eating another player
-	else
-	{
-	}
-
 }
 
 
