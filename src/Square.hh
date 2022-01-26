@@ -9,7 +9,6 @@ typedef struct Square
 	SDL_Rect rect;
 	Piece piece;
 	int x, y;
-
 } Square;
 
 #endif

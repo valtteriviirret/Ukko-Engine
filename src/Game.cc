@@ -49,7 +49,7 @@ void Game::eventHandler()
             SDL_GetMouseState(&mousePos.x, &mousePos.y);
         }
 
-        if(e.type == SDL_MOUSEBUTTONDOWN) 
+        if(e.type == SDL_MOUSEBUTTONDOWN)
 		{
 			// get mouse position
             SDL_GetMouseState(&mousePos.x, &mousePos.y);
@@ -59,7 +59,7 @@ void Game::eventHandler()
             isSquareSelected = true;
 
 			// only allowed for player
-			if(selectedSquare->piece.user == PLAYER) 
+			if(selectedSquare->piece.user == PLAYER)
 			{
                 originalSquare = selectedSquare;
                 isPieceSelected = true;
@@ -68,49 +68,48 @@ void Game::eventHandler()
 	}
 }
 
-void Game::update() 
+void Game::update()
 {
-    if(playerTurn)
+	if (playerTurn)
 	{
 		// if selected in eventhandler
-		if(isPieceSelected)
+		if (isPieceSelected)
 		{
 			// get legal moves
 			std::vector<Square> legalMoves = LegalMove::get(originalSquare->piece);
 
 			// if selected new square
-			if(selectedSquare != originalSquare) 
+			if (selectedSquare != originalSquare)
 			{
-				for(int i = 0; i < (int)legalMoves.size(); i++) 
+				for (int i = 0; i < (int) legalMoves.size(); i++)
 				{
 					// if new click is in legal moves
-					if(selectedSquare->x == legalMoves.at(i).x && selectedSquare->y == legalMoves.at(i).y) 
+					if (selectedSquare->x == legalMoves.at(i).x &&
+						selectedSquare->y == legalMoves.at(i).y)
 					{
 						// loop all pieces to find the correct one
-						for(auto& j : p)
+						for (auto &j: p)
 						{
 							// loop pieces and find correct one
-							if(originalSquare->x == j.x && originalSquare->y == j.y)
+							if (originalSquare->x == j.x && originalSquare->y == j.y)
 							{
 								// make the move
 								Move(j, legalMoves.at(i));
 							}
 						}
-					}
-					else 
+					} else
 					{
 						isPieceSelected = false;
 					}
 				}
 			}
 		}
-    }
-
-	// engine's turn, why do I get warnings here?
+	}
+		// engine's turn, why do I get warnings here?
 	else
 	{
+		// TODO: Engine logic:
 	}
-
 }
 
 void Game::Move(Piece& source, Square target)
@@ -121,7 +120,7 @@ void Game::Move(Piece& source, Square target)
 	// change source values (updating graphics)
 	source.x = target.x;
 	source.y = target.y;
-	
+
 	// creating new empty piece for source's place
 	Piece piece;
 	piece.x = srcSquare.x;
@@ -131,13 +130,13 @@ void Game::Move(Piece& source, Square target)
 	// updating squares
 	Sqr::getSquare(target.x, target.y).piece = source;
 	Sqr::getSquare(srcSquare.x, srcSquare.y).piece = piece;
-	
+
 	// if moving to enemy's square
-	if(target.piece.type != 6)
+	if (target.piece.type != 6)
 	{
 	}
 
-	// eating another player
+		// eating another player
 	else
 	{
 	}
@@ -148,49 +147,49 @@ void Game::Move(Piece& source, Square target)
 // render pieces in their current positions
 void Game::render()
 {
-    // make gray background
-    Renderer::setColor(64, 64, 64);
-    Renderer::clear();
+	// make gray background
+	Renderer::setColor(64, 64, 64);
+	Renderer::clear();
 
-    // render board
-    board->render();
+	// render board
+	board->render();
 
 	// color the square where to mouse is
-   	for(int x = 0; x < 8; x++)
-    {
-        for(int y = 0; y < 8; y++)
-        {
-            if (GUI::onMouseRollOver(mousePos, Sqr::getSquare(x, y).rect))
+	for (int x = 0; x < 8; x++)
+	{
+		for (int y = 0; y < 8; y++)
+		{
+			if (GUI::onMouseRollOver(mousePos, Sqr::getSquare(x, y).rect))
 			{
-                Renderer::setColor(0, 255, 0);
-                Renderer::fillRect(Sqr::getSquare(x, y).rect);
-            }
-            if (isSquareSelected) 
+				Renderer::setColor(0, 255, 0);
+				Renderer::fillRect(Sqr::getSquare(x, y).rect);
+			}
+			if (isSquareSelected)
 			{
 				// selected square must be on board
-				if(selectedSquare != nullptr)
+				if (selectedSquare != nullptr)
 				{
 					// get legal moves of the piece in the square
 					std::vector<Square> v = LegalMove::get(selectedSquare->piece);
 
-                	Renderer::setColor(0, 0, 255);
-					
+					Renderer::setColor(0, 0, 255);
+
 					// color the selected square
-                	Renderer::fillRect(selectedSquare->rect);
+					Renderer::fillRect(selectedSquare->rect);
 
 					// color legal moves of the piece in the selected square
-                    Renderer::setColor(255, 0, 0 );
-					for(auto & i : v)
+					Renderer::setColor(255, 0, 0);
+					for (auto &i: v)
 					{
-                		Renderer::fillRect(i.rect);
+						Renderer::fillRect(i.rect);
 					}
 				}
-            }
-       }
-    }
+			}
+		}
+	}
 
 	// render pieces
-	for(auto& i : p)
+	for (auto &i: p)
 		PieceRenderer::renderInPosition(i);
 
 	// main rendering
@@ -207,33 +206,33 @@ void Game::initPieces(int playerColor)
 	// 24-31 	PLAYER PIECES
 
 	// setting all pieces alive
-	for(int i = 0; i < ARRSIZE(p); i++)
+	for (int i = 0; i < ARRSIZE(p); i++)
 	{
 		p[i].alive = true;
 	}
 
 	// initializing enemy's pieces colors
-	for(int i = 0; i < 16; i++)
+	for (int i = 0; i < 16; i++)
 	{
-		if(playerColor == Color::WHITE)
+		if (playerColor == Color::WHITE)
 			p[i].color = Color::BLACK;
 		else
 			p[i].color = Color::WHITE;
 	}
 
 	// initializing player's pieces colors
-	for(int i = 16; i < 32; i++)
+	for (int i = 16; i < 32; i++)
 	{
-		if(playerColor == Color::WHITE)
+		if (playerColor == Color::WHITE)
 			p[i].color = Color::WHITE;
 		else
 			p[i].color = Color::BLACK;
 	}
 
 	// engine pawns
-	for(int i = 0; i < 8; i++)
+	for (int i = 0; i < 8; i++)
 	{
-		p[i].type = PAWN;	
+		p[i].type = PAWN;
 		p[i].x = i;
 		p[i].y = 1;
 		p[i].user = ENGINE;
@@ -241,7 +240,7 @@ void Game::initPieces(int playerColor)
 	}
 
 	// player pawns
-	for(int i = 16; i < 24; i++)
+	for (int i = 16; i < 24; i++)
 	{
 		p[i].type = PAWN;
 		p[i].x = (i - 16);
@@ -252,7 +251,7 @@ void Game::initPieces(int playerColor)
 
 
 	// ENGINE PIECES
-	for(int i = 8; i < 16; i++)
+	for (int i = 8; i < 16; i++)
 	{
 		p[i].y = 0;
 		p[i].user = ENGINE;
@@ -277,7 +276,7 @@ void Game::initPieces(int playerColor)
 	p[12].type = BISHOP;
 	p[12].x = 2;
 	Sqr::getSquare(2, 0).piece = p[12];
-	
+
 	p[13].type = BISHOP;
 	p[13].x = 5;
 	Sqr::getSquare(5, 0).piece = p[13];
@@ -292,7 +291,7 @@ void Game::initPieces(int playerColor)
 
 
 	// PLAYER PIECES
-	for(int i = 24; i < 32; i++)
+	for (int i = 24; i < 32; i++)
 	{
 		p[i].y = 7;
 		p[i].user = PLAYER;
@@ -331,8 +330,8 @@ void Game::initPieces(int playerColor)
 	Sqr::getSquare(4, 7).piece = p[31];
 
 	// initialize empty squares as empty
-	for(int y = 2; y < 6; y++)
-		for(int x = 0; x < 8; x++)
+	for (int y = 2; y < 6; y++)
+		for (int x = 0; x < 8; x++)
 		{
 			Piece piece;
 			piece.y = y;
@@ -340,11 +339,11 @@ void Game::initPieces(int playerColor)
 			piece.type = NONE;
 			Sqr::getSquare(x, y).piece = piece;
 		}
-	
-    if (playerColor == WHITE)
-        playerTurn = true;
-    else
-        playerTurn = false;
+
+	if (playerColor == WHITE)
+		playerTurn = true;
+	else
+		playerTurn = false;
 }
 
 
