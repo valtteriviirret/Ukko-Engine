@@ -9,10 +9,10 @@
 #include "GUI.hh"
 #include "Board.hh"
 #include "PieceFactory.hh"
-#include <SDL2/SDL.h>
 #include "Settings.hh"
 #include "LegalMoves.hh"
 #include <vector>
+#include <SDL2/SDL.h>
 
 #define ARRSIZE(arr) (int)(sizeof(arr)/sizeof(arr[0]))
 
@@ -23,6 +23,7 @@ class Game
 		~Game();
 		void updateGame();
 		bool ApplicationShouldClose = false;
+		void Move(Square* source, Square* target);
 	private:
 		void render();
 		void update();

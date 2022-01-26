@@ -1,4 +1,5 @@
 #include "Game.hh"
+#include "SquareManager.hh"
 
 Game::Game()
 {
@@ -86,9 +87,13 @@ void Game::update()
 					if(selectedSquare->x == legalMoves.at(i).x && selectedSquare->y == legalMoves.at(i).y) 
 					{
 						// TODO make Game::Move function
-						originalSquare->x = legalMoves.at(i).x;
-						originalSquare->y = legalMoves.at(i).y;
-						originalSquare->piece = legalMoves.at(i).piece;
+						//originalSquare->x = legalMoves.at(i).x;
+						//originalSquare->y = legalMoves.at(i).y;
+						//originalSquare->piece = legalMoves.at(i).piece;
+						Move(originalSquare, &legalMoves.at(i));
+
+						// engine's turn after player
+						//playerTurn = false;
 					}
 					else 
 					{
@@ -102,9 +107,41 @@ void Game::update()
 	// engine's turn, why do I get warnings here?
 	else
 	{
-
 	}
+
 }
+
+void Game::Move(Square* source, Square* target)
+{
+	// change source values
+	source->piece.x = target->x;
+	source->piece.y = target->y;
+	
+	// updateting the value to squares
+	Sqr::getSquare(target->x, target->y).piece = source->piece;
+
+	// creating new empty piece for source's place
+	Piece piece;
+	piece.x = source->x;
+	piece.y = source->y;
+	piece.type = NONE;
+	source->piece = piece;
+
+	// updating the value to squares
+	Sqr::getSquare(source->x, source->y).piece = piece;
+	
+	// if moving to enemy's square
+	if(target->piece.type != 6)
+	{
+	}
+
+	// eating another player
+	else
+	{
+	}
+
+}
+
 
 // render pieces in their current positions
 void Game::render()
