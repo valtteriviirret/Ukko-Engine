@@ -36,7 +36,10 @@ namespace LegalMove
 			{
 				// add if square is empty
 				if(s->piece.type == NONE)
+				{
 					sqrs.push_back(*s);
+					continue;
+				}
 				else
 				{
 					// break the loop if see piece, add if enemy
