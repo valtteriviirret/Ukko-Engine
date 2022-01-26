@@ -1,5 +1,4 @@
 #include "Game.hh"
-#include "SquareManager.hh"
 
 Game::Game()
 {
@@ -64,13 +63,13 @@ void Game::eventHandler()
                 originalSquare = selectedSquare;
                 isPieceSelected = true;
             }
-        }
+       }
 	}
 }
 
 void Game::update() 
 {
-    if(playerTurn)
+	if(playerTurn)
 	{
 		// if selected in eventhandler
 		if(isPieceSelected)
@@ -112,6 +111,8 @@ void Game::update()
 	}
 
 }
+
+
 
 void Game::Move(Piece& source, Square target)
 {
