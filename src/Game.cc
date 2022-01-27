@@ -100,7 +100,7 @@ void Game::update()
 							{
 								// make the move
 								Move::execute(Pieces::get(j), legalMoves.at(i));
-								//playerTurn = false;
+								playerTurn = false;
 							}
 						}
 					}
