@@ -11,15 +11,12 @@
 
 class Engine
 {
-	public:
-		Engine();
-		~Engine();
-		void PlayMove();
-	private:
-		int pickRandomPiece();
-		int selectedPiece = 0;
-		bool isMoveDecided = false;
-		Square move;
+public:
+	Engine();
+	~Engine();
+	void PlayMove();
+private:
+	static int pickPiece();
 };
 
 #endif

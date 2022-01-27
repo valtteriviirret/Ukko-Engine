@@ -1,29 +1,46 @@
 #include "Engine.hh"
 
-Engine::Engine()
-{}
+Engine::Engine() = default;
 
 Engine::~Engine() = default;
 
 void Engine::PlayMove()
 {
-	selectedPiece = pickRandomPiece();
-	// get legal moves
-	std::vector<Square> legalMoves = LegalMove::get(Pieces::get(selectedPiece));
-	if (!isMoveDecided)
+	// get random num
+	int piece = pickPiece();
+	int count = 0;
+	Square s;
+
+	// get moves for random num
+	std::vector<Square> v = LegalMove::get(Pieces::get(piece));
+
+	for(;;)
 	{
-		if ((int)LegalMove::get(Pieces::get(selectedPiece)).size() > 0) isMoveDecided = true;
-		else selectedPiece = pickRandomPiece();
+		if (count == 15)
+		{
+			staleMate = true;
+			break;
+		}
+		if(!v.empty() && Pieces::get(piece).alive)
+			break;
+		else
+		{
+			piece = pickPiece();
+			v = LegalMove::get(Pieces::get(piece));
+			count++;
+		}
 	}
 
-	move = Sqr::getSquare(LegalMove::get(Pieces::get(selectedPiece)).at(selectedPiece).x,
-						  LegalMove::get(Pieces::get(selectedPiece)).at(selectedPiece).y);
+	if(!staleMate)
+	{
+		for (int i = 0; i < v.size(); i++)
+			s = Sqr::getSquare(v[i].x, v[i].y);
 
-	// execute move
-	Move::execute(Pieces::get(selectedPiece), move);
+		Move::execute(Pieces::get(piece), s);
+	}
 }
 
-int Engine::pickRandomPiece()
+int Engine::pickPiece()
 {
 	return rand() % 15;
 }

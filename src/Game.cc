@@ -76,49 +76,56 @@ void Game::eventHandler()
 
 void Game::update() 
 {
-    if(playerTurn)
+	if(!staleMate)
 	{
-		// if selected in eventhandler
-		if(isPieceSelected)
+		if (playerTurn)
 		{
-			// get legal moves
-			std::vector<Square> legalMoves = LegalMove::get(originalSquare->piece);
-
-			// if selected new square
-			if(selectedSquare != originalSquare)
+			// if selected in eventhandler
+			if (isPieceSelected)
 			{
-				for(int i = 0; i < (int)legalMoves.size(); i++)
+				// get legal moves
+				std::vector<Square> legalMoves = LegalMove::get(originalSquare->piece);
+
+				// if selected new square
+				if (selectedSquare != originalSquare)
 				{
-					// if new click is in legal moves
-					if(selectedSquare->x == legalMoves.at(i).x && selectedSquare->y == legalMoves.at(i).y)
+					for (int i = 0; i < (int) legalMoves.size(); i++)
 					{
-						// loop players pieces to find the correct one
-						for(int j = 16; j < 32; j++)
+						// if new click is in legal moves
+						if (selectedSquare->x == legalMoves.at(i).x && selectedSquare->y == legalMoves.at(i).y)
 						{
-							// loop pieces and find correct one
-							if(originalSquare == &Sqr::getSquare(Pieces::get(j).x, Pieces::get(j).y))
+							// loop players pieces to find the correct one
+							for (int j = 16; j < 32; j++)
 							{
-								// make the move
-								Move::execute(Pieces::get(j), legalMoves.at(i));
-								//playerTurn = false;
+								// loop pieces and find correct one
+								if (originalSquare == &Sqr::getSquare(Pieces::get(j).x, Pieces::get(j).y))
+								{
+									// make the move
+									Move::execute(Pieces::get(j), legalMoves.at(i));
+									playerTurn = false;
+								}
 							}
 						}
-					}
 
-					// player selects wrong piece
-					else
-					{
-						isPieceSelected = false;
+							// player selects wrong piece
+						else
+						{
+							isPieceSelected = false;
+						}
 					}
 				}
 			}
 		}
-    }
-	if (!playerTurn)
+		if (!playerTurn)
+		{
+			engine.PlayMove();
+			playerTurn = true;
+		}
+	}
+	else
 	{
-		//engine.PlayMove();
-		engine.PlayMove();
-		playerTurn = true;
+		std::cout << "You win!\n";
+		ApplicationShouldClose = true;
 	}
 }
 
