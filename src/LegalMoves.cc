@@ -53,6 +53,40 @@ namespace LegalMove
 		}
 	}
 
+	void Castling(Piece p, bool dir)
+	{
+		// different directions for castling
+		int n = -1;
+		if(dir)
+			n = 1;
+
+		// max distance
+		for(int i = 1; i < 5; i++)
+		{
+			Square* s = Sqr::squareHelper(p.x + i * n, p.y);
+			
+			// if not on board, this should never happen
+			if(s != nullptr)
+			{
+				// king side castle is smaller
+				if(dir && i == 4)
+					break;
+
+				// empty square
+				else if(s->piece.type == NONE)
+					continue;
+				
+				// something in the middle, cant castle
+				else if(s->piece.type != NONE && s->piece.type != ROOK)
+					break;
+
+				// can castle
+				else
+					sqrs.push_back(*Sqr::squareHelper(p.x + 2 * n, p.y));
+			}
+		}
+	}
+
 	void PawnFunc(Piece p, bool player)
 	{
 		int m = -1;
@@ -136,6 +170,14 @@ namespace LegalMove
 				for(int j = -1; j < 2; j++)
 					if(!(i == 0 && j == 0))
 						xyFindFunc(piece, i, j);
+
+			// if(all of the reasons you can't castle)
+
+			// king side castle
+			Castling(piece, true);
+
+			// queen side castle
+			Castling(piece, false);
 			
 			break;
 			case BISHOP:
