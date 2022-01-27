@@ -4,6 +4,7 @@
 #include "Piece.hh"
 #include "SquareManager.hh"
 #include "Settings.hh"
+#include "Global.hh"
 
 #define ARRSIZE(arr) (int)(sizeof(arr)/sizeof(arr[0]))
 
@@ -12,7 +13,7 @@ namespace Pieces
 	// initializing pieces in their correct positions
 	void init();
 
-	// getting invidual piece
+	// getting individual piece
 	Piece& get(int n);
 }
 

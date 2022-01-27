@@ -4,6 +4,7 @@
 #include "Square.hh"
 #include "SquareManager.hh"
 #include "Piece.hh"
+#include "Global.hh"
 #include "Settings.hh"
 #include <vector>
 

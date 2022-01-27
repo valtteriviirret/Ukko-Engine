@@ -7,6 +7,7 @@
 #include "LegalMoves.hh"
 #include "Move.hh"
 #include <vector>
+#include <iostream>
 
 class Engine
 {
@@ -15,9 +16,10 @@ class Engine
 		~Engine();
 		void PlayMove();
 	private:
-		void getPieces();
-		void evaluate();
-		Piece pieces[32];
+		int pickRandomPiece();
+		int selectedPiece = 0;
+		bool isMoveDecided = false;
+		Square move;
 };
 
 #endif
