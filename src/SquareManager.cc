@@ -16,4 +16,5 @@ namespace Sqr
 
 	// getting individual square
 	Square& getSquare(int x, int y) { return squares[x][y]; }
+
 }

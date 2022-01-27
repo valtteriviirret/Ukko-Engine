@@ -116,6 +116,7 @@ void Game::update()
     }
 	if (!playerTurn)
 	{
+		//engine.PlayMove();
 		engine.PlayMove();
 		playerTurn = true;
 	}
