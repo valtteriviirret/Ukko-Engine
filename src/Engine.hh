@@ -6,7 +6,7 @@ class Engine
 	public:
 		Engine();
 		~Engine();
-		void PlayMove();
+		void PlayMove() {}
 };
 
 #endif

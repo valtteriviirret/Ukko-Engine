@@ -25,6 +25,7 @@ class Game
 		~Game();
 		void updateGame();
 		bool ApplicationShouldClose = false;
+		Engine engine;
 	private:
 		void render();
 		void update();
@@ -38,7 +39,6 @@ class Game
         Square* originalSquare = nullptr;
         bool isSquareSelected = false;
         bool isPieceSelected = false;
-		Engine engine;
 };
 
 #endif
