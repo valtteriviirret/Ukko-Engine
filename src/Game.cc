@@ -58,7 +58,10 @@ void Game::eventHandler()
             selectedSquare = GUI::onSelect(mousePos);
 
 			// render possible moves
-            isSquareSelected = true;
+			if(selectedSquare->piece.user == PLAYER || Settings::showEnemyLegalMoves)
+			{
+            	isSquareSelected = true;
+			}
 
 			// only allowed for player
 			if(selectedSquare->piece.user == PLAYER) 
@@ -88,8 +91,8 @@ void Game::update()
 					// if new click is in legal moves
 					if(selectedSquare->x == legalMoves.at(i).x && selectedSquare->y == legalMoves.at(i).y) 
 					{
-						// loop all pieces to find the correct one
-						for(int j = 0; j < 32; j++)
+						// loop players pieces to find the correct one
+						for(int j = 16; j < 32; j++)
 						{
 							// loop pieces and find correct one
 							if(originalSquare == &Sqr::getSquare(Pieces::get(j).x, Pieces::get(j).y))
@@ -116,10 +119,11 @@ void Game::update()
 
 }
 
+
 void Game::Move(Piece& source, Square target)
 {
 	// if moving to enemy's square
-	if(target.piece.type != 6)
+	if(target.piece.type != 6 && target.piece.type != 5)
 	{
 		for(int i = 0; i < 32; i++)
 		{
