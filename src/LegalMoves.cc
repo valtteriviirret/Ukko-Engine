@@ -16,7 +16,7 @@ namespace LegalMove
 			if(s->piece.type == NONE)
 				sqrs.push_back(*s);
 			
-			// add if enemy is on square
+			// add if enemy
 			else
 				if(s->piece.color != p.color)
 					sqrs.push_back(*s);
@@ -103,7 +103,7 @@ namespace LegalMove
 	{
 		// clear vector to be sure
 		sqrs.clear();
-		
+	
 		switch(piece.type)
 		{
 			case PAWN:
