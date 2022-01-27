@@ -52,7 +52,7 @@ void Game::eventHandler()
             SDL_GetMouseState(&mousePos.x, &mousePos.y);
         }
 
-        if(e.type == SDL_MOUSEBUTTONDOWN) 
+        if(e.type == SDL_MOUSEBUTTONDOWN)
 		{
 			// get mouse position
             SDL_GetMouseState(&mousePos.x, &mousePos.y);
@@ -65,7 +65,7 @@ void Game::eventHandler()
 			}
 
 			// only allowed for player
-			if(selectedSquare->piece.user == PLAYER) 
+			if(selectedSquare->piece.user == PLAYER)
 			{
                 originalSquare = selectedSquare;
                 isPieceSelected = true;
@@ -85,12 +85,12 @@ void Game::update()
 			std::vector<Square> legalMoves = LegalMove::get(originalSquare->piece);
 
 			// if selected new square
-			if(selectedSquare != originalSquare) 
+			if(selectedSquare != originalSquare)
 			{
-				for(int i = 0; i < (int)legalMoves.size(); i++) 
+				for(int i = 0; i < (int)legalMoves.size(); i++)
 				{
 					// if new click is in legal moves
-					if(selectedSquare->x == legalMoves.at(i).x && selectedSquare->y == legalMoves.at(i).y) 
+					if(selectedSquare->x == legalMoves.at(i).x && selectedSquare->y == legalMoves.at(i).y)
 					{
 						// loop players pieces to find the correct one
 						for(int j = 16; j < 32; j++)
@@ -100,7 +100,7 @@ void Game::update()
 							{
 								// make the move
 								Move::execute(Pieces::get(j), legalMoves.at(i));
-								playerTurn = false;
+								//playerTurn = false;
 							}
 						}
 					}
@@ -114,12 +114,11 @@ void Game::update()
 			}
 		}
     }
-
-	else
+	if (!playerTurn)
 	{
 		engine.PlayMove();
+		playerTurn = true;
 	}
-
 }
 
 // render pieces in their current positions
