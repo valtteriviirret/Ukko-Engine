@@ -12,9 +12,9 @@
 #include "SquareManager.hh"
 #include "Window.hh"
 #include "Pieces.hh"
+#include "Move.hh"
 #include <vector>
 #include <SDL2/SDL.h>
-#include <vector>
 
 class Game
 {
@@ -23,7 +23,6 @@ class Game
 		~Game();
 		void updateGame();
 		bool ApplicationShouldClose = false;
-		void Move(Piece& source, Square target);
 	private:
 		void render();
 		void update();
