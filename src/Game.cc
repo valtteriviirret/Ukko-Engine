@@ -23,9 +23,9 @@ Game::Game()
 
 Game::~Game()
 {
-	delete window;
 	delete pieces;
 	delete board;
+	delete window;
 }
 
 void Game::updateGame()
