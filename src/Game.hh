@@ -13,6 +13,8 @@
 #include "Window.hh"
 #include "Pieces.hh"
 #include "Move.hh"
+#include "Engine.hh"
+#include "Global.hh"
 #include <vector>
 #include <SDL2/SDL.h>
 
@@ -36,7 +38,7 @@ class Game
         Square* originalSquare = nullptr;
         bool isSquareSelected = false;
         bool isPieceSelected = false;
-        bool playerTurn;
+		Engine engine;
 };
 
 #endif

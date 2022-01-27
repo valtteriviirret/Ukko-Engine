@@ -19,6 +19,7 @@ Game::Game()
 	
 	// white starts game
 	Settings::PlayerColor == WHITE ? playerTurn = true : playerTurn = false;
+
 }
 
 Game::~Game()
@@ -100,6 +101,7 @@ void Game::update()
 							{
 								// make the move
 								Move::execute(Pieces::get(j), legalMoves.at(i));
+								//Global::playerTurn = false;
 							}
 						}
 					}
@@ -116,6 +118,7 @@ void Game::update()
 
 	else
 	{
+		//engine.PlayMove();
 	}
 
 }

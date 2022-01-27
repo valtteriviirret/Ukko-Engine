@@ -36,5 +36,8 @@ add_executable(UkkoShakki
 	src/Pieces.hh
 	src/Move.cc
 	src/Move.hh
+	src/Engine.cc
+	src/Engine.hh
+	src/Global.hh
 	)
 target_link_libraries(UkkoShakki ${SDL2_LIBRARIES} -lSDL2_image)
