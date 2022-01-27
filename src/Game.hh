@@ -11,6 +11,7 @@
 #include "PieceFactory.hh"
 #include "Settings.hh"
 #include "LegalMoves.hh"
+#include "Pieces.hh"
 #include <vector>
 #include <SDL2/SDL.h>
 
@@ -28,8 +29,6 @@ class Game
 		void render();
 		void update();
 		void eventHandler();
-		void initPieces(int playerColor);
-		Piece p[32];
 		Board* board = nullptr;
 		PieceFactory* pieces = nullptr;
 		Window* window = nullptr;
