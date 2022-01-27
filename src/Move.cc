@@ -7,11 +7,12 @@ namespace Move
 		// create new "piece"
 		Piece piece;
 		piece.type = NONE;
+		source.user == PLAYER ? piece.user = ENGINE : piece.user = PLAYER;
 
 		// castling
 		if(source.type == KING)
 		{
-			// king side castle
+			// queen side castle
 			if(source.x - 2 == target.x)
 			{
 				// move king to correct place
@@ -42,33 +43,32 @@ namespace Move
 				// queenside castle
 			}
 		}
-		else
+
+		// if moving to enemy's square
+		if(target.piece.type != 6 && target.piece.type != 5)
 		{
-			// if moving to enemy's square
-			if(target.piece.type != 6 && target.piece.type != 5)
+			for(int i = 0; i < 32; i++)
 			{
-				for(int i = 0; i < 32; i++)
+				if(Pieces::get(i).x == target.x && Pieces::get(i).y == target.y)
 				{
-					if(Pieces::get(i).x == target.x && Pieces::get(i).y == target.y)
-					{
-						Pieces::get(i).alive = false;
-					}
+					Pieces::get(i).alive = false;
 				}
 			}
-
-			// get square of source
-			Square srcSquare = Sqr::getSquare(source.x, source.y);
-
-			piece.x = srcSquare.x;
-			piece.y = srcSquare.y;
-
-			// change source values (updating graphics)
-			source.x = target.x;
-			source.y = target.y;
-
-			// updating squares
-			Sqr::getSquare(srcSquare.x, srcSquare.y).piece = piece;
-			Sqr::getSquare(target.x, target.y).piece = source;
 		}
+
+		// get square of source
+		Square srcSquare = Sqr::getSquare(source.x, source.y);
+
+		piece.x = srcSquare.x;
+		piece.y = srcSquare.y;
+	
+		// change source values (updating graphics)
+		source.x = target.x;
+		source.y = target.y;
+
+		// updating squares
+		Sqr::getSquare(srcSquare.x, srcSquare.y).piece = piece;
+		Sqr::getSquare(target.x, target.y).piece = source;
 	}
 }
+
