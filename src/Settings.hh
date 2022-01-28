@@ -8,6 +8,7 @@ class Settings
 	public:
 		static int PlayerColor;
 		static bool showEnemyLegalMoves;
+
 };
 
 #endif

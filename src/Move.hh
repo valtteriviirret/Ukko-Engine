@@ -5,6 +5,7 @@
 #include "Square.hh"
 #include "Pieces.hh"
 #include "SquareManager.hh"
+#include "Global.hh"
 #include <iostream>
 
 namespace Move

@@ -1,16 +1,14 @@
 #include "Move.hh"
-#include "SquareManager.hh"
 
 namespace Move
 {
 	// create new empty piece
-	void emptyPiece(Piece& source, int x, int y)
+	void emptyPiece(int x, int y)
 	{
 		Piece piece;
 		piece.x = x;
 		piece.y = y;
 		piece.type = NONE;
-		source.user == PLAYER ? piece.user = ENGINE : piece.user = PLAYER;
 		Sqr::getSquare(piece.x, piece.y).piece = piece;
 	}
 
@@ -29,10 +27,10 @@ namespace Move
 				if(source.user == PLAYER)
 				{
 					// empty space for old rook
-					emptyPiece(source, 0, 7);
+					emptyPiece(0, 7);
 					
 					// empty piece for old king
-					emptyPiece(source, 4, 7);
+					emptyPiece(4, 7);
 
 					// update rook's position
 					Pieces::get(24).x = source.x + 1;
@@ -44,16 +42,40 @@ namespace Move
 					Sqr::getSquare(source.x, source.y).piece = source;
 
 				}
+				// engine's queen side castle
+				else
+				{
+
+				}
 				
 			}
+
+			// king side castle, hmm why not work
 			if(source.x + 2 == target.x)
 			{
 				std::cout << "king side castle";
-				// queenside castle
+				if(source.user == PLAYER)
+				{
+					std::cout << "this should print as well";
+				}
+				else
+				{
+
+				}
 			}
 		}
 
-		// if moving to enemy's square
+		// if rook is moved here
+		if(source.type == ROOK)
+		{
+			// etc
+			if(source.user == PLAYER)
+			{
+
+			}
+		}
+
+		// if moving to enemy's square, something wrong here!
 		if(target.piece.type != 6 && target.piece.type != 5)
 		{
 			for(int i = 0; i < 32; i++)
@@ -69,7 +91,7 @@ namespace Move
 
 		// create empty piece for source's place
 		Square srcSquare = Sqr::getSquare(source.x, source.y);
-		emptyPiece(source, srcSquare.x, srcSquare.y);
+		emptyPiece(srcSquare.x, srcSquare.y);
 
 		// change source values (updating graphics)
 		source.x = target.x;

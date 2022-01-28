@@ -64,7 +64,11 @@ void Game::eventHandler()
 			{
 				if(Pieces::get(i).x == selectedSquare->piece.x && Pieces::get(i).y == selectedSquare->piece.y)
 				{
-					if(Pieces::get(i).user == PLAYER || Settings::showEnemyLegalMoves)
+					if(Pieces::get(i).user == PLAYER)
+            			isSquareSelected = true;
+					
+					// whats up with this
+					if(Pieces::get(i).user != PLAYER && Settings::showEnemyLegalMoves)
             			isSquareSelected = true;
 
 					if(Pieces::get(i).user == PLAYER)
@@ -80,8 +84,10 @@ void Game::eventHandler()
 	}
 }
 
+
 void Game::update() 
 {
+	// I do not like this, need to rewrite this function
 	if(!staleMate)
 	{
 		if (playerTurn)
@@ -130,6 +136,7 @@ void Game::update()
 	}
 	else
 	{
+		// really? Win by stalemate?
 		std::cout << "You win!\n";
 		ApplicationShouldClose = true;
 	}
