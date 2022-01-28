@@ -12,9 +12,9 @@ static bool playerKingMoved = false;
 static bool playerQsideRookMoved = false;
 static bool playerKsideRookMoved = false;
 
-static bool enemyKingMoved = false;
-static bool enemyQsideRookMoved = false;
-static bool enemyKsideRookMoved = false;
+static bool engineKingMoved = false;
+static bool engineQsideRookMoved = false;
+static bool engineKsideRookMoved = false;
 
 
 

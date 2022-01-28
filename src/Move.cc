@@ -14,6 +14,12 @@ namespace Move
 
 	void execute(Piece& source, Square target)
 	{
+		if(target.piece.type == 5)
+		{
+			std::cout << "Check!\n";
+		}
+
+
 		// castling
 		if(source.type == KING)
 		{
@@ -65,12 +71,23 @@ namespace Move
 			}
 		}
 
-		// if rook is moved here
+		// if rook is moved
 		if(source.type == ROOK)
 		{
-			// etc
 			if(source.user == PLAYER)
 			{
+				if(source.x == 0)
+					playerQsideRookMoved = true;
+				if(source.x == 7)
+					playerKsideRookMoved = true;
+			}
+
+			else
+			{
+				if(source.x == 0)
+					engineQsideRookMoved = true;
+				if(source.x == 7)
+					engineKsideRookMoved = true;
 
 			}
 		}
@@ -86,7 +103,7 @@ namespace Move
 				}
 			}
 		}
-
+		
 		// REGULAR MOVE
 
 		// create empty piece for source's place
