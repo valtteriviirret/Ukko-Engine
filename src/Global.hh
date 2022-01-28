@@ -5,6 +5,7 @@
 
 static bool staleMate = false;
 static bool playerTurn;
+static Piece p[32];
 
 // castling
 static bool playerKingMoved = false;
