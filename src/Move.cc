@@ -1,14 +1,21 @@
 #include "Move.hh"
+#include "SquareManager.hh"
 
 namespace Move
 {
-	void execute(Piece& source, Square target)
+	// create new empty piece
+	void emptyPiece(Piece& source, int x, int y)
 	{
-		// create new "piece"
 		Piece piece;
+		piece.x = x;
+		piece.y = y;
 		piece.type = NONE;
 		source.user == PLAYER ? piece.user = ENGINE : piece.user = PLAYER;
+		Sqr::getSquare(piece.x, piece.y).piece = piece;
+	}
 
+	void execute(Piece& source, Square target)
+	{
 		// castling
 		if(source.type == KING)
 		{
@@ -21,19 +28,21 @@ namespace Move
 				// move rook to correct place
 				if(source.user == PLAYER)
 				{
-					Pieces::get(24).x = source.x + 1;
-					piece.x = 0;
-					piece.y = 7;
+					// empty space for old rook
+					emptyPiece(source, 0, 7);
+					
+					// empty piece for old king
+					emptyPiece(source, 4, 7);
 
-					// update rook empty place
-					Sqr::getSquare(piece.x, piece.y).piece = piece;
-					// update new rook
+					// update rook's position
+					Pieces::get(24).x = source.x + 1;
+
+					// update rook
 					Sqr::getSquare(Pieces::get(24).x, Pieces::get(24).y).piece = Pieces::get(24);
+
+					// update king
 					Sqr::getSquare(source.x, source.y).piece = source;
-				}
-				else
-				{
-					// king side castle
+
 				}
 				
 			}
@@ -56,19 +65,19 @@ namespace Move
 			}
 		}
 
-		// get square of source
-		Square srcSquare = Sqr::getSquare(source.x, source.y);
+		// REGULAR MOVE
 
-		piece.x = srcSquare.x;
-		piece.y = srcSquare.y;
-	
+		// create empty piece for source's place
+		Square srcSquare = Sqr::getSquare(source.x, source.y);
+		emptyPiece(source, srcSquare.x, srcSquare.y);
+
 		// change source values (updating graphics)
 		source.x = target.x;
 		source.y = target.y;
 
-		// updating squares
-		Sqr::getSquare(srcSquare.x, srcSquare.y).piece = piece;
+		// update move's piece
 		Sqr::getSquare(target.x, target.y).piece = source;
 	}
+
 }
 
