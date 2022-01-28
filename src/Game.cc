@@ -1,4 +1,5 @@
 #include "Game.hh"
+#include "Pieces.hh"
 
 Game::Game()
 {
@@ -38,7 +39,7 @@ void Game::updateGame()
 // according to valgrind in this function there is uninitialized value, check it out!
 void Game::eventHandler()
 {
-	while(SDL_PollEvent(&e))
+	while(SDL_PollEvent(&e)) 
 	{
 		window->resize(e);
 
@@ -59,17 +60,22 @@ void Game::eventHandler()
             selectedSquare = GUI::onSelect(mousePos);
 
 			// render possible moves
-			if(selectedSquare->piece.user == PLAYER || Settings::showEnemyLegalMoves)
+			for(int i = 0; i < 32; i++)
 			{
-            	isSquareSelected = true;
-			}
+				if(Pieces::get(i).x == selectedSquare->piece.x && Pieces::get(i).y == selectedSquare->piece.y)
+				{
+					if(Pieces::get(i).user == PLAYER || Settings::showEnemyLegalMoves)
+            			isSquareSelected = true;
 
-			// only allowed for player
-			if(selectedSquare->piece.user == PLAYER)
-			{
-                originalSquare = selectedSquare;
-                isPieceSelected = true;
-            }
+					if(Pieces::get(i).user == PLAYER)
+					{
+						originalSquare = selectedSquare;
+						isPieceSelected = true;
+					}
+				}
+	 
+			}
+			
         }
 	}
 }

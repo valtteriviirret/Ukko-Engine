@@ -34,7 +34,7 @@ class Game
 		PieceFactory* pieces = nullptr;
 		Window* window = nullptr;
 		SDL_Event e;
-        SDL_Point mousePos;
+        SDL_Point mousePos = { 0, 0 };
         Square* selectedSquare = nullptr;
         Square* originalSquare = nullptr;
         bool isSquareSelected = false;
