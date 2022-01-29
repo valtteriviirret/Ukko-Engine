@@ -171,13 +171,27 @@ namespace LegalMove
 					if(!(i == 0 && j == 0))
 						xyFindFunc(piece, i, j);
 
-			// if(all of the reasons you can't castle)
+			if(piece.user == PLAYER)
+			{
+				if(!playerKingMoved)
+				{
+					if(!playerKsideRookMoved)
+						Castling(piece, true);
+					if(!playerQsideRookMoved)
+						Castling(piece, false);
+				}
+			}
 
-			// king side castle
-			Castling(piece, true);
-
-			// queen side castle
-			Castling(piece, false);
+			if(piece.user == ENGINE)
+			{
+				if(!engineKingMoved)
+				{
+					if(!engineKsideRookMoved)
+						Castling(piece, true);
+					if(!engineQsideRookMoved)
+						Castling(piece, false);
+				}
+			}
 			
 			break;
 			case BISHOP:

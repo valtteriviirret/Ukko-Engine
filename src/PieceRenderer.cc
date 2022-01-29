@@ -11,9 +11,10 @@ void PieceRenderer::init(PieceFactory* factory)
 
 void PieceRenderer::renderInPosition(Piece piece)
 {
+	// this is no longer needed I think
 	if(piece.alive)
 	{
-		int n;
+		int n = -1;
 
 		// corresponding value from PieceFactory
 		switch(piece.type)
@@ -28,7 +29,8 @@ void PieceRenderer::renderInPosition(Piece piece)
 		}
 		
 		// render the piece
-		SDL_RenderCopy(Renderer::get(), _factory->getPiece(n), nullptr, &Sqr::getSquare(piece.x, piece.y).rect);
+		if(n != -1)
+			SDL_RenderCopy(Renderer::get(), _factory->getPiece(n), nullptr, &Sqr::getSquare(piece.x, piece.y).rect);
 	}
 }
 

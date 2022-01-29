@@ -99,7 +99,10 @@ namespace Move
 			{
 				if(Pieces::get(i).x == target.x && Pieces::get(i).y == target.y)
 				{
-					Pieces::get(i).alive = false;
+					// destroy the old piece
+					Piece newPiece;
+					newPiece.type = NONE;
+					Pieces::get(i) = newPiece;
 				}
 			}
 		}
@@ -114,8 +117,8 @@ namespace Move
 		source.x = target.x;
 		source.y = target.y;
 
-		// update move's piece
-		Sqr::getSquare(target.x, target.y).piece = source;
+		// update moved pieces place
+		Sqr::getSquare(source.x, source.y).piece = source;
 	}
 
 }
