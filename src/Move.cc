@@ -1,8 +1,15 @@
 #include "Move.hh"
-#include "SquareManager.hh"
 
 namespace Move
 {
+	// algebraic notation of the move
+	std::string name;
+
+	// parts of the notation
+	std::string nameSource;
+	std::string nameX;
+	std::string nameY;
+
 	// create new empty piece
 	void emptyPiece(int x, int y)
 	{
@@ -48,8 +55,48 @@ namespace Move
 		Sqr::getSquare(source.x, source.y).piece = source;
 	}
 
+	void readName() { std::cout << name << "\n"; }
+	std::string getName() { return name; }
+
 	void execute(Piece& source, Square target)
 	{
+		name = "";
+
+		switch(source.type)
+		{
+			case PAWN: break;
+			case NONE: break;
+			case ROOK: nameSource = "R"; break;
+			case KING: nameSource = "K"; break;
+			case QUEEN: nameSource = "Q"; break;
+			case KNIGHT: nameSource = "N"; break;
+			case BISHOP: nameSource = "B"; break;
+		}
+
+		switch(target.x)
+		{
+			case 0: nameX = "a"; break;	
+			case 1: nameX = "b"; break;
+			case 2: nameX = "c"; break;
+			case 3: nameX = "d"; break;
+			case 4: nameX = "e"; break;
+			case 5: nameX = "f"; break;
+			case 6: nameX = "g"; break;
+			case 7: nameX = "h"; break;
+		}
+
+		switch(target.y)
+		{
+			case 0: nameY = "8"; break;
+			case 1: nameY = "7"; break;
+			case 2: nameY = "6"; break;
+			case 3: nameY = "5"; break;
+			case 4: nameY = "4"; break;
+			case 5: nameY = "3"; break;
+			case 6: nameY = "2"; break;
+			case 7: nameY = "1"; break;
+		}
+
 		if(target.piece.type == 5)
 		{
 			std::cout << "Check!\n";
@@ -84,8 +131,8 @@ namespace Move
 
 			}
 		}
-
-		// if rook is moved
+	
+		// if rook is moved, has to do with castling
 		if(source.type == ROOK)
 		{
 			if(source.user == PLAYER)
@@ -103,6 +150,23 @@ namespace Move
 				if(source.x == 7)
 					Global::engineKsideRookMoved = true;
 
+			}
+		}
+		
+		// pawn promotion
+		if(source.type == PAWN)
+		{
+			if(source.user == PLAYER)
+			{
+				// last row
+				if(target.y == 0)
+					std::cout << "PLAYER PAWN GETS PROMOTED IN " << nameX << nameY << "\n";
+			}
+			// source.user == ENGINE
+			else
+			{
+				if(target.y == 7)
+					std::cout << "PAWN GETS PROMOTED IN " << nameX << nameY << "\n";
 			}
 		}
 
@@ -135,6 +199,12 @@ namespace Move
 
 		// update moved pieces place
 		Sqr::getSquare(source.x, source.y).piece = source;
+
+		// make the notation
+		name = nameSource + nameX + nameY;
+
+		// read info of the move in console
+		readName();
 	}
 
 }

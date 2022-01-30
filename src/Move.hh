@@ -7,6 +7,7 @@
 #include "SquareManager.hh"
 #include "Global.hh"
 #include <iostream>
+#include <string>
 
 namespace Move
 {
