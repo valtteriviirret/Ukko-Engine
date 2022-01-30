@@ -1,4 +1,5 @@
 #include "Move.hh"
+#include "SquareManager.hh"
 
 namespace Move
 {
@@ -12,10 +13,39 @@ namespace Move
 		Sqr::getSquare(piece.x, piece.y).piece = piece;
 	}
 
-	// make castling in function later
-	void castlingFunc()
+	void castlingFunc(Piece& source, Piece& rook, bool player, bool queenSide)
 	{
+		int y;
 
+		// make king's square empty
+		if(player)
+		{
+			emptyPiece(4, 7);
+			y = 7;
+		}
+		else
+		{
+			emptyPiece(4, 0);
+			y = 0;
+		}
+		
+		// make rook's square empty and move pieces
+		if(queenSide)
+		{
+			emptyPiece(0, y);
+			source.x -= 2;
+			rook.x += 3;
+		}
+		else
+		{
+			emptyPiece(7, y);
+			source.x += 2;
+			rook.x -= 2;
+		}
+
+		// update board
+		Sqr::getSquare(rook.x, rook.y).piece = rook;
+		Sqr::getSquare(source.x, source.y).piece = source;
 	}
 
 	void execute(Piece& source, Square target)
@@ -34,56 +64,23 @@ namespace Move
 
 				// queen side castle
 				if(source.x - 2 == target.x)
-				{
-					// empty space for old rook
-					emptyPiece(0, 7);
-					
-					// empty piece for old king
-					emptyPiece(4, 7);
-
-					// move king to correct place
-					source.x -= 2;
-
-					// move rook to correct place
-					Pieces::get(24).x += 3;
-
-					// update rook, if problems occurs they gotta be here
-					Sqr::getSquare(Pieces::get(24).x, Pieces::get(24).y).piece = Pieces::get(24);
-
-					// update king
-					Sqr::getSquare(source.x, source.y).piece = source;
-
-				}
+					castlingFunc(source, Pieces::get(24), true, true);
 
 				// king side castle
 				if(source.x + 2 == target.x)
-				{
-					// empty space for old rook
-					emptyPiece(7, 7);
-
-					// empty space for old king
-					emptyPiece(4, 7);
-
-					// move king to correct place
-					source.x += 2;
-
-					// move rook to correct place
-					Pieces::get(25).x -= 2;
-					
-					// update rook
-					Sqr::getSquare(Pieces::get(25).x, Pieces::get(25).y).piece = Pieces::get(25);
-
-					// update king
-					Sqr::getSquare(source.x, source.y).piece = source;
-
-				}
-
+					castlingFunc(source, Pieces::get(25), true, false);
 				
 			}
 
 			// (if source.user == ENGINE)
 			else
 			{
+				Global::engineKingMoved = true;
+
+				if(source.x - 2 == target.x)
+					castlingFunc(source, Pieces::get(8), false, true);
+				if(source.x + 2 == target.x)
+					castlingFunc(source, Pieces::get(9), false, false);
 
 			}
 		}
