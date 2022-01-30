@@ -160,13 +160,28 @@ namespace Move
 			{
 				// last row
 				if(target.y == 0)
-					std::cout << "PLAYER PAWN GETS PROMOTED IN " << nameX << nameY << "\n";
+				{
+					int choice;
+					std::cout 	<< "PLAYER PAWN GETS PROMOTED IN " << nameX << nameY << "\n"
+								<< "CHOOSE PIECE:\n1:QUEEN\n2:ROOK\n3:BISHOP\n4:KNIGHT\n";
+					std::cin >> choice;
+
+					switch(choice)
+					{
+						case 2: source.type = ROOK; break;
+						case 1: source.type = QUEEN; break;
+						case 3: source.type = BISHOP; break;
+						case 4: source.type = KNIGHT; break;
+					}
+				}
 			}
 			// source.user == ENGINE
 			else
 			{
 				if(target.y == 7)
-					std::cout << "PAWN GETS PROMOTED IN " << nameX << nameY << "\n";
+				{
+					source.type = QUEEN;
+				}
 			}
 		}
 
@@ -206,6 +221,5 @@ namespace Move
 		// read info of the move in console
 		readName();
 	}
-
 }
 
