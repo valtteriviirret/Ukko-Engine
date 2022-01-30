@@ -3,19 +3,23 @@
 
 #include "Piece.hh"
 
+// check these out!
 static bool staleMate = false;
 static bool playerTurn;
 static Piece p[32];
 
-// castling
-static bool playerKingMoved = false;
-static bool playerQsideRookMoved = false;
-static bool playerKsideRookMoved = false;
+class Global
+{
+	public:
+		// castling
+		static bool playerKingMoved;
+		static bool playerQsideRookMoved;
+		static bool playerKsideRookMoved;
 
-static bool engineKingMoved = false;
-static bool engineQsideRookMoved = false;
-static bool engineKsideRookMoved = false;
-
+		static bool engineKingMoved;
+		static bool engineQsideRookMoved;
+		static bool engineKsideRookMoved;
+};
 
 
 #endif

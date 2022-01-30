@@ -173,22 +173,22 @@ namespace LegalMove
 
 			if(piece.user == PLAYER)
 			{
-				if(!playerKingMoved)
+				if(!Global::playerKingMoved)
 				{
-					if(!playerKsideRookMoved)
+					if(!Global::playerKsideRookMoved)
 						Castling(piece, true);
-					if(!playerQsideRookMoved)
+					if(!Global::playerQsideRookMoved)
 						Castling(piece, false);
 				}
 			}
 
 			if(piece.user == ENGINE)
 			{
-				if(!engineKingMoved)
+				if(!Global::engineKingMoved)
 				{
-					if(!engineKsideRookMoved)
+					if(!Global::engineKsideRookMoved)
 						Castling(piece, true);
-					if(!engineQsideRookMoved)
+					if(!Global::engineQsideRookMoved)
 						Castling(piece, false);
 				}
 			}

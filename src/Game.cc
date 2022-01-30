@@ -1,5 +1,4 @@
 #include "Game.hh"
-#include "Pieces.hh"
 
 Game::Game()
 {
@@ -20,6 +19,7 @@ Game::Game()
 	
 	// white starts game
 	Settings::PlayerColor == WHITE ? playerTurn = true : playerTurn = false;
+
 }
 
 Game::~Game()

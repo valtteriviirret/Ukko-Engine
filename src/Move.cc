@@ -1,6 +1,4 @@
 #include "Move.hh"
-#include "Pieces.hh"
-#include "SquareManager.hh"
 
 namespace Move
 {
@@ -27,13 +25,12 @@ namespace Move
 			std::cout << "Check!\n";
 		}
 
-
 		// castling
 		if(source.type == KING)
 		{
 			if(source.user == PLAYER)
 			{
-				playerKingMoved = true;
+				Global::playerKingMoved = true;
 
 				// queen side castle
 				if(source.x - 2 == target.x)
@@ -97,17 +94,17 @@ namespace Move
 			if(source.user == PLAYER)
 			{
 				if(source.x == 0)
-					playerQsideRookMoved = true;
+					Global::playerQsideRookMoved = true;
 				if(source.x == 7)
-					playerKsideRookMoved = true;
+					Global::playerKsideRookMoved = true;
 			}
 
 			else
 			{
 				if(source.x == 0)
-					engineQsideRookMoved = true;
+					Global::engineQsideRookMoved = true;
 				if(source.x == 7)
-					engineKsideRookMoved = true;
+					Global::engineKsideRookMoved = true;
 
 			}
 		}
