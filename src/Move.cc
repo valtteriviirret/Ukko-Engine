@@ -1,4 +1,6 @@
 #include "Move.hh"
+#include "Pieces.hh"
+#include "SquareManager.hh"
 
 namespace Move
 {
@@ -12,6 +14,12 @@ namespace Move
 		Sqr::getSquare(piece.x, piece.y).piece = piece;
 	}
 
+	// make castling in function later
+	void castlingFunc()
+	{
+
+	}
+
 	void execute(Piece& source, Square target)
 	{
 		if(target.piece.type == 5)
@@ -23,14 +31,12 @@ namespace Move
 		// castling
 		if(source.type == KING)
 		{
-			// queen side castle
-			if(source.x - 2 == target.x)
+			if(source.user == PLAYER)
 			{
-				// move king to correct place
-				source.x -= 2;
+				playerKingMoved = true;
 
-				// move rook to correct place
-				if(source.user == PLAYER)
+				// queen side castle
+				if(source.x - 2 == target.x)
 				{
 					// empty space for old rook
 					emptyPiece(0, 7);
@@ -38,36 +44,50 @@ namespace Move
 					// empty piece for old king
 					emptyPiece(4, 7);
 
-					// update rook's position
-					Pieces::get(24).x = source.x + 1;
+					// move king to correct place
+					source.x -= 2;
 
-					// update rook
+					// move rook to correct place
+					Pieces::get(24).x += 3;
+
+					// update rook, if problems occurs they gotta be here
 					Sqr::getSquare(Pieces::get(24).x, Pieces::get(24).y).piece = Pieces::get(24);
 
 					// update king
 					Sqr::getSquare(source.x, source.y).piece = source;
 
 				}
-				// engine's queen side castle
-				else
+
+				// king side castle
+				if(source.x + 2 == target.x)
 				{
+					// empty space for old rook
+					emptyPiece(7, 7);
+
+					// empty space for old king
+					emptyPiece(4, 7);
+
+					// move king to correct place
+					source.x += 2;
+
+					// move rook to correct place
+					Pieces::get(25).x -= 2;
+					
+					// update rook
+					Sqr::getSquare(Pieces::get(25).x, Pieces::get(25).y).piece = Pieces::get(25);
+
+					// update king
+					Sqr::getSquare(source.x, source.y).piece = source;
 
 				}
+
 				
 			}
 
-			// king side castle, hmm why not work
-			if(source.x + 2 == target.x)
+			// (if source.user == ENGINE)
+			else
 			{
-				std::cout << "king side castle";
-				if(source.user == PLAYER)
-				{
-					std::cout << "this should print as well";
-				}
-				else
-				{
 
-				}
 			}
 		}
 
@@ -92,7 +112,9 @@ namespace Move
 			}
 		}
 
-		// if moving to enemy's square, something wrong here!
+		// if moving to enemy's square, if problems were to occur in the future its prolly here
+		//
+		// also this if must change later
 		if(target.piece.type != 6 && target.piece.type != 5)
 		{
 			for(int i = 0; i < 32; i++)
@@ -113,7 +135,7 @@ namespace Move
 		Square srcSquare = Sqr::getSquare(source.x, source.y);
 		emptyPiece(srcSquare.x, srcSquare.y);
 
-		// change source values (updating graphics)
+		// change source values to target
 		source.x = target.x;
 		source.y = target.y;
 

@@ -63,17 +63,17 @@ namespace LegalMove
 		// max distance
 		for(int i = 1; i < 5; i++)
 		{
+			// king side castle is smaller
+			if(dir && i == 4)
+				break;
+
 			Square* s = Sqr::squareHelper(p.x + i * n, p.y);
 			
 			// if not on board, this should never happen
 			if(s != nullptr)
 			{
-				// king side castle is smaller
-				if(dir && i == 4)
-					break;
-
 				// empty square
-				else if(s->piece.type == NONE)
+				if(s->piece.type == NONE)
 					continue;
 				
 				// something in the middle, cant castle
