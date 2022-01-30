@@ -97,11 +97,6 @@ namespace Move
 			case 7: nameY = "1"; break;
 		}
 
-		if(target.piece.type == 5)
-		{
-			std::cout << "Check!\n";
-		}
-
 		// castling
 		if(source.type == KING)
 		{

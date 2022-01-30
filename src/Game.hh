@@ -27,6 +27,7 @@ class Game
 		bool ApplicationShouldClose = false;
 		Engine engine;
 	private:
+		bool isCheck(bool player);
 		void render();
 		void update();
 		void eventHandler();

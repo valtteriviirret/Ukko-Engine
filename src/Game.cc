@@ -1,4 +1,5 @@
 #include "Game.hh"
+#include "LegalMoves.hh"
 
 Game::Game()
 {
@@ -84,6 +85,31 @@ void Game::eventHandler()
 	}
 }
 
+bool Game::isCheck(bool player)
+{
+	if(player)
+	{
+		for(int i = 0; i < 16; i++)
+		{
+			std::vector v = LegalMove::get(Pieces::get(i));
+			for(int j = 0; j < (int)v.size(); j++)
+				if(v.at(j).piece.type == 5)
+					return false;
+		}
+	}
+	else
+	{
+		for(int i = 16; i < 32; i++)
+		{
+			std::vector v = LegalMove::get(Pieces::get(i));
+			for(int j = 0; j < (int)v.size(); j++)
+				if(v.at(j).piece.type == 5)
+					return false;
+		}
+	}
+	return true;
+}
+
 
 void Game::update() 
 {
@@ -92,6 +118,11 @@ void Game::update()
 	{
 		if (playerTurn)
 		{
+			if(!isCheck(true))
+			{
+				std::cout << "Check\n!";
+			}
+
 			// if selected in eventhandler
 			if (isPieceSelected)
 			{
@@ -130,6 +161,10 @@ void Game::update()
 		}
 		if (!playerTurn)
 		{
+			if(!isCheck(false))
+			{
+				std::cout << "Check!\n";
+			}
 			engine.PlayMove();
 			playerTurn = true;
 		}
