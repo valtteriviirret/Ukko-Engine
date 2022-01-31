@@ -111,69 +111,59 @@ bool Game::isCheck(bool player)
 }
 
 
-void Game::update() 
+void Game::update()
 {
-	// I do not like this, need to rewrite this function
-	if(!staleMate)
+	if (playerTurn)
 	{
-		if (playerTurn)
+		if (!isCheck(true))
 		{
-			if(!isCheck(true))
-			{
-				std::cout << "Check\n!";
-			}
+			std::cout << "Check\n!";
+		}
 
-			// if selected in eventhandler
-			if (isPieceSelected)
-			{
-				// get legal moves
-				std::vector<Square> legalMoves = LegalMove::get(originalSquare->piece);
+		// if selected in eventhandler
+		if (isPieceSelected)
+		{
+			// get legal moves
+			std::vector<Square> legalMoves = LegalMove::get(originalSquare->piece);
 
-				// if selected new square
-				if (selectedSquare != originalSquare)
+			// if selected new square
+			if (selectedSquare != originalSquare)
+			{
+				for (int i = 0; i < (int) legalMoves.size(); i++)
 				{
-					for (int i = 0; i < (int) legalMoves.size(); i++)
+					// if new click is in legal moves
+					if (selectedSquare->x == legalMoves.at(i).x && selectedSquare->y == legalMoves.at(i).y)
 					{
-						// if new click is in legal moves
-						if (selectedSquare->x == legalMoves.at(i).x && selectedSquare->y == legalMoves.at(i).y)
+						// loop players pieces to find the correct one
+						for (int j = 16; j < 32; j++)
 						{
-							// loop players pieces to find the correct one
-							for (int j = 16; j < 32; j++)
+							// loop pieces and find correct one
+							if (originalSquare == &Sqr::getSquare(Pieces::get(j).x, Pieces::get(j).y))
 							{
-								// loop pieces and find correct one
-								if (originalSquare == &Sqr::getSquare(Pieces::get(j).x, Pieces::get(j).y))
-								{
-									// make the move
-									Move::execute(Pieces::get(j), legalMoves.at(i));
-									playerTurn = false;
-								}
+								// make the move
+								Move::execute(Pieces::get(j), legalMoves.at(i));
+								playerTurn = false;
 							}
 						}
+					}
 
-							// player selects wrong piece
-						else
-						{
-							isPieceSelected = false;
-						}
+						// player selects wrong piece
+					else
+					{
+						isPieceSelected = false;
 					}
 				}
 			}
 		}
-		if (!playerTurn)
-		{
-			if(!isCheck(false))
-			{
-				std::cout << "Check!\n";
-			}
-			engine.PlayMove();
-			playerTurn = true;
-		}
 	}
-	else
+	if (!playerTurn)
 	{
-		// really? Win by stalemate?
-		std::cout << "You win!\n";
-		ApplicationShouldClose = true;
+		if (!isCheck(false))
+		{
+			std::cout << "Check!\n";
+		}
+		engine.PlayMove();
+		playerTurn = true;
 	}
 }
 
