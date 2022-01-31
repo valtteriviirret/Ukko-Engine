@@ -14,14 +14,14 @@ void Engine::PlayMove()
 	// get moves for random num
 	std::vector<Square> v = LegalMove::get(Pieces::get(piece));
 
-	for(;;)
+	for (;;)
 	{
 		if (count == 15)
 		{
 			staleMate = true;
 			break;
 		}
-		if(!v.empty() && Pieces::get(piece).alive)
+		if (!v.empty() && Pieces::get(piece).alive)
 			break;
 		else
 		{
@@ -31,10 +31,14 @@ void Engine::PlayMove()
 		}
 	}
 
-	if(!staleMate)
+	if (!staleMate)
 	{
-		for (auto & i : v)
+		for (auto &i: v)
+		{
 			s = Sqr::getSquare(i.x, i.y);
+			if (Sqr::getSquare(i.x, i.y).piece.type != NONE && Sqr::getSquare(i.x, i.y).piece.user == PLAYER)
+				break;
+		}
 
 		Move::execute(Pieces::get(piece), s);
 	}
@@ -42,5 +46,5 @@ void Engine::PlayMove()
 
 int Engine::pickPiece()
 {
-	return rand() % 15;
+	return rand() % 16;
 }
