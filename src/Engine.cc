@@ -33,8 +33,8 @@ void Engine::PlayMove()
 
 	if(!staleMate)
 	{
-		for (int i = 0; i < v.size(); i++)
-			s = Sqr::getSquare(v[i].x, v[i].y);
+		for (auto & i : v)
+			s = Sqr::getSquare(i.x, i.y);
 
 		Move::execute(Pieces::get(piece), s);
 	}

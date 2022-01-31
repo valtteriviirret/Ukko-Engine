@@ -92,8 +92,8 @@ bool Game::isCheck(bool player)
 		for(int i = 0; i < 16; i++)
 		{
 			std::vector v = LegalMove::get(Pieces::get(i));
-			for(int j = 0; j < (int)v.size(); j++)
-				if(v.at(j).piece.type == 5)
+			for(auto & j : v)
+				if(j.piece.type == 5)
 					return false;
 		}
 	}
@@ -102,8 +102,8 @@ bool Game::isCheck(bool player)
 		for(int i = 16; i < 32; i++)
 		{
 			std::vector v = LegalMove::get(Pieces::get(i));
-			for(int j = 0; j < (int)v.size(); j++)
-				if(v.at(j).piece.type == 5)
+			for(auto & j : v)
+				if(j.piece.type == 5)
 					return false;
 		}
 	}
@@ -119,42 +119,7 @@ void Game::update()
 		{
 			std::cout << "Check\n!";
 		}
-
-		// if selected in eventhandler
-		if (isPieceSelected)
-		{
-			// get legal moves
-			std::vector<Square> legalMoves = LegalMove::get(originalSquare->piece);
-
-			// if selected new square
-			if (selectedSquare != originalSquare)
-			{
-				for (int i = 0; i < (int) legalMoves.size(); i++)
-				{
-					// if new click is in legal moves
-					if (selectedSquare->x == legalMoves.at(i).x && selectedSquare->y == legalMoves.at(i).y)
-					{
-						// loop players pieces to find the correct one
-						for (int j = 16; j < 32; j++)
-						{
-							// loop pieces and find correct one
-							if (originalSquare == &Sqr::getSquare(Pieces::get(j).x, Pieces::get(j).y))
-							{
-								// make the move
-								Move::execute(Pieces::get(j), legalMoves.at(i));
-								playerTurn = false;
-							}
-						}
-					}
-
-						// player selects wrong piece
-					else
-					{
-						isPieceSelected = false;
-					}
-				}
-			}
-		}
+		playMove();
 	}
 	if (!playerTurn)
 	{
@@ -170,53 +135,89 @@ void Game::update()
 // render pieces in their current positions
 void Game::render()
 {
-    // make gray background
-    Renderer::setColor(64, 64, 64);
-    Renderer::clear();
+	// make gray background
+	Renderer::setColor(64, 64, 64);
+	Renderer::clear();
 
-    // render board
-    board->render();
+	// render board
+	board->render();
 
 	// color the square where to mouse is
-   	for(int x = 0; x < 8; x++)
-    {
-        for(int y = 0; y < 8; y++)
-        {
-            if (GUI::onMouseRollOver(mousePos, Sqr::getSquare(x, y).rect))
+	for (int x = 0; x < 8; x++)
+	{
+		for (int y = 0; y < 8; y++)
+		{
+			if (GUI::onMouseRollOver(mousePos, Sqr::getSquare(x, y).rect))
 			{
-                Renderer::setColor(0, 255, 0);
-                Renderer::fillRect(Sqr::getSquare(x, y).rect);
-            }
-            if (isSquareSelected) 
+				Renderer::setColor(0, 255, 0);
+				Renderer::fillRect(Sqr::getSquare(x, y).rect);
+			}
+			if (isSquareSelected)
 			{
 				// selected square must be on board
-				if(selectedSquare != nullptr)
+				if (selectedSquare != nullptr)
 				{
 					// get legal moves of the piece in the square
 					std::vector<Square> v = LegalMove::get(selectedSquare->piece);
 
-                	Renderer::setColor(0, 0, 255);
-					
+					Renderer::setColor(0, 0, 255);
+
 					// color the selected square
-                	Renderer::fillRect(selectedSquare->rect);
+					Renderer::fillRect(selectedSquare->rect);
 
 					// color legal moves of the piece in the selected square
-                    Renderer::setColor(255, 0, 0 );
-					for(auto & i : v)
+					Renderer::setColor(255, 0, 0);
+					for (auto &i: v)
 					{
-                		Renderer::fillRect(i.rect);
+						Renderer::fillRect(i.rect);
 					}
 				}
-            }
-       }
-    }
+			}
+		}
+	}
 
 	// render pieces
-	for(int i = 0; i < 32; i++)
+	for (int i = 0; i < 32; i++)
 		PieceRenderer::renderInPosition(Pieces::get(i));
 
 	// main rendering
 	Renderer::render();
 }
 
+// Player's move logic:
+void Game::playMove()
+{
+	// if selected in eventHandler
+	if (isPieceSelected)
+	{
+		// get legal moves
+		std::vector<Square> legalMoves = LegalMove::get(originalSquare->piece);
 
+		// if selected new square
+		if (selectedSquare != originalSquare)
+		{
+			for (auto &legalMove: legalMoves)
+			{
+				// if new click is in legal moves
+				if (selectedSquare->x == legalMove.x && selectedSquare->y == legalMove.y)
+				{
+					// loop players pieces to find the correct one
+					for (int j = 16; j < 32; j++)
+					{
+						// loop pieces and find correct one
+						if (originalSquare == &Sqr::getSquare(Pieces::get(j).x, Pieces::get(j).y))
+						{
+							// make the move
+							Move::execute(Pieces::get(j), legalMove);
+							playerTurn = false;
+						}
+					}
+				}
+
+					// player selects wrong piece
+				else
+					isPieceSelected = false;
+			}
+		}
+	}
+}

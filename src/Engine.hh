@@ -14,7 +14,7 @@ class Engine
 public:
 	Engine();
 	~Engine();
-	void PlayMove();
+	static void PlayMove();
 private:
 	static int pickPiece();
 };
