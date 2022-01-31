@@ -1,5 +1,6 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
+#include "SDL2/SDL_ttf.h"
 #include "Game.hh"
 
 #define FPS 60
@@ -17,6 +18,11 @@ int main(int argc, char* argv[])
 	int imgFlags = IMG_INIT_PNG;
 	if(!(IMG_Init(imgFlags) &imgFlags))
 		std::cout << "SDL_image could not initialize! " << IMG_GetError() << "\n";
+
+	// initialize SDL_TTF
+	TTF_Init();
+	if(TTF_Init() < 0)
+		std::cout << "SDL_ttf could not initialize! " << TTF_GetError() << "\n";
 
 	// create new game
 	Game game;
@@ -36,6 +42,7 @@ int main(int argc, char* argv[])
 
 	// end the program
 	IMG_Quit();
+	TTF_Quit();
 	SDL_Quit();
 
     return 0;

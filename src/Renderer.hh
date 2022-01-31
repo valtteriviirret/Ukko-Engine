@@ -2,6 +2,7 @@
 #define RENDERER_HH
 
 #include <SDL2/SDL.h>
+#include <iostream>
 
 namespace Renderer
 {

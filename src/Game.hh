@@ -15,8 +15,8 @@
 #include "Move.hh"
 #include "Engine.hh"
 #include "Global.hh"
+#include "FontLoader.h"
 #include <vector>
-#include <SDL2/SDL.h>
 
 class Game
 {
@@ -25,7 +25,6 @@ class Game
 		~Game();
 		void updateGame();
 		bool ApplicationShouldClose = false;
-		Engine engine;
 	private:
 		static void updateBoard();
 		void playerPlayMove();
@@ -39,6 +38,7 @@ class Game
         SDL_Point mousePos = { 0, 0 };
         Square* selectedSquare = nullptr;
         Square* originalSquare = nullptr;
+		TTF_Font* consoleFont = nullptr;
         bool isSquareSelected = false;
         bool isPieceSelected = false;
 };

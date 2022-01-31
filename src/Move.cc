@@ -7,9 +7,8 @@ namespace Move
 
 	// parts of the notation
 	std::string nameSource;
-	std::string captures;
-	std::string nameX;
-	std::string nameY;
+	char nameX;
+	char nameY;
 	std::string promotion;
 
 	// create new empty piece
@@ -26,8 +25,6 @@ namespace Move
 	{
 		int y;
 		nameSource = "";
-		nameX = "";
-		nameY = "";
 
 		// make king's square empty
 		if(player)
@@ -69,44 +66,41 @@ namespace Move
 	{
 		name = "";
 		nameSource = "";
-		captures = "";
 		promotion = "";
-		nameX = "";
-		nameY = "";
 
 		switch(source.type)
 		{
-			case PAWN: break;
 			case NONE: break;
-			case ROOK: nameSource = "R"; break;
-			case KING: nameSource = "K"; break;
-			case QUEEN: nameSource = "Q"; break;
-			case KNIGHT: nameSource = "N"; break;
-			case BISHOP: nameSource = "B"; break;
+			case PAWN: nameSource = "Pawn"; break;
+			case ROOK: nameSource = "Rook"; break;
+			case KING: nameSource = "King"; break;
+			case QUEEN: nameSource = "Queen"; break;
+			case KNIGHT: nameSource = "Knight"; break;
+			case BISHOP: nameSource = "Bishop"; break;
 		}
 
 		switch(target.x)
 		{
-			case 0: nameX = "a"; break;	
-			case 1: nameX = "b"; break;
-			case 2: nameX = "c"; break;
-			case 3: nameX = "d"; break;
-			case 4: nameX = "e"; break;
-			case 5: nameX = "f"; break;
-			case 6: nameX = "g"; break;
-			case 7: nameX = "h"; break;
+			case 0: nameX = 'A'; break;
+			case 1: nameX = 'B'; break;
+			case 2: nameX = 'C'; break;
+			case 3: nameX = 'D'; break;
+			case 4: nameX = 'E'; break;
+			case 5: nameX = 'F'; break;
+			case 6: nameX = 'G'; break;
+			case 7: nameX = 'H'; break;
 		}
 
 		switch(target.y)
 		{
-			case 0: nameY = "8"; break;
-			case 1: nameY = "7"; break;
-			case 2: nameY = "6"; break;
-			case 3: nameY = "5"; break;
-			case 4: nameY = "4"; break;
-			case 5: nameY = "3"; break;
-			case 6: nameY = "2"; break;
-			case 7: nameY = "1"; break;
+			case 0: nameY = '8'; break;
+			case 1: nameY = '7'; break;
+			case 2: nameY = '6'; break;
+			case 3: nameY = '5'; break;
+			case 4: nameY = '4'; break;
+			case 5: nameY = '3'; break;
+			case 6: nameY = '2'; break;
+			case 7: nameY = '1'; break;
 		}
 
 
@@ -180,19 +174,19 @@ namespace Move
 					{
 						case 1: 
 						source.type = QUEEN; 
-						promotion = "Q";
+						promotion = 'Q';
 						break;
 						case 2: 
 						source.type = ROOK; 
-						promotion = "R";
+						promotion = 'R';
 						break;
 						case 3: 
 						source.type = BISHOP; 
-						promotion = "B";
+						promotion = 'B';
 						break;
 						case 4: 
 						source.type = KNIGHT; 
-						promotion = "N";
+						promotion = 'N';
 						break;
 					}
 				}
@@ -204,7 +198,7 @@ namespace Move
 				if(target.y == 7)
 				{
 					source.type = QUEEN;
-					promotion = "Q";
+					promotion = 'Q';
 				}
 			}
 		}
@@ -222,7 +216,6 @@ namespace Move
 					Piece newPiece;
 					newPiece.type = NONE;
 					Pieces::get(i) = newPiece;
-					captures = "x";
 				}
 			}
 		}
@@ -241,7 +234,7 @@ namespace Move
 		Sqr::getSquare(source.x, source.y).piece = source;
 
 		// make the notation
-		name = name + nameSource + captures + nameX + nameY + promotion;
+		name = name + nameSource + " to " + nameX + nameY + promotion;
 
 		// read info of the move in console
 		readName();

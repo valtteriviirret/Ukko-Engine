@@ -30,5 +30,18 @@ namespace Texture
 
 		return texture;
 	}
+
+	SDL_Texture* createTextureFromText(std::string text, TTF_Font* font, SDL_Color color)
+	{
+		SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), color);
+
+		//Create texture from surface pixels
+		SDL_Texture* texture = SDL_CreateTextureFromSurface(Renderer::get(), textSurface);
+
+		//Get rid of old surface
+		SDL_FreeSurface( textSurface);
+
+		return texture;
+	}
 }
 

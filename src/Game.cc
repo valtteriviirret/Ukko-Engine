@@ -20,10 +20,12 @@ Game::Game()
 	// white starts game
 	Settings::PlayerColor == WHITE ? playerTurn = true : playerTurn = false;
 
+	consoleFont = FontLoader::loadFont("Assets/Fonts/TYPEWR__.TTF", 12);
 }
 
 Game::~Game()
 {
+	TTF_CloseFont(consoleFont);
 	delete pieces;
 	delete board;
 	delete window;
@@ -39,48 +41,48 @@ void Game::updateGame()
 // according to valgrind in this function there is uninitialized value, check it out!
 void Game::eventHandler()
 {
-	while(SDL_PollEvent(&e)) 
+	while (SDL_PollEvent(&e))
 	{
 		window->resize(e);
 
 		// close application
-		if((e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) || e.type == SDL_QUIT)
+		if ((e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) || e.type == SDL_QUIT)
 			ApplicationShouldClose = true;
 
-		if(e.type == SDL_MOUSEMOTION)
-        {
-            // Get mouse position
-            SDL_GetMouseState(&mousePos.x, &mousePos.y);
-        }
+		if (e.type == SDL_MOUSEMOTION)
+		{
+			// Get mouse position
+			SDL_GetMouseState(&mousePos.x, &mousePos.y);
+		}
 
-        if(e.type == SDL_MOUSEBUTTONDOWN)
+		if (e.type == SDL_MOUSEBUTTONDOWN)
 		{
 			// get mouse position
-            SDL_GetMouseState(&mousePos.x, &mousePos.y);
-            selectedSquare = GUI::onSelect(mousePos);
+			SDL_GetMouseState(&mousePos.x, &mousePos.y);
+			selectedSquare = GUI::onSelect(mousePos);
 
 			// render possible moves
-			for(int i = 0; i < 32; i++)
+			for (int i = 0; i < 32; i++)
 			{
-				if(Pieces::get(i).x == selectedSquare->piece.x && Pieces::get(i).y == selectedSquare->piece.y)
+				if (Pieces::get(i).x == selectedSquare->piece.x && Pieces::get(i).y == selectedSquare->piece.y)
 				{
-					if(Pieces::get(i).user == PLAYER)
-            			isSquareSelected = true;
-					
-					// whats up with this
-					if(Pieces::get(i).user != PLAYER && Settings::showEnemyLegalMoves)
-            			isSquareSelected = true;
+					if (Pieces::get(i).user == PLAYER)
+						isSquareSelected = true;
 
-					if(Pieces::get(i).user == PLAYER)
+					// whats up with this
+					if (Pieces::get(i).user != PLAYER && Settings::showEnemyLegalMoves)
+						isSquareSelected = true;
+
+					if (Pieces::get(i).user == PLAYER)
 					{
 						originalSquare = selectedSquare;
 						isPieceSelected = true;
 					}
 				}
-	 
+
 			}
-			
-        }
+
+		}
 	}
 }
 

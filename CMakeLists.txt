@@ -4,7 +4,7 @@ project(UkkoShakki)
 set(CMAKE_CXX_STANDARD 17)
 find_package(SDL2 REQUIRED)
 
-include_directories(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS})
+include_directories(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS})
 add_executable(UkkoShakki 
 	src/main.cc 
 	src/Window.cc
@@ -40,5 +40,5 @@ add_executable(UkkoShakki
 	src/Engine.hh
 	src/Global.hh
 	src/Global.cc
-	)
-target_link_libraries(UkkoShakki ${SDL2_LIBRARIES} -lSDL2_image)
+        src/FontLoader.cpp src/FontLoader.h)
+target_link_libraries(UkkoShakki ${SDL2_LIBRARIES} -lSDL2_image -lSDL2_ttf)
