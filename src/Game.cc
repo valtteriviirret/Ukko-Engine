@@ -121,13 +121,15 @@ void Game::update()
 		}
 		playMove();
 	}
-	if (!playerTurn)
+	else
 	{
+		selectedSquare = nullptr;
+
 		if (!isCheck(false))
 		{
 			std::cout << "Check!\n";
 		}
-		engine.PlayMove();
+		Engine::PlayMove();
 		playerTurn = true;
 	}
 }

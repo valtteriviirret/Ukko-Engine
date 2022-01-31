@@ -14,7 +14,4 @@ Square *GUI::onSelect(SDL_Point &mousePos)
 		return &Sqr::getSquare(x, y);
 	else
 		return &Sqr::getSquare(7, y);
-
-	// Why did you do this?
-	// We cannot utilize the right side for anything in the future, this makes no sense to me.
 }
