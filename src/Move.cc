@@ -7,8 +7,10 @@ namespace Move
 
 	// parts of the notation
 	std::string nameSource;
+	std::string captures;
 	std::string nameX;
 	std::string nameY;
+	std::string promotion;
 
 	// create new empty piece
 	void emptyPiece(int x, int y)
@@ -23,6 +25,9 @@ namespace Move
 	void castlingFunc(Piece& source, Piece& rook, bool player, bool queenSide)
 	{
 		int y;
+		nameSource = "";
+		nameX = "";
+		nameY = "";
 
 		// make king's square empty
 		if(player)
@@ -42,12 +47,14 @@ namespace Move
 			emptyPiece(0, y);
 			source.x -= 2;
 			rook.x += 3;
+			name = "0-0-0";
 		}
 		else
 		{
 			emptyPiece(7, y);
 			source.x += 2;
 			rook.x -= 2;
+			name = "0-0";
 		}
 
 		// update board
@@ -61,6 +68,11 @@ namespace Move
 	void execute(Piece& source, Square target)
 	{
 		name = "";
+		nameSource = "";
+		captures = "";
+		promotion = "";
+		nameX = "";
+		nameY = "";
 
 		switch(source.type)
 		{
@@ -97,6 +109,8 @@ namespace Move
 			case 7: nameY = "1"; break;
 		}
 
+
+
 		// castling
 		if(source.type == KING)
 		{
@@ -121,6 +135,7 @@ namespace Move
 
 				if(source.x - 2 == target.x)
 					castlingFunc(source, Pieces::get(8), false, true);
+
 				if(source.x + 2 == target.x)
 					castlingFunc(source, Pieces::get(9), false, false);
 
@@ -163,19 +178,33 @@ namespace Move
 
 					switch(choice)
 					{
-						case 2: source.type = ROOK; break;
-						case 1: source.type = QUEEN; break;
-						case 3: source.type = BISHOP; break;
-						case 4: source.type = KNIGHT; break;
+						case 1: 
+						source.type = QUEEN; 
+						promotion = "Q";
+						break;
+						case 2: 
+						source.type = ROOK; 
+						promotion = "R";
+						break;
+						case 3: 
+						source.type = BISHOP; 
+						promotion = "B";
+						break;
+						case 4: 
+						source.type = KNIGHT; 
+						promotion = "N";
+						break;
 					}
 				}
 			}
 			// source.user == ENGINE
 			else
 			{
+				// engine always picks queen, at least for now
 				if(target.y == 7)
 				{
 					source.type = QUEEN;
+					promotion = "Q";
 				}
 			}
 		}
@@ -193,6 +222,7 @@ namespace Move
 					Piece newPiece;
 					newPiece.type = NONE;
 					Pieces::get(i) = newPiece;
+					captures = "x";
 				}
 			}
 		}
@@ -211,7 +241,7 @@ namespace Move
 		Sqr::getSquare(source.x, source.y).piece = source;
 
 		// make the notation
-		name = nameSource + nameX + nameY;
+		name = name + nameSource + captures + nameX + nameY + promotion;
 
 		// read info of the move in console
 		readName();
