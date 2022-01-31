@@ -28,7 +28,8 @@ class Game
 		Engine engine;
 	private:
 		static bool isCheck(bool player);
-		void playMove();
+		static void updateBoard();
+		void playerPlayMove();
 		void render();
 		void update();
 		void eventHandler();

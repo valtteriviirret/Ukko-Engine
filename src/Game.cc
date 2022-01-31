@@ -119,7 +119,7 @@ void Game::update()
 		{
 			std::cout << "Check\n!";
 		}
-		playMove();
+		playerPlayMove();
 	}
 	else
 	{
@@ -130,9 +130,11 @@ void Game::update()
 			std::cout << "Check!\n";
 		}
 		Engine::PlayMove();
+		updateBoard();
 		playerTurn = true;
 	}
 }
+
 
 // render pieces in their current positions
 void Game::render()
@@ -186,8 +188,9 @@ void Game::render()
 	Renderer::render();
 }
 
+
 // Player's move logic:
-void Game::playMove()
+void Game::playerPlayMove()
 {
 	// if selected in eventHandler
 	if (isPieceSelected)
@@ -211,6 +214,7 @@ void Game::playMove()
 						{
 							// make the move
 							Move::execute(Pieces::get(j), legalMove);
+							updateBoard();
 							playerTurn = false;
 						}
 					}
@@ -222,4 +226,10 @@ void Game::playMove()
 			}
 		}
 	}
+}
+
+
+void Game::updateBoard()
+{
+	// update board here
 }
