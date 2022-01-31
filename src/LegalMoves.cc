@@ -171,28 +171,12 @@ namespace LegalMove
 					if(!(i == 0 && j == 0))
 						xyFindFunc(piece, i, j);
 
-			if(piece.user == PLAYER)
-			{
-				if(!Global::playerKingMoved)
-				{
-					if(!Global::playerKsideRookMoved)
-						Castling(piece, true);
-					if(!Global::playerQsideRookMoved)
-						Castling(piece, false);
-				}
-			}
+			if(Global::playerCanCastleK)
+				Castling(piece, true);
 
-			if(piece.user == ENGINE)
-			{
-				if(!Global::engineKingMoved)
-				{
-					if(!Global::engineKsideRookMoved)
-						Castling(piece, true);
-					if(!Global::engineQsideRookMoved)
-						Castling(piece, false);
-				}
-			}
-			
+			if(Global::playerCanCastleQ)
+				Castling(piece, false);
+		
 			break;
 			case BISHOP:
 

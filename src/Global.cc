@@ -7,5 +7,12 @@ bool Global::playerKsideRookMoved = false;
 bool Global::engineQsideRookMoved = false;
 bool Global::engineKsideRookMoved = false;
 
+bool Global::playerCanCastleK = false;
+bool Global::playerCanCastleQ = false;
+bool Global::engineCanCastleK = false;
+bool Global::engineCanCastleQ = false;
+
+bool Global::playerInCheck = false;
+bool Global::engineInCheck = false;
 
 

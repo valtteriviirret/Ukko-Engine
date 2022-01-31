@@ -1,5 +1,4 @@
 #include "Game.hh"
-#include "LegalMoves.hh"
 
 Game::Game()
 {
@@ -85,50 +84,17 @@ void Game::eventHandler()
 	}
 }
 
-bool Game::isCheck(bool player)
-{
-	if(player)
-	{
-		for(int i = 0; i < 16; i++)
-		{
-			std::vector v = LegalMove::get(Pieces::get(i));
-			for(auto & j : v)
-				if(j.piece.type == 5)
-					return false;
-		}
-	}
-	else
-	{
-		for(int i = 16; i < 32; i++)
-		{
-			std::vector v = LegalMove::get(Pieces::get(i));
-			for(auto & j : v)
-				if(j.piece.type == 5)
-					return false;
-		}
-	}
-	return true;
-}
-
-
 void Game::update()
 {
 	if (playerTurn)
 	{
-		if (!isCheck(true))
-		{
-			std::cout << "Check\n!";
-		}
 		playerPlayMove();
+		updateBoard();
 	}
 	else
 	{
 		selectedSquare = nullptr;
 
-		if (!isCheck(false))
-		{
-			std::cout << "Check!\n";
-		}
 		Engine::PlayMove();
 		updateBoard();
 		playerTurn = true;
@@ -231,5 +197,55 @@ void Game::playerPlayMove()
 
 void Game::updateBoard()
 {
-	// update board here
+	for(int i = 0; i < 16; i++)
+	{
+		std::vector v = LegalMove::get(Pieces::get(i));
+
+		for(int j = 0; j < (int)v.size(); j++)
+		{
+			// see checks
+			Global::playerInCheck = true;
+			if(Pieces::get(j).type == 5)
+				Global::playerInCheck = false;
+
+			Global::playerCanCastleK = true;
+			Global::playerCanCastleQ = true;
+
+			// possibility to castle
+			if(!Global::playerKingMoved)
+			{
+				if(!Global::playerKsideRookMoved)
+				{
+					if((v.at(j).x == 5 && v.at(j).y == 7) || (v.at(j).x == 6 && v.at(j).y == 7))
+						Global::playerCanCastleK = false;
+				}
+				else
+					Global::playerCanCastleK = false;
+				
+				if(!Global::playerQsideRookMoved)
+				{
+					if((v.at(j).x == 1 && v.at(j).y == 7) || (v.at(j).x == 2 && v.at(j).y == 7))
+						Global::playerCanCastleQ = false;
+				}
+				else
+					Global::playerCanCastleQ = false;
+			}
+			else
+			{
+				Global::playerCanCastleQ = false;
+				Global::playerCanCastleK = false;
+			}
+		}
+	}
+	for(int i = 16; i < 32; i++)
+	{
+		std::vector v = LegalMove::get(Pieces::get(i));
+		for(int j = 0; j < (int)v.size(); j++)
+		{
+			// see checks
+			Global::engineInCheck = false;
+			if(Pieces::get(j).type == 5)
+				Global::engineInCheck = true;
+		}
+	}
 }

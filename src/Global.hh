@@ -19,6 +19,15 @@ class Global
 		static bool engineKingMoved;
 		static bool engineQsideRookMoved;
 		static bool engineKsideRookMoved;
+
+		static bool playerCanCastleK;
+		static bool playerCanCastleQ;
+		static bool engineCanCastleK;
+		static bool engineCanCastleQ;
+
+		// check
+		static bool playerInCheck;
+		static bool engineInCheck;
 };
 
 
