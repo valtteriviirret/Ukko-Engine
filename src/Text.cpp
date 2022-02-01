@@ -34,5 +34,6 @@ void Text::setText()
 
 void Text::render()
 {
+	position.x = Screen::getWidth() - 150;
 	SDL_RenderCopy(Renderer::get(), textTexture, nullptr, &position);
 }
