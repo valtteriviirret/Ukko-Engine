@@ -15,7 +15,11 @@ namespace GameManager
 			{
 				// see checks
 				if(v.at(j).piece.type == 5)
+				{
 					Global::playerInCheck = true;
+					Global::playerCanCastleQ = false;
+					Global::playerCanCastleK = false;
+				}
 
 				// possibility to castle
 				if(!Global::playerKingMoved)
@@ -54,7 +58,11 @@ namespace GameManager
 			{
 				// see checks
 				if(v.at(j).piece.type == 5)
+				{
 					Global::engineInCheck = true;
+					Global::engineCanCastleK = false;
+					Global::engineCanCastleQ = false;
+				}
 
 				// possibility to castle
 				if(!Global::engineKingMoved)
