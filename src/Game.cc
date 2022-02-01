@@ -20,10 +20,6 @@ Game::Game()
 	// white starts game
 	Settings::PlayerColor == WHITE ? playerTurn = true : playerTurn = false;
 
-	for (int i = 0; i < 40; i++)
-	{
-		console[i] = nullptr;
-	}
 }
 
 Game::~Game()
