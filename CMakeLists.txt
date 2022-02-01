@@ -44,6 +44,8 @@ add_executable(UkkoShakki
 	src/FontLoader.hh
 	src/Text.cc
 	src/Text.hh
+	src/GameManager.cc
+	src/GameManager.hh
 	)
 
 target_link_libraries(UkkoShakki ${SDL2_LIBRARIES} -lSDL2_image -lSDL2_ttf)

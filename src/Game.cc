@@ -1,4 +1,5 @@
 #include "Game.hh"
+#include "GameManager.hh"
 
 Game::Game()
 {
@@ -89,7 +90,11 @@ void Game::update()
 	if (playerTurn)
 	{
 		playerPlayMove();
-		updateBoard();
+
+		if(Global::playerInCheck)
+			std::cout << "Player in check!\n";
+	
+
 	}
 	else
 	{
@@ -99,8 +104,15 @@ void Game::update()
 
 		for (int i = 0; i < consoleIndex; i++)
 			console[i]->position.y -= 18;
+		
+		GameManager::update();
 
-		updateBoard();
+		if(Global::engineInCheck)
+			std::cout << "engine in check\n";
+
+
+
+
 		playerTurn = true;
 	}
 }
@@ -200,7 +212,7 @@ void Game::playerPlayMove()
 							for (int i = 0; i < consoleIndex; i++)
 								console[i]->position.y -= 18;
 
-							updateBoard();
+							GameManager::update();
 							playerTurn = false;
 						}
 					}
@@ -214,7 +226,7 @@ void Game::playerPlayMove()
 	}
 }
 
-
+/*
 void Game::updateBoard()
 {
 	for(int i = 0; i < 16; i++)
@@ -224,9 +236,10 @@ void Game::updateBoard()
 		for(int j = 0; j < (int)v.size(); j++)
 		{
 			// see checks
-			Global::playerInCheck = true;
-			if(Pieces::get(j).type == 5)
-				Global::playerInCheck = false;
+			Global::playerInCheck = false;
+
+			if(v.at(j).piece.type == 5)
+				Global::playerInCheck = true;
 
 			Global::playerCanCastleK = true;
 			Global::playerCanCastleQ = true;
@@ -264,8 +277,9 @@ void Game::updateBoard()
 		{
 			// see checks
 			Global::engineInCheck = false;
-			if(Pieces::get(j).type == 5)
+			if(v.at(j).piece.type == 5)
 				Global::engineInCheck = true;
 		}
 	}
 }
+	*/
