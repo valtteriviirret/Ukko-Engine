@@ -27,7 +27,6 @@ class Game
 		void updateGame();
 		bool ApplicationShouldClose = false;
 	private:
-		static void updateBoard();
 		void playerPlayMove();
 		void render();
 		void update();
