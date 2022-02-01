@@ -40,5 +40,9 @@ add_executable(UkkoShakki
 	src/Engine.hh
 	src/Global.hh
 	src/Global.cc
-        src/FontLoader.cpp src/FontLoader.h src/Text.cpp src/Text.h)
+	src/FontLoader.cpp
+	src/FontLoader.h
+	src/Text.cpp
+	src/Text.h)
+
 target_link_libraries(UkkoShakki ${SDL2_LIBRARIES} -lSDL2_image -lSDL2_ttf)
