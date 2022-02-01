@@ -15,7 +15,7 @@
 #include "Move.hh"
 #include "Engine.hh"
 #include "Global.hh"
-#include "Text.h"
+#include "Text.hh"
 #include <vector>
 
 class Game

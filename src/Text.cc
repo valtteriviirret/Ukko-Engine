@@ -1,13 +1,13 @@
-#include "Text.h"
+#include "Text.hh"
 
 Text::Text(std::string _text, bool playerTurn)
 {
 	text = _text;
 	font = FontLoader::loadFont("Assets/Fonts/mytype.ttf", 18);
 	if (!playerTurn)
-		color = {0, 255, 255};
+		color = { 0, 255, 255, 255 };
 	else
-		color = {255, 255, 0};
+		color = { 255, 255, 0, 255 };
 
 	position.x = Screen::getWidth() - 150;
 	position.y = Screen::getHeight() - 25;

@@ -1,12 +1,12 @@
 #ifndef UKKOSHAKKI_TEXT_H
 #define UKKOSHAKKI_TEXT_H
 
-#include "iostream"
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_ttf.h"
+#include <iostream>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include "Renderer.hh"
 #include "ScreenSize.hh"
-#include "FontLoader.h"
+#include "FontLoader.hh"
 
 class Text
 {
