@@ -22,9 +22,7 @@ int main(int argc, char* argv[])
 	// initialize SDL_TTF
 	TTF_Init();
 
-	if(TTF_WasInit() == 1)
-		std::cout << "SDL_ttf initialized successfully." << "\n";
-	else
+	if(TTF_WasInit() != 1)
 		std::cout << "SDL_ttf could not initialize! " << TTF_GetError() << "\n";
 
 	// create new game
