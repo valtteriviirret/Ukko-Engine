@@ -24,7 +24,6 @@ Game::Game()
 
 Game::~Game()
 {
-	delete consoleText;
 	delete pieces;
 	delete board;
 	delete window;
