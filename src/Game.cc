@@ -19,6 +19,11 @@ Game::Game()
 	
 	// white starts game
 	Settings::PlayerColor == WHITE ? playerTurn = true : playerTurn = false;
+
+	for (int i = 0; i < 40; i++)
+	{
+		console[i] = nullptr;
+	}
 }
 
 Game::~Game()
@@ -86,6 +91,11 @@ void Game::eventHandler()
 
 void Game::update()
 {
+	if (consoleIndex == 999)
+	{
+		delete console[consoleIndex];
+		consoleIndex = 0;
+	}
 	if (playerTurn)
 	{
 		playerPlayMove();
@@ -94,9 +104,13 @@ void Game::update()
 	else
 	{
 		selectedSquare = nullptr;
-
 		Engine::PlayMove();
-		consoleText = new Text(Move::getName(), playerTurn);
+		console[consoleIndex] = new Text(Move::getName(), playerTurn);
+		consoleIndex++;
+
+		for (int i = 0; i < consoleIndex; i++)
+			console[i]->position.y -= 18;
+
 		updateBoard();
 		playerTurn = true;
 	}
@@ -151,8 +165,11 @@ void Game::render()
 	for (int i = 0; i < 32; i++)
 		PieceRenderer::renderInPosition(Pieces::get(i));
 
-	if(consoleText != nullptr)
-		consoleText->render();
+	for (int i = 0; i <= consoleIndex; i++)
+	{
+		if (console[i] != nullptr)
+			console[i]->render();
+	}
 
 	// main rendering
 	Renderer::render();
@@ -184,7 +201,12 @@ void Game::playerPlayMove()
 						{
 							// make the move
 							Move::execute(Pieces::get(j), legalMove);
-							consoleText = new Text(Move::getName(), playerTurn);
+							console[consoleIndex] = new Text(Move::getName(), playerTurn);
+							consoleIndex++;
+
+							for (int i = 0; i < consoleIndex; i++)
+								console[i]->position.y -= 18;
+
 							updateBoard();
 							playerTurn = false;
 						}
