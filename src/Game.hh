@@ -38,7 +38,7 @@ class Game
         SDL_Point mousePos = { 0, 0 };
         Square* selectedSquare = nullptr;
         Square* originalSquare = nullptr;
-		Text* console[1000];
+		std::vector<Text*> console;
 		int consoleIndex = 0;
         bool isSquareSelected = false;
         bool isPieceSelected = false;

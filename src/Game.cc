@@ -20,7 +20,6 @@ Game::Game()
 	
 	// white starts game
 	Settings::PlayerColor == WHITE ? playerTurn = true : playerTurn = false;
-
 }
 
 Game::~Game()
@@ -80,7 +79,6 @@ void Game::eventHandler()
 				}
 
 			}
-
 		}
 	}
 }
@@ -99,10 +97,10 @@ void Game::update()
 	else
 	{
 		Engine::PlayMove();
-		console[consoleIndex] = new Text(Move::getName(), playerTurn);
+		console.push_back(new Text(Move::getName(), playerTurn));
 		consoleIndex++;
 
-		for (int i = 0; i < consoleIndex; i++)
+		for (int i = 0; i < console.size(); i++)
 			console[i]->position.y -= 18;
 		
 		GameManager::update();
@@ -126,7 +124,7 @@ void Game::render()
 	Renderer::clear();
 
 	// render console
-	for (int i = 0; i <= consoleIndex; i++)
+	for (int i = 0; i < console.size(); i++)
 	{
 		if (console[i] != nullptr)
 			console[i]->render();
@@ -206,7 +204,7 @@ void Game::playerPlayMove()
 						{
 							// make the move
 							Move::execute(Pieces::get(j), legalMove);
-							console[consoleIndex] = new Text(Move::getName(), playerTurn);
+							console.push_back(new Text(Move::getName(), playerTurn));
 							consoleIndex++;
 
 							for (int i = 0; i < consoleIndex; i++)
