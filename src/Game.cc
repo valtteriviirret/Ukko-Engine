@@ -86,11 +86,6 @@ void Game::eventHandler()
 
 void Game::update()
 {
-	if (consoleIndex == 999)
-	{
-		delete console[consoleIndex];
-		consoleIndex = 0;
-	}
 	if (playerTurn)
 	{
 		playerPlayMove();
@@ -118,6 +113,13 @@ void Game::render()
 	// make gray background
 	Renderer::setColor(64, 64, 64);
 	Renderer::clear();
+
+	// render console
+	for (int i = 0; i <= consoleIndex; i++)
+	{
+		if (console[i] != nullptr)
+			console[i]->render();
+	}
 
 	// render board
 	board->render();
@@ -159,12 +161,6 @@ void Game::render()
 	// render pieces
 	for (int i = 0; i < 32; i++)
 		PieceRenderer::renderInPosition(Pieces::get(i));
-
-	for (int i = 0; i <= consoleIndex; i++)
-	{
-		if (console[i] != nullptr)
-			console[i]->render();
-	}
 
 	// main rendering
 	Renderer::render();
