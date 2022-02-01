@@ -1,4 +1,5 @@
 #include "LegalMoves.hh"
+#include <iostream>
 
 namespace LegalMove
 {
@@ -131,6 +132,49 @@ namespace LegalMove
 					sqrs.push_back(*r);
 	}
 
+	// return moves that don't give check to enemy
+	std::vector<Square> getLegal(Piece piece, std::vector<Square> v)
+	{
+		// save pieces position
+		int px = piece.x;
+		int py = piece.y;
+
+		if(piece.user == PLAYER)
+		{
+			// loop all the possible moves
+			for(int i = 0; i < (int)v.size(); i++)
+			{
+				// set piece to corresponding place in map
+				Sqr::getSquare(piece.x, piece.y).x = v.at(i).piece.x;
+				Sqr::getSquare(piece.x, piece.y).y = v.at(i).piece.y;
+				
+				// loop all enemy pieces
+				for(int j = 0; j < 16; j++)
+				{
+					// get all legal moves for the piece
+					std::vector<Square> temp = LegalMove::get(Pieces::get(j));
+
+					// loop legal moves for the piece
+					for(int k = 0; k < (int)temp.size(); k++)
+					{
+						// king is in check
+						if(temp.at(k).piece.type == 5)
+						{
+							//v.erase(v.begin() + (i - 1));
+							std::cout << "king is threatened\n";
+						}
+					}
+				}
+
+				// set piece to its original place
+				Sqr::getSquare(piece.x, piece.y).x = px;
+				Sqr::getSquare(piece.x, piece.y).y = py;
+
+			}
+		}
+
+		return v;
+	}
 	
 	// get legal moves
 	std::vector<Square> get(Piece piece)
@@ -204,6 +248,6 @@ namespace LegalMove
 		}
 		
 		// return legal moves for the piece
-		return sqrs;
+		return getLegal(piece, sqrs);
 	}
 }

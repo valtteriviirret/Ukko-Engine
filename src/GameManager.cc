@@ -6,6 +6,7 @@ namespace GameManager
 	{
 		Global::playerCanCastleK = true;
 		Global::playerCanCastleQ = true;
+		Global::playerInCheck = false;
 
 		for(int i = 0; i < 16; i++)
 		{
@@ -50,6 +51,7 @@ namespace GameManager
 
 		Global::engineCanCastleK = true;
 		Global::engineCanCastleQ = true;
+		Global::engineInCheck = false;
 
 		for(int i = 16; i < 32; i++)
 		{

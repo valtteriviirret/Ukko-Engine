@@ -17,6 +17,7 @@
 #include "Global.hh"
 #include "Text.hh"
 #include "GameManager.hh"
+#include "GameFunctions.hh"
 #include <vector>
 
 class Game
