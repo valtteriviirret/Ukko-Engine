@@ -20,10 +20,12 @@ Game::Game()
 	// white starts game
 	Settings::PlayerColor == WHITE ? playerTurn = true : playerTurn = false;
 
+	text = new Text("Message", playerTurn);
 }
 
 Game::~Game()
 {
+	delete text;
 	delete pieces;
 	delete board;
 	delete window;

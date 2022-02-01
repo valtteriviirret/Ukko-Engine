@@ -1,11 +1,15 @@
 cmake_minimum_required(VERSION 3.21)
 project(UkkoShakki)
 
-set(CMAKE_CXX_STANDARD 17)
-find_package(SDL2 REQUIRED)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-include_directories(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS})
-add_executable(UkkoShakki 
+set(CMAKE_CXX_STANDARD 17)
+
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+find_package(SDL2_ttf REQUIRED)
+
+add_executable(UkkoShakki
 	src/main.cc 
 	src/Window.cc
 	src/Window.hh
@@ -45,4 +49,5 @@ add_executable(UkkoShakki
 	src/Text.cpp
 	src/Text.h)
 
-target_link_libraries(UkkoShakki ${SDL2_LIBRARIES} -lSDL2_image -lSDL2_ttf)
+
+target_link_libraries(UkkoShakki SDL2::Main SDL2::Image SDL2::TTF)
