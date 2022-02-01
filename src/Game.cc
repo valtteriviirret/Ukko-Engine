@@ -88,10 +88,8 @@ void Game::update()
 	{
 		playerPlayMove();
 
-		if(Global::playerInCheck)
-			std::cout << "Player in check!\n";
-	
-
+		//if(Global::playerInCheck)
+			//std::cout << "Player in check!\n";
 	}
 	else
 	{
@@ -150,9 +148,6 @@ void Game::render()
 					// get legal moves of the piece in the square
 					std::vector<Square> v = LegalMove::get(selectedSquare->piece);
 
-					// check move
-					//std::vector<Square> x = GameFunctions::moveCheck(v, selectedSquare->piece, true);
-
 					Renderer::setColor(0, 0, 255);
 
 					// color the selected square
@@ -160,10 +155,12 @@ void Game::render()
 
 					// color legal moves of the piece in the selected square
 					Renderer::setColor(255, 0, 0);
+					
 					for (auto &i: v)
 					{
 						Renderer::fillRect(i.rect);
 					}
+				
 				} else if (!playerTurn)
 				{
 					selectedSquare = nullptr;
@@ -189,6 +186,8 @@ void Game::playerPlayMove()
 	{
 		// get legal moves
 		std::vector<Square> legalMoves = LegalMove::get(originalSquare->piece);
+
+		isPieceSelected = false;
 
 		// if selected new square
 		if (selectedSquare != originalSquare)
