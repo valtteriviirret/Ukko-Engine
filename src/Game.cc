@@ -93,7 +93,6 @@ void Game::update()
 	}
 	else
 	{
-		selectedSquare = nullptr;
 		Engine::PlayMove();
 		console[consoleIndex] = new Text(Move::getName(), playerTurn);
 		consoleIndex++;
@@ -137,7 +136,7 @@ void Game::render()
 			if (isSquareSelected)
 			{
 				// selected square must be on board
-				if (selectedSquare != nullptr)
+				if (selectedSquare != nullptr && playerTurn)
 				{
 					// get legal moves of the piece in the square
 					std::vector<Square> v = LegalMove::get(selectedSquare->piece);
@@ -153,6 +152,9 @@ void Game::render()
 					{
 						Renderer::fillRect(i.rect);
 					}
+				} else if (!playerTurn)
+				{
+					selectedSquare = nullptr;
 				}
 			}
 		}
