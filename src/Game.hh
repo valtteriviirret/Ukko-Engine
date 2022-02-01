@@ -15,7 +15,7 @@
 #include "Move.hh"
 #include "Engine.hh"
 #include "Global.hh"
-#include "FontLoader.h"
+#include "Text.h"
 #include <vector>
 
 class Game
@@ -38,7 +38,7 @@ class Game
         SDL_Point mousePos = { 0, 0 };
         Square* selectedSquare = nullptr;
         Square* originalSquare = nullptr;
-		TTF_Font* consoleFont = nullptr;
+		Text* text = nullptr;
         bool isSquareSelected = false;
         bool isPieceSelected = false;
 };

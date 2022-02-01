@@ -2,11 +2,13 @@
 #define GLOBAL_HH
 
 #include "Piece.hh"
+#include "iostream"
 
 // check these out!
 static bool staleMate = false;
 static bool playerTurn;
 static Piece p[32];
+static std::string output;
 
 class Global
 {
