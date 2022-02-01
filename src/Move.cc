@@ -235,7 +235,6 @@ namespace Move
 
 		// make the notation
 		name = name + nameSource + " to " + nameX + nameY + promotion;
-		output = name;
 
 		// read info of the move in console
 		readName();

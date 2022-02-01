@@ -19,13 +19,11 @@ Game::Game()
 	
 	// white starts game
 	Settings::PlayerColor == WHITE ? playerTurn = true : playerTurn = false;
-
-	text = new Text("Message", playerTurn);
 }
 
 Game::~Game()
 {
-	delete text;
+	delete consoleText;
 	delete pieces;
 	delete board;
 	delete window;
@@ -98,6 +96,7 @@ void Game::update()
 		selectedSquare = nullptr;
 
 		Engine::PlayMove();
+		consoleText = new Text(Move::getName(), playerTurn);
 		updateBoard();
 		playerTurn = true;
 	}
@@ -152,6 +151,9 @@ void Game::render()
 	for (int i = 0; i < 32; i++)
 		PieceRenderer::renderInPosition(Pieces::get(i));
 
+	if(consoleText != nullptr)
+		consoleText->render();
+
 	// main rendering
 	Renderer::render();
 }
@@ -182,6 +184,7 @@ void Game::playerPlayMove()
 						{
 							// make the move
 							Move::execute(Pieces::get(j), legalMove);
+							consoleText = new Text(Move::getName(), playerTurn);
 							updateBoard();
 							playerTurn = false;
 						}

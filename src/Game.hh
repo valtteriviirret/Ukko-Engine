@@ -38,7 +38,7 @@ class Game
         SDL_Point mousePos = { 0, 0 };
         Square* selectedSquare = nullptr;
         Square* originalSquare = nullptr;
-		Text* text = nullptr;
+		Text* consoleText = nullptr;
         bool isSquareSelected = false;
         bool isPieceSelected = false;
 };

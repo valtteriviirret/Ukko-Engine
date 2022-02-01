@@ -12,6 +12,7 @@
 namespace Move
 {
 	void execute(Piece& source, Square target);
+	std::string getName();
 }
 
 #endif

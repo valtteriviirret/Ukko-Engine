@@ -3,14 +3,14 @@
 Text::Text(std::string _text, bool playerTurn)
 {
 	text = _text;
-	font = FontLoader::loadFont("Assets/Fonts/typewr.ttf", 12);
+	font = FontLoader::loadFont("Assets/Fonts/mytype.ttf", 18);
 	if (!playerTurn)
 		color = {0, 255, 255};
 	else
 		color = {255, 255, 0};
 
-	position.x = Screen::getWidth() - 200;
-	position.y = Screen::getHeight() - 50;
+	position.x = Screen::getWidth() - 150;
+	position.y = Screen::getHeight() - 25;
 
 	if (font != NULL)
 		setText();
