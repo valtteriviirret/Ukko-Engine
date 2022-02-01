@@ -150,9 +150,6 @@ void Game::render()
 	for (int i = 0; i < 32; i++)
 		PieceRenderer::renderInPosition(Pieces::get(i));
 
-	if (text != nullptr)
-		text->render();
-
 	// main rendering
 	Renderer::render();
 }

@@ -41,8 +41,8 @@ int main(int argc, char* argv[])
     }
 
 	// end the program
-	IMG_Quit();
 	TTF_Quit();
+	IMG_Quit();
 	SDL_Quit();
 
     return 0;

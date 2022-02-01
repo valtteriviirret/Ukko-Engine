@@ -3,7 +3,7 @@
 Text::Text(std::string _text, bool playerTurn)
 {
 	text = _text;
-	font = FontLoader::loadFont("Assets/Fonts/TYPEWR__.TTF", 12);
+	font = FontLoader::loadFont("Assets/Fonts/typewr.ttf", 12);
 	if (!playerTurn)
 		color = {0, 255, 255};
 	else
@@ -12,7 +12,10 @@ Text::Text(std::string _text, bool playerTurn)
 	position.x = Screen::getWidth() - 200;
 	position.y = Screen::getHeight() - 50;
 
-	setText();
+	if (font != NULL)
+		setText();
+	else
+		std::cout << "Error loading font! " << TTF_GetError << "\n";
 }
 
 Text::~Text()
