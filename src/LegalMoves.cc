@@ -137,7 +137,7 @@ namespace LegalMove
 	{
 		// clear vector to be sure
 		sqrs.clear();
-	
+
 		switch(piece.type)
 		{
 			case PAWN:
@@ -175,6 +175,12 @@ namespace LegalMove
 				Castling(piece, true);
 
 			if(Global::playerCanCastleQ)
+				Castling(piece, false);
+
+			if(Global::engineCanCastleK)
+				Castling(piece, true);
+
+			if(Global::engineCanCastleQ)
 				Castling(piece, false);
 		
 			break;

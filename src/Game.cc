@@ -1,5 +1,4 @@
 #include "Game.hh"
-#include "GameManager.hh"
 
 Game::Game()
 {
@@ -100,7 +99,7 @@ void Game::update()
 		console.push_back(new Text(Move::getName(), playerTurn));
 		consoleIndex++;
 
-		for (int i = 0; i < console.size(); i++)
+		for (int i = 0; i < (int)console.size(); i++)
 			console[i]->position.y -= 18;
 		
 		GameManager::update();
@@ -124,7 +123,7 @@ void Game::render()
 	Renderer::clear();
 
 	// render console
-	for (int i = 0; i < console.size(); i++)
+	for (int i = 0; i < (int)console.size(); i++)
 	{
 		if (console[i] != nullptr)
 			console[i]->render();
