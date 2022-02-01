@@ -1,8 +1,8 @@
 #include "Text.hh"
+#include "ScreenSize.hh"
 
-Text::Text(std::string _text, bool playerTurn)
+Text::Text(std::string _text, bool playerTurn) : text(_text)
 {
-	text = _text;
 	font = FontLoader::loadFont("Assets/Fonts/mytype.ttf", 18);
 	if (!playerTurn)
 		color = { 0, 255, 255, 255 };
@@ -12,7 +12,7 @@ Text::Text(std::string _text, bool playerTurn)
 	position.x = Screen::getWidth() - 150;
 	position.y = Screen::getHeight() - 25;
 
-	if (font != NULL)
+	if (font)
 		setText();
 	else
 		std::cout << "Error loading font! " << TTF_GetError << "\n";
@@ -34,6 +34,6 @@ void Text::setText()
 
 void Text::render()
 {
-	position.x = Screen::getWidth() - 150;
+	position.x = Screen::getWidth() - Screen::getWidth() / 5;
 	SDL_RenderCopy(Renderer::get(), textTexture, nullptr, &position);
 }
