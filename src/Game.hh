@@ -29,6 +29,7 @@ class Game
 	private:
 		void updateConsole();
 		void playerPlayMove();
+		void enginePlayMove();
 		void render();
 		void update();
 		void eventHandler();

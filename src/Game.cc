@@ -72,33 +72,10 @@ void Game::eventHandler()
 	}
 }
 
+// update turns
 void Game::update()
 {
-	if (playerTurn)
-	{
-		playerPlayMove();
-	}
-	else
-	{
-		Engine::PlayMove();
-		GameManager::update();
-		updateConsole();
-
-		if(Global::engineInCheck)
-			std::cout << "engine in check\n";
-
-		// players turn
-		playerTurn = true;
-	}
-}
-
-void Game::updateConsole()
-{
-	console.push_back(new Text(Move::getName(), playerTurn));
-	consoleIndex++;
-
-	for (auto & i : console)
-		i->position.y -= 18;
+	playerTurn ? playerPlayMove() : enginePlayMove();
 }
 
 // render pieces in their current positions
@@ -185,4 +162,28 @@ void Game::playerPlayMove()
 			}
 		}
 	}
+}
+
+// Engine's move:
+void Game::enginePlayMove()
+{
+	Engine::PlayMove();
+	GameManager::update();
+	updateConsole();
+
+	if(Global::engineInCheck)
+		std::cout << "engine in check\n";
+
+	// players turn
+	playerTurn = true;
+}
+
+// update console output
+void Game::updateConsole()
+{
+	console.push_back(new Text(Move::getName(), playerTurn));
+	consoleIndex++;
+
+	for (auto & i : console)
+		i->position.y -= 18;
 }
