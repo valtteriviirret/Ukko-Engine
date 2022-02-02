@@ -93,8 +93,8 @@ void Game::update()
 	}
 	else
 	{
+		Engine::PlayMove();
 
-		
 		GameManager::update();
 
 		updateConsole();
@@ -131,45 +131,35 @@ void Game::render()
 	// render board
 	board->render();
 
-	// color the square where to mouse is
-	for (int x = 0; x < 8; x++)
+	for(int i = 0; i < 8; i++)
 	{
-		for (int y = 0; y < 8; y++)
+		for(int j = 0; j < 8; j++)
 		{
-			if (GUI::onMouseRollOver(mousePos, Sqr::getSquare(x, y).rect))
+			// color the square where the mouse is
+			if (GUI::onMouseRollOver(mousePos, Sqr::getSquare(i, j).rect))
 			{
 				Renderer::setColor(0, 255, 0);
-				Renderer::fillRect(Sqr::getSquare(x, y).rect);
-			}
-			if (isSquareSelected)
-			{
-				// selected square must be on board
-				if (selectedSquare && playerTurn)
-				{
-					// get legal moves of the piece in the square
-					std::vector<Square> v = LegalMove::get(selectedSquare->piece);
-
-					Renderer::setColor(0, 0, 255);
-
-					// color the selected square
-					Renderer::fillRect(selectedSquare->rect);
-
-					// color legal moves of the piece in the selected square
-					Renderer::setColor(255, 0, 0);
-					
-					for (auto &i: v)
-					{
-						Renderer::fillRect(i.rect);
-					}
-				
-				} else if (!playerTurn)
-				{
-					selectedSquare = nullptr;
-				}
+				Renderer::fillRect(Sqr::getSquare(i, j).rect);
 			}
 		}
 	}
 
+	for(int i = 0; i < (int)legalMoves.size(); i++)
+	{
+		if(selectedSquare && playerTurn)
+		{
+			// color legal moves
+			Renderer::setColor(255, 0, 0);
+			Renderer::fillRect(legalMoves.at(i).rect);
+
+			// color selected square
+			Renderer::setColor(0, 0, 255);
+			Renderer::fillRect(selectedSquare->rect);
+		}
+		else
+			selectedSquare = nullptr;
+	}
+	
 	// render pieces
 	for (int i = 0; i < 32; i++)
 		PieceRenderer::renderInPosition(Pieces::get(i));
@@ -185,7 +175,9 @@ void Game::playerPlayMove()
 	// if selected in eventHandler
 	if (isPieceSelected)
 	{
+		// get the legal moves
 		legalMoves = LegalMove::get(originalSquare->piece);
+
 		// if selected new square
 		if (selectedSquare != originalSquare)
 		{
@@ -207,14 +199,11 @@ void Game::playerPlayMove()
 							updateConsole();
 							GameManager::update();
 							playerTurn = false;
-
-							std::cout << "fdfd";
 						}
 					}
 				}
 				else
 					isPieceSelected = false;
-
 			}
 		}
 	}
