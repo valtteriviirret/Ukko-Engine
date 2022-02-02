@@ -58,25 +58,24 @@ void Game::eventHandler()
 			SDL_GetMouseState(&mousePos.x, &mousePos.y);
 			selectedSquare = GUI::onSelect(mousePos);
 
+			isSquareSelected = false;
+
 			// render possible moves
 			for (int i = 0; i < 32; i++)
 			{
 				if (Pieces::get(i).x == selectedSquare->piece.x && Pieces::get(i).y == selectedSquare->piece.y)
 				{
-					if (Pieces::get(i).user == PLAYER)
-						isSquareSelected = true;
-
-					// whats up with this
+					// show enemy legal moves
 					if (Pieces::get(i).user != PLAYER && Settings::showEnemyLegalMoves)
 						isSquareSelected = true;
 
 					if (Pieces::get(i).user == PLAYER)
 					{
 						originalSquare = selectedSquare;
-						isPieceSelected = true;
+						isSquareSelected = true; // rendering
+						isPieceSelected = true; // select enemy
 					}
 				}
-
 			}
 		}
 	}
@@ -90,26 +89,30 @@ void Game::update()
 
 		//if(Global::playerInCheck)
 			//std::cout << "Player in check!\n";
+			
 	}
 	else
 	{
-		Engine::PlayMove();
-		console.push_back(new Text(Move::getName(), playerTurn));
-		consoleIndex++;
 
-		for (int i = 0; i < (int)console.size(); i++)
-			console[i]->position.y -= 18;
 		
 		GameManager::update();
+
+		updateConsole();
 
 		if(Global::engineInCheck)
 			std::cout << "engine in check\n";
 
-
-
-
+		// players turn
 		playerTurn = true;
 	}
+}
+
+void Game::updateConsole()
+{
+	console.push_back(new Text(Move::getName(), playerTurn));
+	consoleIndex++;
+	for (int i = 0; i < (int)console.size(); i++)
+		console[i]->position.y -= 18;
 }
 
 
@@ -122,10 +125,8 @@ void Game::render()
 
 	// render console
 	for (int i = 0; i < (int)console.size(); i++)
-	{
-		if (console[i] != nullptr)
+		if (console[i])
 			console[i]->render();
-	}
 
 	// render board
 	board->render();
@@ -143,7 +144,7 @@ void Game::render()
 			if (isSquareSelected)
 			{
 				// selected square must be on board
-				if (selectedSquare != nullptr && playerTurn)
+				if (selectedSquare && playerTurn)
 				{
 					// get legal moves of the piece in the square
 					std::vector<Square> v = LegalMove::get(selectedSquare->piece);
@@ -184,14 +185,11 @@ void Game::playerPlayMove()
 	// if selected in eventHandler
 	if (isPieceSelected)
 	{
-		// get legal moves
-		std::vector<Square> legalMoves = LegalMove::get(originalSquare->piece);
-
-		isPieceSelected = false;
-
+		legalMoves = LegalMove::get(originalSquare->piece);
 		// if selected new square
 		if (selectedSquare != originalSquare)
 		{
+			// get legal moves
 			for (auto &legalMove: legalMoves)
 			{
 				// if new click is in legal moves
@@ -205,23 +203,21 @@ void Game::playerPlayMove()
 						{
 							// make the move
 							Move::execute(Pieces::get(j), legalMove);
-							console.push_back(new Text(Move::getName(), playerTurn));
-							consoleIndex++;
-
-							for (int i = 0; i < consoleIndex; i++)
-								console[i]->position.y -= 18;
-
+							
+							updateConsole();
 							GameManager::update();
 							playerTurn = false;
+
+							std::cout << "fdfd";
 						}
 					}
 				}
-
-					// player selects wrong piece
 				else
 					isPieceSelected = false;
+
 			}
 		}
 	}
 }
+
 

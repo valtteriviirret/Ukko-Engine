@@ -27,6 +27,7 @@ class Game
 		void updateGame();
 		bool ApplicationShouldClose = false;
 	private:
+		void updateConsole();
 		void playerPlayMove();
 		void render();
 		void update();
@@ -42,6 +43,7 @@ class Game
 		int consoleIndex = 0;
         bool isSquareSelected = false;
         bool isPieceSelected = false;
+		std::vector<Square> legalMoves;
 };
 
 #endif
