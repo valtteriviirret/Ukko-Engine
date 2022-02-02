@@ -135,18 +135,26 @@ namespace LegalMove
 	// return moves that don't give check to enemy
 	std::vector<Square> getLegal(Piece piece, std::vector<Square> v)
 	{
-		// save pieces position
-		int px = piece.x;
-		int py = piece.y;
+		Piece p;
+		p.type = piece.type;
+		p.user = PLAYER;
+
+		Piece none;
+		none.type = NONE;
+
+		int s = v.size();
 
 		if(piece.user == PLAYER)
 		{
 			// loop all the possible moves
-			for(int i = 0; i < (int)v.size(); i++)
+			for(int i = 0; i < s; i++)
 			{
-				// set piece to corresponding place in map
-				Sqr::getSquare(piece.x, piece.y).x = v.at(i).piece.x;
-				Sqr::getSquare(piece.x, piece.y).y = v.at(i).piece.y;
+				p.x = v.at(i).piece.x;
+				p.y = v.at(i).piece.y;
+				none.x = v.at(i).piece.x;
+				none.y = v.at(i).piece.y;
+				
+				//Sqr::squareHelper(v.at(i).piece.x, v.at(i).piece.y)->piece = p;
 				
 				// loop all enemy pieces
 				for(int j = 0; j < 16; j++)
@@ -160,17 +168,14 @@ namespace LegalMove
 						// king is in check
 						if(temp.at(k).piece.type == 5)
 						{
-							v.erase(v.begin() + i);
-							//i--;
-							std::cout << "king is threatened\n";
+							//v.erase(std::next(v.begin() + i));
+							//s--;
+							std::cout << i;
 						}
 					}
 				}
-
-				// set piece to its original place
-				Sqr::getSquare(piece.x, piece.y).x = px;
-				Sqr::getSquare(piece.x, piece.y).y = py;
-
+				
+				//Sqr::squareHelper(v.at(i).piece.x, v.at(i).piece.y)->piece = none;
 			}
 		}
 

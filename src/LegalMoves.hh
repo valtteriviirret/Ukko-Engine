@@ -7,6 +7,7 @@
 #include "Global.hh"
 #include "Settings.hh"
 #include "Pieces.hh"
+#include "Move.hh"
 #include <vector>
 
 namespace LegalMove
