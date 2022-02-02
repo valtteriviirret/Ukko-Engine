@@ -160,7 +160,7 @@ namespace LegalMove
 						// king is in check
 						if(temp.at(k).piece.type == 5)
 						{
-							//v.erase(v.begin() + i);
+							v.erase(v.begin() + i);
 							//i--;
 							std::cout << "king is threatened\n";
 						}

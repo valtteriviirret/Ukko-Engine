@@ -40,10 +40,9 @@ class Game
         Square* selectedSquare = nullptr;
         Square* originalSquare = nullptr;
 		std::vector<Text*> console;
-		int consoleIndex = 0;
-        bool isSquareSelected = false;
-        bool isPieceSelected = false;
 		std::vector<Square> legalMoves;
+		int consoleIndex = 0;
+        bool isPieceSelected = false;
 };
 
 #endif
