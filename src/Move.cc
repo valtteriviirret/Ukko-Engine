@@ -14,10 +14,15 @@ namespace Move
 	// create new empty piece
 	void emptyPiece(int x, int y)
 	{
-		Piece piece;
-		piece.x = x;
-		piece.y = y;
-		piece.type = NONE;
+		Piece piece = 
+		{
+			.type = NONE,
+			.color = WHITE,
+			.alive = true,
+			.x = x,
+			.y = y,
+			.user = PLAYER
+		};
 		Sqr::getSquare(piece.x, piece.y).piece = piece;
 	}
 
@@ -213,8 +218,15 @@ namespace Move
 				if(Pieces::get(i).x == target.x && Pieces::get(i).y == target.y)
 				{
 					// destroy the old piece
-					Piece newPiece;
-					newPiece.type = NONE;
+					Piece newPiece = 
+					{
+						.type = NONE,
+						.color = WHITE,
+						.alive = true,
+						.x = target.x,
+						.y = target.y,
+						.user = PLAYER
+					};
 					Pieces::get(i) = newPiece;
 				}
 			}
