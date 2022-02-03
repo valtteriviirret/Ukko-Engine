@@ -163,7 +163,7 @@ namespace LegalMove
 				};
 
 
-				Sqr::squareHelper(v.at(i).piece.x, v.at(i).piece.y)->piece = p;
+				//Sqr::squareHelper(v.at(i).piece.x, v.at(i).piece.y)->piece = p;
 				
 				// loop all enemy pieces
 				for(int j = 0; j < 16; j++)
@@ -184,7 +184,7 @@ namespace LegalMove
 					}
 				}
 				
-				Sqr::squareHelper(v.at(i).piece.x, v.at(i).piece.y)->piece = none;
+				//Sqr::squareHelper(v.at(i).piece.x, v.at(i).piece.y)->piece = none;
 			}
 		}
 

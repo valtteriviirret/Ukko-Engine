@@ -140,10 +140,15 @@ namespace Pieces
 		for(int y = 2; y < 6; y++)
 			for(int x = 0; x < 8; x++)
 			{
-				Piece piece;
-				piece.y = y;
-				piece.x = x;
-				piece.type = NONE;
+				Piece piece = 
+				{
+					NONE,
+					UNDEFINED,
+					true,
+					x,
+					y,
+					GHOST
+				};
 				Sqr::getSquare(x, y).piece = piece;
 			}
 	}
