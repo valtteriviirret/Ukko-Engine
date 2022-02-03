@@ -16,12 +16,12 @@ namespace Move
 	{
 		Piece piece = 
 		{
-			.type = NONE,
-			.color = WHITE,
-			.alive = true,
-			.x = x,
-			.y = y,
-			.user = PLAYER
+			NONE,
+			UNDEFINED,
+			true,
+			x,
+			y,
+			GHOST
 		};
 		Sqr::getSquare(piece.x, piece.y).piece = piece;
 	}
@@ -220,12 +220,12 @@ namespace Move
 					// destroy the old piece
 					Piece newPiece = 
 					{
-						.type = NONE,
-						.color = WHITE,
-						.alive = true,
-						.x = target.x,
-						.y = target.y,
-						.user = PLAYER
+						NONE,
+						UNDEFINED,
+						true,
+						target.x,
+						target.y,
+						GHOST	
 					};
 					Pieces::get(i) = newPiece;
 				}

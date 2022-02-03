@@ -2,8 +2,8 @@
 #define PIECE_HH
 
 typedef enum { PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING, NONE } Type;
-typedef enum { BLACK, WHITE } Color;
-typedef enum { PLAYER, ENGINE } User; 
+typedef enum { BLACK, WHITE, UNDEFINED } Color;
+typedef enum { PLAYER, ENGINE, GHOST } User; 
 
 typedef struct Piece
 {
