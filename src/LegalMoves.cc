@@ -135,12 +135,14 @@ namespace LegalMove
 	// return moves that don't give check to enemy
 	std::vector<Square> getLegal(Piece piece, std::vector<Square> v)
 	{
+		/*
 		Piece p;
 		p.type = piece.type;
 		p.user = PLAYER;
 
 		Piece none;
 		none.type = NONE;
+		*/
 
 		int s = v.size();
 
@@ -149,10 +151,12 @@ namespace LegalMove
 			// loop all the possible moves
 			for(int i = 0; i < s; i++)
 			{
+				/*
 				p.x = v.at(i).piece.x;
 				p.y = v.at(i).piece.y;
 				none.x = v.at(i).piece.x;
 				none.y = v.at(i).piece.y;
+				*/
 				
 				//Sqr::squareHelper(v.at(i).piece.x, v.at(i).piece.y)->piece = p;
 				
