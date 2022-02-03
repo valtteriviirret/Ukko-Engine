@@ -1,4 +1,4 @@
-#include "Game.hh"
+		#include "Game.hh"
 
 Game::Game()
 {
@@ -61,7 +61,7 @@ void Game::eventHandler()
 			selectedSquare = GUI::onSelect(mousePos);
 
 			// render possible moves
-			if (selectedSquare->piece.user == PLAYER && selectedSquare->piece.type != NONE)
+			if (selectedSquare->piece.type != NONE && selectedSquare->piece.user == PLAYER)
 			{
 				originalSquare = selectedSquare;
 				legalMoves = LegalMove::get(originalSquare->piece);
@@ -98,6 +98,7 @@ void Game::render()
 		Renderer::setColor(0, 0, 255);
 		Renderer::fillRect(selectedSquare->rect);
 	}
+
 
 	for(auto & legalMove : legalMoves)
 	{
@@ -153,7 +154,7 @@ void Game::playerPlayMove()
 						Move::execute(Pieces::get(j), legalMove);
 						legalMoves.clear();
 						updateConsole();
-						GameManager::update();
+						//GameManager::update();
 						isPieceSelected = false;
 						playerTurn = false;
 					}
@@ -167,7 +168,7 @@ void Game::playerPlayMove()
 void Game::enginePlayMove()
 {
 	Engine::PlayMove();
-	GameManager::update();
+	//GameManager::update();
 	updateConsole();
 
 	if(Global::engineInCheck)

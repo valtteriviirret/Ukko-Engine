@@ -23,7 +23,7 @@ namespace Move
 			y,
 			GHOST
 		};
-		Sqr::getSquare(piece.x, piece.y).piece = piece;
+		Sqr::squareHelper(piece.x, piece.y)->piece = piece;
 	}
 
 	void castlingFunc(Piece& source, Piece& rook, bool player, bool queenSide)
@@ -60,8 +60,8 @@ namespace Move
 		}
 
 		// update board
-		Sqr::getSquare(rook.x, rook.y).piece = rook;
-		Sqr::getSquare(source.x, source.y).piece = source;
+		Sqr::squareHelper(rook.x, rook.y)->piece = rook;
+		Sqr::squareHelper(source.x, source.y)->piece = source;
 	}
 
 	void readName() { std::cout << name << "\n"; }
@@ -235,15 +235,15 @@ namespace Move
 		// REGULAR MOVE
 
 		// create empty piece for source's place
-		Square srcSquare = Sqr::getSquare(source.x, source.y);
-		emptyPiece(srcSquare.x, srcSquare.y);
+		Square* srcSquare = Sqr::squareHelper(source.x, source.y);
+		emptyPiece(srcSquare->x, srcSquare->y);
 
 		// change source values to target
 		source.x = target.x;
 		source.y = target.y;
 
 		// update moved pieces place
-		Sqr::getSquare(source.x, source.y).piece = source;
+		Sqr::squareHelper(source.x, source.y)->piece = source;
 
 		// make the notation
 		name = name + nameSource + " to " + nameX + nameY + promotion;
