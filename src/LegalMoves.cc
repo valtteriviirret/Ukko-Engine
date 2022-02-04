@@ -135,34 +135,35 @@ namespace LegalMove
 	// return moves that don't give check to enemy
 	std::vector<Square> getLegal(Piece piece, std::vector<Square> v)
 	{
-		int s = v.size();
-
 		std::vector<Square> new_v = v;
 
 		if(piece.user == PLAYER)
 		{
 			// loop all the possible moves
-			for(int i = 0; i < s; i++)
+			for(int i = 0; i < (int)v.size(); i++)
 			{
 				Piece p =
-						{
-								piece.type,
-								WHITE,
-								true,
-								v.at(i).piece.x,
-								v.at(i).piece.y,
-								GHOST
-						};
+				{
+						piece.type,
+						WHITE,
+						true,
+						v.at(i).piece.x,
+						v.at(i).piece.y,
+						GHOST
+				};
 
 				Piece none =
-						{
-								NONE,
-								UNDEFINED,
-								true,
-								v.at(i).piece.x,
-								v.at(i).piece.y,
-								GHOST
-						};
+				{
+						NONE,
+						UNDEFINED,
+						true,
+						v.at(i).piece.x,
+						v.at(i).piece.y,
+						GHOST
+				};
+
+				// need to create the fake move
+				Sqr::squareHelper(new_v.at(i).piece.x, new_v.at(i).piece.y)->piece = p;
 
 				// loop all enemy pieces
 				for(int j = 0; j < 16; j++)
@@ -178,7 +179,8 @@ namespace LegalMove
 							new_v.erase(new_v.begin() + i);
 					}
 				}
-
+				
+				// return back to normal
 				Sqr::squareHelper(new_v.at(i).piece.x, new_v.at(i).piece.y)->piece = none;
 			}
 		}
@@ -258,6 +260,7 @@ namespace LegalMove
 		}
 
 		// return legal moves for the piece
-		return getLegal(piece, sqrs);
+		//return getLegal(piece, sqrs);
+		return sqrs;
 	}
 }

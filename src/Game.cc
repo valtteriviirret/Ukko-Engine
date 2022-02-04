@@ -1,4 +1,4 @@
-		#include "Game.hh"
+#include "Game.hh"
 
 Game::Game()
 {
@@ -154,7 +154,7 @@ void Game::playerPlayMove()
 						Move::execute(Pieces::get(j), legalMove);
 						legalMoves.clear();
 						updateConsole();
-						//GameManager::update();
+						GameManager::update();
 						isPieceSelected = false;
 						playerTurn = false;
 					}
@@ -168,7 +168,7 @@ void Game::playerPlayMove()
 void Game::enginePlayMove()
 {
 	Engine::PlayMove();
-	//GameManager::update();
+	GameManager::update();
 	updateConsole();
 
 	if(Global::engineInCheck)
