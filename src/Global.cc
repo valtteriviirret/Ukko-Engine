@@ -15,4 +15,17 @@ bool Global::engineCanCastleQ = true;
 bool Global::playerInCheck = false;
 bool Global::engineInCheck = false;
 
+static Piece ghost(int x, int y)
+{
+	Piece none =
+			{
+					NONE,
+					UNDEFINED,
+					true,
+					x,
+					y,
+					GHOST
+			};
+	return none;
+}
 

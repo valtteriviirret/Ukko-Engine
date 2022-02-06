@@ -13,33 +13,33 @@ namespace Pieces
 		// 24-31 	PLAYER PIECES
 
 		// setting all pieces alive
-		for(int i = 0; i < 32; i++)
+		for (int i = 0; i < 32; i++)
 		{
 			p[i].alive = true;
 		}
 
 		// initializing enemy's pieces colors
-		for(int i = 0; i < 16; i++)
+		for (int i = 0; i < 16; i++)
 		{
-			if(Settings::PlayerColor == Color::WHITE)
+			if (Settings::PlayerColor == Color::WHITE)
 				p[i].color = Color::BLACK;
 			else
 				p[i].color = Color::WHITE;
 		}
 
 		// initializing player's pieces colors
-		for(int i = 16; i < 32; i++)
+		for (int i = 16; i < 32; i++)
 		{
-			if(Settings::PlayerColor == Color::WHITE)
+			if (Settings::PlayerColor == Color::WHITE)
 				p[i].color = Color::WHITE;
 			else
 				p[i].color = Color::BLACK;
 		}
 
 		// engine pawns
-		for(int i = 0; i < 8; i++)
+		for (int i = 0; i < 8; i++)
 		{
-			p[i].type = PAWN;	
+			p[i].type = PAWN;
 			p[i].x = i;
 			p[i].y = 1;
 			p[i].user = ENGINE;
@@ -47,7 +47,7 @@ namespace Pieces
 		}
 
 		// player pawns
-		for(int i = 16; i < 24; i++)
+		for (int i = 16; i < 24; i++)
 		{
 			p[i].type = PAWN;
 			p[i].x = (i - 16);
@@ -58,7 +58,7 @@ namespace Pieces
 
 
 		// ENGINE PIECES
-		for(int i = 8; i < 16; i++)
+		for (int i = 8; i < 16; i++)
 		{
 			p[i].y = 0;
 			p[i].user = ENGINE;
@@ -83,7 +83,7 @@ namespace Pieces
 		p[12].type = BISHOP;
 		p[12].x = 2;
 		Sqr::getSquare(2, 0).piece = p[12];
-		
+
 		p[13].type = BISHOP;
 		p[13].x = 5;
 		Sqr::getSquare(5, 0).piece = p[13];
@@ -98,7 +98,7 @@ namespace Pieces
 
 
 		// PLAYER PIECES
-		for(int i = 24; i < 32; i++)
+		for (int i = 24; i < 32; i++)
 		{
 			p[i].y = 7;
 			p[i].user = PLAYER;
@@ -137,20 +137,19 @@ namespace Pieces
 		Sqr::getSquare(4, 7).piece = p[31];
 
 		// initialize empty squares as empty
-		for(int y = 2; y < 6; y++)
-			for(int x = 0; x < 8; x++)
+		for (int y = 2; y < 6; y++)
+			for (int x = 0; x < 8; x++)
 			{
-				Piece piece = 
-				{
-					NONE,
-					UNDEFINED,
-					true,
-					x,
-					y,
-					GHOST
-				};
+				Piece piece =
+						{
+								NONE,
+								UNDEFINED,
+								true,
+								x,
+								y,
+								GHOST
+						};
 				Sqr::getSquare(x, y).piece = piece;
 			}
 	}
-
 }

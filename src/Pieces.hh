@@ -15,6 +15,7 @@ namespace Pieces
 
 	// getting individual piece
 	Piece& get(int n);
+
 }
 
 #endif
