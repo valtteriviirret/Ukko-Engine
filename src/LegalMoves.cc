@@ -136,13 +136,12 @@ namespace LegalMove
 
 	// return moves that don't give check to enemy
 	std::vector<Square> getLegal(Piece piece)
-	{
-		std::vector<Square> new_v = LegalMove::get(piece);
-
-		if(piece.user == PLAYER)
-		{
-			// loop all the possible moves
-			for(auto i = new_v.begin(); i != new_v.end(); i++)
+	{ 
+		std::vector<Square> v = LegalMove::get(piece); 
+		if(piece.user == PLAYER) 
+		{ 
+			// loop all the possible moves 
+			for(auto i = v.begin(); i != v.end(); i++) 
 			{
 				bool deleted = false;
 
@@ -183,16 +182,47 @@ namespace LegalMove
 						// king is in check
 						if(temp.at(k).piece.type == KING)
 						{
-							// doesn't work
 							Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
 							deleted = true;
-							new_v.erase(i--);
+							v.erase(i--);
 						}
 					}
 				}
 				
-				if(!deleted)
-					Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
+			if(!deleted)
+				Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
+			}
+		}
+		else
+		{
+			for(auto i = v.begin(); i < v.end(); i++)
+			{
+				bool deleted = false;
+
+				// create fakepiece in possible move
+				Piece p =
+				{
+						piece.type,
+						WHITE,
+						true,
+						i->piece.x,
+						i->piece.y,
+						PLAYER
+				};
+
+				// create empty piece
+				Piece none =
+				{
+						NONE,
+						UNDEFINED,
+						true,
+						i->piece.x,
+						i->piece.y,
+						GHOST
+				};
+
+
+
 			}
 		}
 
