@@ -4,5 +4,5 @@
 int Settings::PlayerColor = Color::WHITE;
 
 // show engine's legal moves by clicking enemy's piece
-bool Settings::showEnemyLegalMoves = false;
+bool Settings::showEnemyLegalMoves = true;
 

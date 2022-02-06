@@ -134,33 +134,18 @@ namespace LegalMove
 	}
 
 
-
-/*
-grep -R 'LegalMove::get' src/
-
-src/GameManager.cc:			std::vector v = LegalMove::get(Pieces::get(i));
-src/GameManager.cc:			std::vector v = LegalMove::get(Pieces::get(i));
-src/Engine.cc:	std::vector<Square> v = LegalMove::get(Pieces::get(piece));
-src/Engine.cc:			v = LegalMove::get(Pieces::get(piece));
-src/LegalMoves.cc:		std::vector<Square> new_v = LegalMove::get(piece);
-src/LegalMoves.cc:		//std::vector<Square> xxx = LegalMove::get(piece);
-src/LegalMoves.cc:					std::vector<Square> temp = LegalMove::get(Pieces::get(j));
-
-
-src/Game.cc:				legalMoves = LegalMove::getLegal(originalSquare->piece);
-
-*/
-
-
 	// return moves that don't give check to enemy
 	std::vector<Square> getLegal(Piece piece)
 	{
 		std::vector<Square> new_v = LegalMove::get(piece);
+
 		if(piece.user == PLAYER)
 		{
 			// loop all the possible moves
 			for(auto i = new_v.begin(); i != new_v.end(); i++)
 			{
+				bool deleted = false;
+
 				// create fakepiece in possible move
 				Piece p =
 				{
@@ -169,7 +154,7 @@ src/Game.cc:				legalMoves = LegalMove::getLegal(originalSquare->piece);
 						true,
 						i->piece.x,
 						i->piece.y,
-						GHOST
+						PLAYER
 				};
 
 				// create empty piece
@@ -199,13 +184,15 @@ src/Game.cc:				legalMoves = LegalMove::getLegal(originalSquare->piece);
 						if(temp.at(k).piece.type == KING)
 						{
 							// doesn't work
+							Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
+							deleted = true;
 							new_v.erase(i--);
 						}
 					}
 				}
 				
-				// return back to normal
-				Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
+				if(!deleted)
+					Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
 			}
 		}
 

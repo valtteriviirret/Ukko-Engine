@@ -11,7 +11,7 @@ void Engine::PlayMove()
 	Square s;
 
 	// get moves for random num
-	std::vector<Square> v = LegalMove::get(Pieces::get(piece));
+	std::vector<Square> v = LegalMove::getLegal(Pieces::get(piece));
 
 	for (;;)
 	{
@@ -20,7 +20,7 @@ void Engine::PlayMove()
 		else
 		{
 			piece = pickPiece();
-			v = LegalMove::get(Pieces::get(piece));
+			v = LegalMove::getLegal(Pieces::get(piece));
 		}
 	}
 
