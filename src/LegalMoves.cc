@@ -1,5 +1,6 @@
 #include "LegalMoves.hh"
 #include <iostream>
+#include <algorithm>
 
 namespace LegalMove
 {
@@ -19,8 +20,8 @@ namespace LegalMove
 
 				// add if enemy
 			else
-			if(s->piece.color != p.color)
-				sqrs.push_back(*s);
+				if(s->piece.color != p.color)
+					sqrs.push_back(*s);
 		}
 	}
 
@@ -132,38 +133,58 @@ namespace LegalMove
 					sqrs.push_back(*r);
 	}
 
-	// return moves that don't give check to enemy
-	std::vector<Square> getLegal(Piece piece, std::vector<Square> v)
-	{
-		std::vector<Square> new_v = v;
 
+
+/*
+grep -R 'LegalMove::get' src/
+
+src/GameManager.cc:			std::vector v = LegalMove::get(Pieces::get(i));
+src/GameManager.cc:			std::vector v = LegalMove::get(Pieces::get(i));
+src/Engine.cc:	std::vector<Square> v = LegalMove::get(Pieces::get(piece));
+src/Engine.cc:			v = LegalMove::get(Pieces::get(piece));
+src/LegalMoves.cc:		std::vector<Square> new_v = LegalMove::get(piece);
+src/LegalMoves.cc:		//std::vector<Square> xxx = LegalMove::get(piece);
+src/LegalMoves.cc:					std::vector<Square> temp = LegalMove::get(Pieces::get(j));
+
+
+src/Game.cc:				legalMoves = LegalMove::getLegal(originalSquare->piece);
+
+*/
+
+
+	// return moves that don't give check to enemy
+	std::vector<Square> getLegal(Piece piece)
+	{
+		std::vector<Square> new_v = LegalMove::get(piece);
 		if(piece.user == PLAYER)
 		{
 			// loop all the possible moves
-			for(int i = 0; i < (int)v.size(); i++)
+			for(auto i = new_v.begin(); i != new_v.end(); i++)
 			{
+				// create fakepiece in possible move
 				Piece p =
 				{
 						piece.type,
 						WHITE,
 						true,
-						v.at(i).piece.x,
-						v.at(i).piece.y,
+						i->piece.x,
+						i->piece.y,
 						GHOST
 				};
 
+				// create empty piece
 				Piece none =
 				{
 						NONE,
 						UNDEFINED,
 						true,
-						v.at(i).piece.x,
-						v.at(i).piece.y,
+						i->piece.x,
+						i->piece.y,
 						GHOST
 				};
 
 				// need to create the fake move
-				Sqr::squareHelper(new_v.at(i).piece.x, new_v.at(i).piece.y)->piece = p;
+				Sqr::getSquare(i->piece.x,i->piece.y).piece = p;
 
 				// loop all enemy pieces
 				for(int j = 0; j < 16; j++)
@@ -176,12 +197,15 @@ namespace LegalMove
 					{
 						// king is in check
 						if(temp.at(k).piece.type == KING)
-							new_v.erase(new_v.begin() + i);
+						{
+							// doesn't work
+							new_v.erase(i--);
+						}
 					}
 				}
 				
 				// return back to normal
-				Sqr::squareHelper(new_v.at(i).piece.x, new_v.at(i).piece.y)->piece = none;
+				Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
 			}
 		}
 
@@ -259,8 +283,8 @@ namespace LegalMove
 			case NONE: break;
 		}
 
-		// return legal moves for the piece
 		//return getLegal(piece, sqrs);
+		// return raw moves
 		return sqrs;
 	}
 }

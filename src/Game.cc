@@ -64,7 +64,7 @@ void Game::eventHandler()
 			if (selectedSquare->piece.type != NONE && selectedSquare->piece.user == PLAYER)
 			{
 				originalSquare = selectedSquare;
-				legalMoves = LegalMove::get(originalSquare->piece);
+				legalMoves = LegalMove::getLegal(originalSquare->piece);
 				isPieceSelected = true;
 			}
 		}
