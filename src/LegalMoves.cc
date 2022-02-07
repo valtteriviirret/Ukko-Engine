@@ -1,6 +1,4 @@
 #include "LegalMoves.hh"
-#include <iostream>
-#include <algorithm>
 
 namespace LegalMove
 {
@@ -145,30 +143,10 @@ namespace LegalMove
 			{
 				bool deleted = false;
 
-				// create fakepiece in possible move
-				Piece p =
-				{
-						piece.type,
-						WHITE,
-						true,
-						i->piece.x,
-						i->piece.y,
-						PLAYER
-				};
+				// creating empty piece
+				Piece none = ghost(i->piece.x, i->piece.y);
 
-				// create empty piece
-				Piece none =
-				{
-						NONE,
-						UNDEFINED,
-						true,
-						i->piece.x,
-						i->piece.y,
-						GHOST
-				};
-
-				// need to create the fake move
-				Sqr::getSquare(i->piece.x,i->piece.y).piece = p;
+				Sqr::getSquare(i->piece.x, i->piece.y).piece = myPiece(piece);
 
 				// loop all enemy pieces
 				for(int j = 0; j < 16; j++)
@@ -182,51 +160,55 @@ namespace LegalMove
 						// king is in check
 						if(temp.at(k).piece.type == KING)
 						{
-							Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
+						Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
 							deleted = true;
 							v.erase(i--);
 						}
 					}
 				}
 				
-			if(!deleted)
-				Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
+				if(!deleted)
+					Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
 			}
 		}
 		else
 		{
-			for(auto i = v.begin(); i < v.end(); i++)
+			/*
+			for(auto i = v.begin(); i != v.end(); i++)
 			{
 				bool deleted = false;
+				Piece none = ghost(i->piece.x, i->piece.y);
 
-				// create fakepiece in possible move
-				Piece p =
+				Sqr::getSquare(i->piece.x, i->piece.y).piece = myPiece(piece);
+
+				// loop enemy pieces
+				for(int j = 16; j < 32; j++)
 				{
-						piece.type,
-						WHITE,
-						true,
-						i->piece.x,
-						i->piece.y,
-						PLAYER
-				};
+					// get all legal moves for the piece
+					std::vector<Square> temp = LegalMove::get(Pieces::get(j));
 
-				// create empty piece
-				Piece none =
-				{
-						NONE,
-						UNDEFINED,
-						true,
-						i->piece.x,
-						i->piece.y,
-						GHOST
-				};
+					for(int k = 0; k < (int)temp.size(); k++)
+					{
+						// king is in check
+						if(temp.at(k).piece.type == KING)
+						{
+							Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
+							deleted = true;
+							v.erase(i--);
+						}
 
+					}
+				}
 
-
+				if(!deleted)
+					Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
 			}
+			*/
+				
 		}
 
-		return new_v;
+
+		return v;
 	}
 
 	// get legal moves

@@ -15,17 +15,30 @@ bool Global::engineCanCastleQ = true;
 bool Global::playerInCheck = false;
 bool Global::engineInCheck = false;
 
-static Piece ghost(int x, int y)
+Piece ghost(int x, int y)
 {
-	Piece none =
-			{
-					NONE,
-					UNDEFINED,
-					true,
-					x,
-					y,
-					GHOST
-			};
-	return none;
+	return
+	{
+			NONE,
+			UNDEFINED,
+			true,
+			x,
+			y,
+			GHOST
+	};
+}
+
+// this looks like it doesn't make sense, but it does
+Piece myPiece(Piece piece)
+{
+	return
+	{
+		piece.type,
+		piece.color,
+		true,
+		piece.x,
+		piece.y,
+		piece.user
+	};
 }
 

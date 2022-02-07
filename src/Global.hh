@@ -9,7 +9,8 @@ static bool playerTurn;
 static Piece p[32];
 
 // return ghost struct
-static Piece ghost(int x, int y);
+Piece ghost(int x, int y);
+Piece myPiece(Piece piece);
 
 class Global
 {
