@@ -11,19 +11,9 @@ namespace Move
 	char nameY;
 	std::string promotion;
 
-	// create new empty piece
 	void emptyPiece(int x, int y)
 	{
-		Piece piece = 
-		{
-			NONE,
-			UNDEFINED,
-			true,
-			x,
-			y,
-			GHOST
-		};
-		Sqr::squareHelper(piece.x, piece.y)->piece = piece;
+		Sqr::squareHelper(x, y)->piece = ghost(x, y);
 	}
 
 	void castlingFunc(Piece& source, Piece& rook, bool player, bool queenSide)
@@ -227,7 +217,9 @@ namespace Move
 						target.y,
 						GHOST	
 					};
-					Pieces::get(i) = newPiece;
+
+					Pieces::get(i) = myPiece(Pieces::get(i));
+					myPiece(Pieces::get(i));
 				}
 			}
 		}
@@ -236,6 +228,8 @@ namespace Move
 
 		// create empty piece for source's place
 		Square* srcSquare = Sqr::squareHelper(source.x, source.y);
+
+		// set empty piece
 		emptyPiece(srcSquare->x, srcSquare->y);
 
 		// change source values to target
