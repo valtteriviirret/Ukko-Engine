@@ -207,19 +207,7 @@ namespace Move
 			{
 				if(Pieces::get(i).x == target.x && Pieces::get(i).y == target.y)
 				{
-					// destroy the old piece
-					Piece newPiece = 
-					{
-						NONE,
-						UNDEFINED,
-						true,
-						target.x,
-						target.y,
-						GHOST	
-					};
-
 					Pieces::get(i) = myPiece(Pieces::get(i));
-					myPiece(Pieces::get(i));
 				}
 			}
 		}

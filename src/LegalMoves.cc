@@ -132,82 +132,56 @@ namespace LegalMove
 	}
 
 
-	// return moves that don't give check to enemy
+	// give legal moves
 	std::vector<Square> getLegal(Piece piece)
 	{ 
+		// get raw legal moves for the piece
 		std::vector<Square> v = LegalMove::get(piece); 
-		if(piece.user == PLAYER) 
-		{ 
-			// loop all the possible moves 
-			for(auto i = v.begin(); i != v.end(); i++) 
-			{
-				bool deleted = false;
 
-				// creating empty piece
-				Piece none = ghost(i->piece.x, i->piece.y);
-
-				Sqr::getSquare(i->piece.x, i->piece.y).piece = myPiece(piece);
-
-				// loop all enemy pieces
-				for(int j = 0; j < 16; j++)
-				{
-					// get all legal moves for the piece
-					std::vector<Square> temp = LegalMove::get(Pieces::get(j));
-
-					// loop legal moves for the piece
-					for(int k = 0; k < (int)temp.size(); k++)
-					{
-						// king is in check
-						if(temp.at(k).piece.type == KING)
-						{
-						Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
-							deleted = true;
-							v.erase(i--);
-						}
-					}
-				}
-				
-				if(!deleted)
-					Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
-			}
-		}
-		else
+		// loop all the possible moves 
+		for(auto i = v.begin(); i != v.end(); i++) 
 		{
-			/*
-			for(auto i = v.begin(); i != v.end(); i++)
+			// making fake move
+			Sqr::getSquare(i->piece.x, i->piece.y).piece = myPiece(piece);
+
+			// has the fake move been deleted?
+			bool deleted = false;
+
+			// creating empty piece
+			Piece none = ghost(i->piece.x, i->piece.y);
+
+			// getting the opponent's pieces
+			int a = piece.user == PLAYER ? 0 : 16;
+			int b = piece.user == PLAYER ? 16 : 32;
+
+			// loop all opponent's pieces
+			for(int j = a; j < b; j++)
 			{
-				bool deleted = false;
-				Piece none = ghost(i->piece.x, i->piece.y);
+				// get all raw legal moves for the opponent's pieces
+				std::vector<Square> temp = LegalMove::get(Pieces::get(j));
 
-				Sqr::getSquare(i->piece.x, i->piece.y).piece = myPiece(piece);
-
-				// loop enemy pieces
-				for(int j = 16; j < 32; j++)
+				// loop legal moves for the piece
+				for(int k = 0; k < (int)temp.size(); k++)
 				{
-					// get all legal moves for the piece
-					std::vector<Square> temp = LegalMove::get(Pieces::get(j));
-
-					for(int k = 0; k < (int)temp.size(); k++)
+					// king is in check
+					if(temp.at(k).piece.type == KING)
 					{
-						// king is in check
-						if(temp.at(k).piece.type == KING)
-						{
-							Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
-							deleted = true;
-							v.erase(i--);
-						}
+						// delete fake move
+						Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
+						deleted = true;
 
+						// delete move and 
+						v.erase(i--);
 					}
 				}
-
-				if(!deleted)
-					Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
 			}
-			*/
-				
+			
+			// if the move was legal, delete fake move
+			if(!deleted)
+				Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
 		}
 
-
+		// return filtered moves
 		return v;
 	}
 
