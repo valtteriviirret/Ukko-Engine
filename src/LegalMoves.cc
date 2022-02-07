@@ -141,14 +141,14 @@ namespace LegalMove
 		// loop all the possible moves 
 		for(auto i = v.begin(); i != v.end(); i++) 
 		{
+			// get original piece in possible move
+			Piece originalPiece = Sqr::getSquare(i->piece.x, i->piece.y).piece;
+
 			// making fake move
 			Sqr::getSquare(i->piece.x, i->piece.y).piece = myPiece(piece);
 
 			// has the fake move been deleted?
 			bool deleted = false;
-
-			// creating empty piece
-			Piece none = ghost(i->piece.x, i->piece.y);
 
 			// getting the opponent's pieces
 			int a = piece.user == PLAYER ? 0 : 16;
@@ -167,7 +167,7 @@ namespace LegalMove
 					if(temp.at(k).piece.type == KING)
 					{
 						// delete fake move
-						Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
+						Sqr::getSquare(i->piece.x, i->piece.y).piece = originalPiece;
 						deleted = true;
 
 						// delete move and set counter smaller after deletion
@@ -178,7 +178,7 @@ namespace LegalMove
 			
 			// if the move was legal, delete fake move
 			if(!deleted)
-				Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
+				Sqr::getSquare(i->piece.x, i->piece.y).piece = originalPiece;
 		}
 
 		// return filtered moves

@@ -61,7 +61,7 @@ void Game::eventHandler()
 			selectedSquare = GUI::onSelect(mousePos);
 
 			// render possible moves
-			if (selectedSquare->piece.type != NONE)
+			if (selectedSquare->piece.type != NONE && selectedSquare->piece.user == PLAYER)
 			{
 				originalSquare = selectedSquare;
 				legalMoves = LegalMove::getLegal(originalSquare->piece);
@@ -155,7 +155,7 @@ void Game::playerPlayMove()
 						updateConsole();
 						GameManager::update();
 						isPieceSelected = false;
-						//playerTurn = false;
+						playerTurn = false;
 					}
 				}
 			}
