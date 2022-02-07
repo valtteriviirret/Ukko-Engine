@@ -4,7 +4,7 @@
 #include "Piece.hh"
 
 // check these out!
-static bool staleMate = false;
+typedef enum { GAME_ON, VICTORY, DEFEAT, STALEMATE } currentGameState;
 static bool playerTurn;
 static Piece p[32];
 
@@ -30,7 +30,7 @@ class Global
 		static bool engineCanCastleQ;
 
 		// check
-		static bool playerInCheck;
+		[[maybe_unused]] static bool playerInCheck;
 		static bool engineInCheck;
 };
 
