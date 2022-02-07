@@ -8,14 +8,17 @@ void Engine::PlayMove()
 {
 	// get random num
 	int piece = pickPiece();
+
+	// this is bad
 	Square s;
 
 	// get moves for random num
 	std::vector<Square> v = LegalMove::getLegal(Pieces::get(piece));
 
+	// get piece that has legal moves
 	for (;;)
 	{
-		if (!v.empty() && Pieces::get(piece).alive)
+		if (!v.empty())
 			break;
 		else
 		{
@@ -24,16 +27,13 @@ void Engine::PlayMove()
 		}
 	}
 
-	if (!staleMate)
+	for (auto &i: v)
 	{
-		for (auto &i: v)
-		{
-			s = Sqr::getSquare(i.x, i.y);
-			if (Sqr::getSquare(i.x, i.y).piece.type != NONE && Sqr::getSquare(i.x, i.y).piece.user == PLAYER)
-				break;
-		}
-		Move::execute(Pieces::get(piece), s);
+		s = Sqr::getSquare(i.x, i.y);
+		if (Sqr::getSquare(i.x, i.y).piece.type != NONE && Sqr::getSquare(i.x, i.y).piece.user == PLAYER)
+			break;
 	}
+	Move::execute(Pieces::get(piece), s);
 }
 
 int Engine::pickPiece()

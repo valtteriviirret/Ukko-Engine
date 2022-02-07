@@ -209,11 +209,6 @@ namespace Move
 				{
 					// kill the old piece
 					Pieces::get(i) = ghost(target.x, target.y);
-
-					//emptyPiece(target.x, target.y);
-
-
-					//Sqr::squareHelper(Pieces::get(i).x, Pieces::get(i).y)->piece = ghost(target.x, target.y);
 				}
 			}
 		}

@@ -155,7 +155,7 @@ void Game::playerPlayMove()
 						updateConsole();
 						GameManager::update();
 						isPieceSelected = false;
-						playerTurn = false;
+						//playerTurn = false;
 					}
 				}
 			}

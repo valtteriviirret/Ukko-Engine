@@ -170,7 +170,7 @@ namespace LegalMove
 						Sqr::getSquare(i->piece.x, i->piece.y).piece = none;
 						deleted = true;
 
-						// delete move and 
+						// delete move and set counter smaller after deletion
 						v.erase(i--);
 					}
 				}
@@ -224,17 +224,24 @@ namespace LegalMove
 						if(!(i == 0 && j == 0))
 							xyFindFunc(piece, i, j);
 
-				if(Global::playerCanCastleK)
-					Castling(piece, true);
 
-				if(Global::playerCanCastleQ)
-					Castling(piece, false);
+				if(piece.user == PLAYER)
+				{
+					if(Global::playerCanCastleK)
+						Castling(piece, true);
 
-				if(Global::engineCanCastleK)
-					Castling(piece, true);
+					if(Global::playerCanCastleQ)
+						Castling(piece, false);
+				}
 
-				if(Global::engineCanCastleQ)
-					Castling(piece, false);
+				else
+				{
+					if(Global::engineCanCastleK)
+						Castling(piece, true);
+
+					if(Global::engineCanCastleQ)
+						Castling(piece, false);
+				}
 
 				break;
 			case BISHOP:
