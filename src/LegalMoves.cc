@@ -256,7 +256,6 @@ namespace LegalMove
 			case NONE: break;
 		}
 
-		//return getLegal(piece, sqrs);
 		// return raw moves
 		return sqrs;
 	}

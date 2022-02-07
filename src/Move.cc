@@ -207,24 +207,28 @@ namespace Move
 			{
 				if(Pieces::get(i).x == target.x && Pieces::get(i).y == target.y)
 				{
-					Pieces::get(i) = myPiece(Pieces::get(i));
+					// kill the old piece
+					Pieces::get(i) = ghost(target.x, target.y);
+
+					//emptyPiece(target.x, target.y);
+
+
+					//Sqr::squareHelper(Pieces::get(i).x, Pieces::get(i).y)->piece = ghost(target.x, target.y);
 				}
 			}
 		}
-		
+
 		// REGULAR MOVE
 
 		// create empty piece for source's place
 		Square* srcSquare = Sqr::squareHelper(source.x, source.y);
-
-		// set empty piece
 		emptyPiece(srcSquare->x, srcSquare->y);
 
 		// change source values to target
 		source.x = target.x;
 		source.y = target.y;
 
-		// update moved pieces place
+		// update moved piece
 		Sqr::squareHelper(source.x, source.y)->piece = source;
 
 		// make the notation

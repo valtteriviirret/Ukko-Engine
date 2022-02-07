@@ -77,7 +77,6 @@ void Game::update()
 	playerTurn ? playerPlayMove() : enginePlayMove();
 }
 
-// render pieces in their current positions
 void Game::render()
 {
 	// make gray background
