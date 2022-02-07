@@ -34,5 +34,7 @@ class Global
 		static bool engineInCheck;
 };
 
+// return ghost struct
+Piece ghost(int x, int y);
 
 #endif

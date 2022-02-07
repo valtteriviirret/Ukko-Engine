@@ -17,28 +17,6 @@ bool Global::engineInCheck = false;
 
 Piece ghost(int x, int y)
 {
-	return
-	{
-			NONE,
-			UNDEFINED,
-			true,
-			x,
-			y,
-			GHOST
-	};
-}
-
-// this looks like it doesn't make sense, but it does
-Piece myPiece(Piece piece)
-{
-	return
-	{
-		piece.type,
-		piece.color,
-		true,
-		piece.x,
-		piece.y,
-		piece.user
-	};
+	return {NONE, UNDEFINED, true, x, y, GHOST };
 }
 
