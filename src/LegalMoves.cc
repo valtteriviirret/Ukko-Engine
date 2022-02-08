@@ -190,9 +190,20 @@ namespace LegalMove
 
 		if(piece.type != KING)
 		{
+			bool backToNormal = false;
+
 			// loop all the possible moves 
 			for(auto i = v.begin(); i != v.end(); i++) 
 			{
+				// get original square
+				Piece originalSquare = Sqr::getSquare(i->x, i->y).piece;
+
+				// set the fake move
+				Sqr::getSquare(i->x, i->y).piece = piece;
+
+				// set original square to empty
+				Sqr::getSquare(piece.x, piece.y).piece = ghost(piece.x, piece.y);
+
 				// getting the opponent's pieces
 				int a = piece.user == PLAYER ? 0 : 16;
 				int b = piece.user == PLAYER ? 16 : 32;
@@ -209,10 +220,21 @@ namespace LegalMove
 						// king is in check
 						if(k->piece.type == KING)
 						{
+							// set move back to normal
+							Sqr::getSquare(i->x, i->y).piece = originalSquare;
+							Sqr::getSquare(piece.x, piece.y).piece = piece;
+							backToNormal = true;
+
 							// delete move, substract from moves after deletion
 							v.erase(i--);
 						}
 					}
+				}
+
+				if(!backToNormal)
+				{
+					Sqr::getSquare(i->x, i->y).piece = originalSquare;
+					Sqr::getSquare(piece.x, piece.y).piece = piece;
 				}
 			}
 		}
