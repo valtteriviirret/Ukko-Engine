@@ -140,17 +140,42 @@ namespace LegalMove
 	// get legal moves for king
 	bool kingInDanger(Square square, Piece piece)
 	{
+		// get opponents pieces
 		int a = piece.user == PLAYER ? 0 : 16;
 		int b = piece.user == PLAYER ? 16 : 32;
 
+		// is everything back to normal?
+		bool backtoNormal = false;
+
+		// set the fake move
+		Sqr::getSquare(square.x, square.y).piece = piece;
+
+		// set original square to empty
+		Sqr::getSquare(piece.x, piece.y).piece = ghost(piece.x, piece.y);
+
 		for(int i = a; i < b; i++)
 		{
+			// get all legal moves
 			std::vector<Square> v = LegalMove::get(Pieces::get(i));
 
-			// if raw move is same as opponents move
-			for(auto j = v.begin(); j != v.end(); j++)
-				if(j->x == square.x && j->y == square.y)
+			for(auto j = v.begin(); j < v.end(); j++)
+			{
+				// if king is in check
+				if(j->piece.type == KING)
+				{
+					// back to normal
+					Sqr::getSquare(square.x, square.y).piece = square.piece;
+					Sqr::getSquare(piece.x, piece.y).piece = piece;
+					backtoNormal = true;
 					return true;
+				}
+			}
+		}
+
+		if(!backtoNormal)
+		{
+			Sqr::getSquare(square.x, square.y).piece = square.piece;
+			Sqr::getSquare(piece.x, piece.y).piece = piece;
 		}
 
 		return false;
@@ -168,15 +193,6 @@ namespace LegalMove
 			// loop all the possible moves 
 			for(auto i = v.begin(); i != v.end(); i++) 
 			{
-				// get original piece in possible move
-				Piece originalPiece = Sqr::getSquare(i->piece.x, i->piece.y).piece;
-
-				// making fake move
-				Sqr::getSquare(i->piece.x, i->piece.y).piece = myPiece(piece);
-
-				// has the fake move been deleted?
-				bool deleted = false;
-
 				// getting the opponent's pieces
 				int a = piece.user == PLAYER ? 0 : 16;
 				int b = piece.user == PLAYER ? 16 : 32;
@@ -193,19 +209,11 @@ namespace LegalMove
 						// king is in check
 						if(k->piece.type == KING)
 						{
-							// delete fake move
-							Sqr::getSquare(i->piece.x, i->piece.y).piece = originalPiece;
-							deleted = true;
-
 							// delete move, substract from moves after deletion
 							v.erase(i--);
 						}
 					}
 				}
-				
-				// if the move was legal, delete fake move
-				if(!deleted)
-					Sqr::getSquare(i->piece.x, i->piece.y).piece = originalPiece;
 			}
 		}
 
