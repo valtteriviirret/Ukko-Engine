@@ -137,12 +137,44 @@ namespace LegalMove
 					sqrs.push_back(*r);
 	}
 
+	std::vector<Square> kingInDanger(std::vector<Square> moves, bool player)
+	{
+		/*
+		if(player)
+		{
+			// loop raw moves
+			for(auto i = moves.begin(); i != moves.end(); i++)
+			{
+				// loop enemy pieces
+				for(int j = 0; j < 16; j++)
+				{
+					std::vector<Square> v = LegalMove::get(Pieces::get(j));
+
+					for(auto k = v.begin(); k != v.end(); k++)
+					{
+						if(i->x == k->x && i->y == i->y)	
+						{
+							moves.erase(i--);
+						}
+					}
+				}
+			}
+
+		}
+		else
+		{
+
+		}
+		*/
+		return moves;
+	}
+
 
 	// get legal moves
 	std::vector<Square> getLegal(Piece piece)
 	{ 
 		// get raw legal moves for the piece
-		std::vector<Square> v = LegalMove::get(piece); 
+		std::vector<Square> v = LegalMove::get(piece);
 
 		// loop all the possible moves 
 		for(auto i = v.begin(); i != v.end(); i++) 
@@ -169,7 +201,7 @@ namespace LegalMove
 				// loop legal moves for the piece
 				for(int k = 0; k < (int)temp.size(); k++)
 				{
-					if(originalPiece.type != KING)
+					if(piece.type != KING)
 					{
 						// king is in check
 						if(temp.at(k).piece.type == KING)
@@ -180,6 +212,13 @@ namespace LegalMove
 
 							// delete move, substract from moves after deletion
 							v.erase(i--);
+						}
+					}
+					else
+					{
+						if(piece.user == PLAYER)
+						{
+							//return kingInDanger(v, true);
 						}
 					}
 				}
