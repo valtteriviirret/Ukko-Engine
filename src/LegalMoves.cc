@@ -170,7 +170,7 @@ namespace LegalMove
 						Sqr::getSquare(i->piece.x, i->piece.y).piece = originalPiece;
 						deleted = true;
 
-						// delete move and set counter smaller after deletion
+						// delete move, set counter smaller after deletion
 						v.erase(i--);
 					}
 				}

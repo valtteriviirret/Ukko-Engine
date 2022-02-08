@@ -99,7 +99,7 @@ void Game::render()
 	}
 
 
-	for(auto & legalMove : legalMoves)
+	for(auto& legalMove : legalMoves)
 	{
 		if(selectedSquare && playerTurn)
 		{
@@ -149,11 +149,16 @@ void Game::playerPlayMove()
 					// loop pieces and find correct one
 					if (originalSquare == &Sqr::getSquare(Pieces::get(j).x, Pieces::get(j).y))
 					{
+						GameManager::update();
+
 						// make the move
-						Move::execute(Pieces::get(j), legalMove);
+						if(!Global::playerInCheck)
+							Move::execute(Pieces::get(j), legalMove);
+						else
+							std::cout << "player in check";
+
 						legalMoves.clear();
 						updateConsole();
-						GameManager::update();
 						isPieceSelected = false;
 						playerTurn = false;
 					}
@@ -166,12 +171,14 @@ void Game::playerPlayMove()
 // Engine's move:
 void Game::enginePlayMove()
 {
-	Engine::PlayMove();
 	GameManager::update();
-	updateConsole();
 
-	if(Global::engineInCheck)
+	if(!Global::engineInCheck)
+		Engine::PlayMove();
+	else
 		std::cout << "engine in check\n";
+
+	updateConsole();
 
 	// players turn
 	playerTurn = true;
@@ -183,6 +190,6 @@ void Game::updateConsole()
 	console.push_back(new Text(Move::getName(), playerTurn));
 	consoleIndex++;
 
-	for (auto & i : console)
+	for (auto& i : console)
 		i->position.y -= 18;
 }
