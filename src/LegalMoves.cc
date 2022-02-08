@@ -2,13 +2,15 @@
 
 namespace LegalMove
 {
-	// the vector to be returned
+	// raw legal moves
 	std::vector<Square> sqrs;
 
 	// KNIGHT, KING
 	void xyFindFunc(Piece p, int x, int y)
 	{
+		// pointing to square 
 		Square* s = Sqr::squareHelper((p.x + x), (p.y + y));
+
 		// if square is not on board
 		if(s != nullptr)
 		{
@@ -56,9 +58,8 @@ namespace LegalMove
 	void Castling(Piece p, bool dir)
 	{
 		// different directions for castling
-		int n = -1;
-		if(dir)
-			n = 1;
+		int n = 0;
+		dir ? n = 1 : n = -1;
 
 		// max distance
 		for(int i = 1; i < 5; i++)
@@ -76,11 +77,11 @@ namespace LegalMove
 				if(s->piece.type == NONE)
 					continue;
 
-					// something in the middle, cant castle
+				// something in the middle, cant castle
 				else if(s->piece.type != NONE && s->piece.type != ROOK)
 					break;
 
-					// can castle
+				// can castle
 				else
 					sqrs.push_back(*Sqr::squareHelper(p.x + 2 * n, p.y));
 			}
@@ -90,9 +91,10 @@ namespace LegalMove
 	void PawnFunc(Piece p, bool player)
 	{
 		int m = -1;
+
+		// first row is special
 		if(player)
 		{
-			// first row is special
 			if(p.y == 6)
 				if(Sqr::squareHelper(p.x, 4)->piece.type == NONE)
 					sqrs.push_back(*Sqr::squareHelper(p.x, 4));
@@ -108,12 +110,16 @@ namespace LegalMove
 
 		// left
 		Square* l = Sqr::squareHelper(p.x + 1 * m, p.y + 1 * m);
+
 		// check that square is on the board
 		if(l != nullptr)
+			
 			// check if square is empty of pieces
 			if(l->piece.type != NONE)
+				
 				// check that the square color is different to piece
 				if(l->piece.color != p.color)
+					
 					// add square
 					sqrs.push_back(*l);
 
@@ -132,7 +138,7 @@ namespace LegalMove
 	}
 
 
-	// give legal moves
+	// get legal moves
 	std::vector<Square> getLegal(Piece piece)
 	{ 
 		// get raw legal moves for the piece
@@ -163,15 +169,18 @@ namespace LegalMove
 				// loop legal moves for the piece
 				for(int k = 0; k < (int)temp.size(); k++)
 				{
-					// king is in check
-					if(temp.at(k).piece.type == KING)
+					if(originalPiece.type != KING)
 					{
-						// delete fake move
-						Sqr::getSquare(i->piece.x, i->piece.y).piece = originalPiece;
-						deleted = true;
+						// king is in check
+						if(temp.at(k).piece.type == KING)
+						{
+							// delete fake move
+							Sqr::getSquare(i->piece.x, i->piece.y).piece = originalPiece;
+							deleted = true;
 
-						// delete move, set counter smaller after deletion
-						v.erase(i--);
+							// delete move, substract from moves after deletion
+							v.erase(i--);
+						}
 					}
 				}
 			}
@@ -185,10 +194,9 @@ namespace LegalMove
 		return v;
 	}
 
-	// get legal moves
+	// get raw moves
 	std::vector<Square> get(Piece piece)
 	{
-		// clear vector to be sure
 		sqrs.clear();
 
 		switch(piece.type)

@@ -6,6 +6,8 @@ Engine::~Engine() = default;
 
 void Engine::PlayMove()
 {
+	getAllSquares();
+
 	// get random num
 	int piece = pickPiece();
 
@@ -41,3 +43,12 @@ int Engine::pickPiece()
 	// TODO: Evaluate the board. Pick pieces based on player's and AI's legal moves.
 	return rand() % 16;
 }
+
+void Engine::getAllSquares()
+{
+	for(int i = 0; i < 8; i++)
+		for(int j = 0; j < 8; j++)
+			squares[i][j] = Sqr::squareHelper(i, j);
+}
+
+

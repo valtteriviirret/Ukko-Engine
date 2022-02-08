@@ -35,7 +35,6 @@ void Game::updateGame()
 	render();
 }
 
-// according to valgrind in this function there is uninitialized value, check it out!
 void Game::eventHandler()
 {
 	while (SDL_PollEvent(&e))
@@ -152,10 +151,7 @@ void Game::playerPlayMove()
 						GameManager::update();
 
 						// make the move
-						if(!Global::playerInCheck)
-							Move::execute(Pieces::get(j), legalMove);
-						else
-							std::cout << "player in check";
+						Move::execute(Pieces::get(j), legalMove);
 
 						legalMoves.clear();
 						updateConsole();
@@ -173,10 +169,7 @@ void Game::enginePlayMove()
 {
 	GameManager::update();
 
-	if(!Global::engineInCheck)
-		Engine::PlayMove();
-	else
-		std::cout << "engine in check\n";
+	engine.PlayMove();
 
 	updateConsole();
 
