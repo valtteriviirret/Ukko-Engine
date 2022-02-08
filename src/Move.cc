@@ -201,7 +201,7 @@ namespace Move
 		}
 
 		// capturing piece
-		if(target.piece.type != 6)
+		if(target.piece.type != 6 && target.piece.type != 5)
 		{
 			for(int i = 0; i < 32; i++)
 			{
