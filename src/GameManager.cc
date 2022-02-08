@@ -2,98 +2,103 @@
 
 namespace GameManager
 {
-	void update()
+	void update(bool player)
 	{
-		Global::playerCanCastleK = true;
-		Global::playerCanCastleQ = true;
-		Global::playerInCheck = false;
-
-		for(int i = 0; i < 16; i++)
+		if(player)
 		{
-			std::vector v = LegalMove::get(Pieces::get(i));
+			Global::playerCanCastleK = true;
+			Global::playerCanCastleQ = true;
+			Global::playerInCheck = false;
 
-			for(int j = 0; j < (int)v.size(); j++)
+			for(int i = 0; i < 16; i++)
 			{
-				// see checks
-				if(v.at(j).piece.type == 5)
-				{
-					Global::playerInCheck = true;
-					Global::playerCanCastleQ = false;
-					Global::playerCanCastleK = false;
-				}
+				std::vector v = LegalMove::get(Pieces::get(i));
 
-				// possibility to castle
-				if(!Global::playerKingMoved)
+				for(int j = 0; j < (int)v.size(); j++)
 				{
-					if(!Global::playerKsideRookMoved)
+					// see checks
+					if(v.at(j).piece.type == 5)
 					{
-						if((v.at(j).x == 5 && v.at(j).y == 7) || (v.at(j).x == 6 && v.at(j).y == 7))
-							Global::playerCanCastleK = false;
-					}
-					else
+						Global::playerInCheck = true;
+						Global::playerCanCastleQ = false;
 						Global::playerCanCastleK = false;
-					
-					if(!Global::playerQsideRookMoved)
+					}
+
+					// possibility to castle
+					if(!Global::playerKingMoved)
 					{
-						if((v.at(j).x == 1 && v.at(j).y == 7) || (v.at(j).x == 2 && v.at(j).y == 7))
+						if(!Global::playerKsideRookMoved)
+						{
+							if((v.at(j).x == 5 && v.at(j).y == 7) || (v.at(j).x == 6 && v.at(j).y == 7))
+								Global::playerCanCastleK = false;
+						}
+						else
+							Global::playerCanCastleK = false;
+						
+						if(!Global::playerQsideRookMoved)
+						{
+							if((v.at(j).x == 1 && v.at(j).y == 7) || (v.at(j).x == 2 && v.at(j).y == 7))
+								Global::playerCanCastleQ = false;
+						}
+						else
 							Global::playerCanCastleQ = false;
 					}
 					else
+					{
 						Global::playerCanCastleQ = false;
-				}
-				else
-				{
-					Global::playerCanCastleQ = false;
-					Global::playerCanCastleK = false;
+						Global::playerCanCastleK = false;
+					}
 				}
 			}
 		}
 
-		Global::engineCanCastleK = true;
-		Global::engineCanCastleQ = true;
-		Global::engineInCheck = false;
-
-		for(int i = 16; i < 32; i++)
+		else
 		{
-			std::vector v = LegalMove::get(Pieces::get(i));
-			for(int j = 0; j < (int)v.size(); j++)
+			Global::engineCanCastleK = true;
+			Global::engineCanCastleQ = true;
+			Global::engineInCheck = false;
+
+			for(int i = 16; i < 32; i++)
 			{
-				// see checks
-				if(v.at(j).piece.type == 5)
+				std::vector v = LegalMove::get(Pieces::get(i));
+				for(int j = 0; j < (int)v.size(); j++)
 				{
-					Global::engineInCheck = true;
-					Global::engineCanCastleK = false;
-					Global::engineCanCastleQ = false;
-				}
-
-				// possibility to castle
-				if(!Global::engineKingMoved)
-				{
-					if(!Global::engineKsideRookMoved)
+					// see checks
+					if(v.at(j).piece.type == 5)
 					{
-						if((v.at(j).x == 5 && v.at(j).y == 0) || (v.at(j).x == 6 && v.at(j).y == 7))
-							Global::engineCanCastleK = false;
-					}
-					else
+						Global::engineInCheck = true;
 						Global::engineCanCastleK = false;
+						Global::engineCanCastleQ = false;
+					}
 
-					if(!Global::engineQsideRookMoved)
+					// possibility to castle
+					if(!Global::engineKingMoved)
 					{
-						if((v.at(j).x == 1  && v.at(j).y == 0) || (v.at(j).x == 2 && v.at(j).y == 0))
-							Global::playerCanCastleQ = false;
+						if(!Global::engineKsideRookMoved)
+						{
+							if((v.at(j).x == 5 && v.at(j).y == 0) || (v.at(j).x == 6 && v.at(j).y == 7))
+								Global::engineCanCastleK = false;
+						}
+						else
+							Global::engineCanCastleK = false;
+
+						if(!Global::engineQsideRookMoved)
+						{
+							if((v.at(j).x == 1  && v.at(j).y == 0) || (v.at(j).x == 2 && v.at(j).y == 0))
+								Global::playerCanCastleQ = false;
+						}
+						else
+							Global::engineCanCastleQ = false;
+
 					}
 					else
+					{
+						Global::engineCanCastleK = false;
 						Global::engineCanCastleQ = false;
+					}
 
 				}
-				else
-				{
-					Global::engineCanCastleK = false;
-					Global::engineCanCastleQ = false;
-				}
-
 			}
 		}
 	}
-
 }

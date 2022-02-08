@@ -137,39 +137,58 @@ namespace LegalMove
 					sqrs.push_back(*r);
 	}
 
+	// get legal moves for king
+	bool kingInDanger(Piece piece)
+	{
+		int a = piece.user == PLAYER ? 16 : 0;
+		int b = piece.user == PLAYER ? 32 : 16;
+
+		for(int i = a; i < b; i++)
+		{
+			std::vector<Square> v = LegalMove::get(Pieces::get(i));
+
+			// if raw move is same as opponents legalmove
+			for(auto j = v.begin(); j != v.end(); j++)
+				if(j->x == piece.x && j->y == piece.y)
+					return false;
+		}
+
+		return true;
+	}
+
 
 	// get legal moves
 	std::vector<Square> getLegal(Piece piece)
 	{ 
 		// get raw legal moves for the piece
-		std::vector<Square> v = LegalMove::get(piece); 
+		std::vector<Square> v = LegalMove::get(piece);
 
-		// loop all the possible moves 
-		for(auto i = v.begin(); i != v.end(); i++) 
+		if(piece.type != KING)
 		{
-			// get original piece in possible move
-			Piece originalPiece = Sqr::getSquare(i->piece.x, i->piece.y).piece;
-
-			// making fake move
-			Sqr::getSquare(i->piece.x, i->piece.y).piece = myPiece(piece);
-
-			// has the fake move been deleted?
-			bool deleted = false;
-
-			// getting the opponent's pieces
-			int a = piece.user == PLAYER ? 0 : 16;
-			int b = piece.user == PLAYER ? 16 : 32;
-
-			// loop all opponent's pieces
-			for(int j = a; j < b; j++)
+			// loop all the possible moves 
+			for(auto i = v.begin(); i != v.end(); i++) 
 			{
-				// get all raw legal moves for the opponent's pieces
-				std::vector<Square> temp = LegalMove::get(Pieces::get(j));
+				// get original piece in possible move
+				Piece originalPiece = Sqr::getSquare(i->piece.x, i->piece.y).piece;
 
-				// loop legal moves for the piece
-				for(int k = 0; k < (int)temp.size(); k++)
+				// making fake move
+				Sqr::getSquare(i->piece.x, i->piece.y).piece = myPiece(piece);
+
+				// has the fake move been deleted?
+				bool deleted = false;
+
+				// getting the opponent's pieces
+				int a = piece.user == PLAYER ? 0 : 16;
+				int b = piece.user == PLAYER ? 16 : 32;
+
+				// loop all opponent's pieces
+				for(int j = a; j < b; j++)
 				{
-					if(originalPiece.type != KING)
+					// get all raw legal moves for the opponent's pieces
+					std::vector<Square> temp = LegalMove::get(Pieces::get(j));
+
+					// loop legal moves for the piece
+					for(int k = 0; k < (int)temp.size(); k++)
 					{
 						// king is in check
 						if(temp.at(k).piece.type == KING)
@@ -183,13 +202,21 @@ namespace LegalMove
 						}
 					}
 				}
+				
+				// if the move was legal, delete fake move
+				if(!deleted)
+					Sqr::getSquare(i->piece.x, i->piece.y).piece = originalPiece;
 			}
-			
-			// if the move was legal, delete fake move
-			if(!deleted)
-				Sqr::getSquare(i->piece.x, i->piece.y).piece = originalPiece;
 		}
 
+		else
+		{
+			// get legal moves for king
+			for(auto i = v.begin(); i != v.end(); i++)
+				if(!kingInDanger(i->piece))
+					v.erase(i--);
+		}
+		
 		// return filtered moves
 		return v;
 	}

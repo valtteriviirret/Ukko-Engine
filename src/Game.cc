@@ -148,7 +148,7 @@ void Game::playerPlayMove()
 					// loop pieces and find correct one
 					if (originalSquare == &Sqr::getSquare(Pieces::get(j).x, Pieces::get(j).y))
 					{
-						GameManager::update();
+						GameManager::update(false);
 
 						// make the move
 						Move::execute(Pieces::get(j), legalMove);
@@ -167,7 +167,7 @@ void Game::playerPlayMove()
 // Engine's move:
 void Game::enginePlayMove()
 {
-	GameManager::update();
+	GameManager::update(true);
 
 	engine.PlayMove();
 
