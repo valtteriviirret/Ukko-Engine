@@ -3,18 +3,12 @@
 
 #include "Piece.hh"
 #include "Pieces.hh"
+#include "Square.hh"
+#include "SquareManager.hh"
 
-class Status
+namespace Status
 {
-	public:
-		Status();
-		~Status();
-		Status* getStatus();
-		void setStatus();
-		void updateStatus();
-
-	private:
-		Status* status;
-};
+		
+}
 
 #endif

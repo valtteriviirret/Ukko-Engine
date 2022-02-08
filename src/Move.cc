@@ -129,6 +129,7 @@ namespace Move
 					castlingFunc(source, Pieces::get(9), false, false);
 
 			}
+			
 		}
 	
 		// if rook is moved, has to do with castling
@@ -151,6 +152,7 @@ namespace Move
 
 			}
 		}
+
 		
 		// pawn promotion
 		if(source.type == PAWN)
@@ -198,10 +200,8 @@ namespace Move
 			}
 		}
 
-		// if moving to enemy's square, if problems were to occur in the future its prolly here
-		//
-		// also this if must change later
-		if(target.piece.type != 6 && target.piece.type != 5)
+		// capturing piece
+		if(target.piece.type != 6)
 		{
 			for(int i = 0; i < 32; i++)
 			{

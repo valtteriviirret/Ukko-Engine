@@ -6,6 +6,7 @@
 #include "Global.hh"
 #include "LegalMoves.hh"
 #include "Move.hh"
+#include "SquareManager.hh"
 #include <vector>
 #include <iostream>
 
@@ -14,9 +15,11 @@ class Engine
 public:
 	Engine();
 	~Engine();
-	static void PlayMove();
+	void PlayMove();
 private:
-	static int pickPiece();
+	void getAllSquares();
+	Square* squares[8][8] = {};
+	int pickPiece();
 };
 
 #endif

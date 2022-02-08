@@ -27,6 +27,7 @@ class Game
 		void updateGame();
 		bool ApplicationShouldClose = false;
 	private:
+		Engine engine;
 		void updateConsole();
 		void playerPlayMove();
 		void enginePlayMove();
