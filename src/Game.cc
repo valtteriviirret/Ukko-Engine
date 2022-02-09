@@ -75,6 +75,7 @@ void Game::update()
 {
 	playerTurn ? playerPlayMove() : enginePlayMove();
 
+	// ideally we want to ask for a new game, not just close everything
 	if (currentGameState == VICTORY || currentGameState == DEFEAT || currentGameState == STALEMATE)
 		ApplicationShouldClose = true;
 }
@@ -99,7 +100,6 @@ void Game::render()
 		Renderer::setColor(0, 0, 255);
 		Renderer::fillRect(selectedSquare->rect);
 	}
-
 
 	for(auto& legalMove : legalMoves)
 	{
@@ -173,6 +173,8 @@ void Game::playerPlayMove()
 void Game::enginePlayMove()
 {
 	GameManager::update(true);
+
+	// ???
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	engine.PlayMove();
 	updateConsole();

@@ -18,6 +18,7 @@ public:
 	~Engine();
 	void PlayMove();
 private:
+	void makeFakeMove(Piece source, Square target);
 	void getAllSquares();
 	Square* squares[8][8] = {};
 	static int pickPiece();

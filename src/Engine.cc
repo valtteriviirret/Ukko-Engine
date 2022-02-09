@@ -52,11 +52,22 @@ int Engine::pickPiece()
 	return rand() % 16;
 }
 
+// get all squares
 void Engine::getAllSquares()
 {
 	for(int i = 0; i < 8; i++)
 		for(int j = 0; j < 8; j++)
 			squares[i][j] = Sqr::squareHelper(i, j);
 }
+
+void Engine::makeFakeMove(Piece source, Square target)
+{
+	// source goes to target
+	squares[target.x][target.y]->piece = source;
+
+	// source is set to zero
+	squares[source.x][source.y]->piece = ghost(source.x, source.y);
+}
+
 
 

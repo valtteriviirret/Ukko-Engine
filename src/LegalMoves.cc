@@ -233,7 +233,7 @@ namespace LegalMove
 
 		else
 		{
-			// get legal moves for king
+			// remove unlegal moves for a king
 			for(auto i = v.begin(); i != v.end(); i++)
 				if(kingInDanger(Sqr::getSquare(i->x, i->y), piece))
 					v.erase(i--);
