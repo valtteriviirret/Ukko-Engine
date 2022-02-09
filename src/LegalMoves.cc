@@ -169,7 +169,6 @@ namespace LegalMove
 
 		Sqr::getSquare(square.x, square.y).piece = square.piece;
 		Sqr::getSquare(piece.x, piece.y).piece = piece;
-
 		return false;
 	}
 
@@ -177,23 +176,24 @@ namespace LegalMove
 	// get legal moves
 	std::vector<Square> getLegal(Piece piece)
 	{ 
-		// get raw legal moves for the piece
+		// get raw moves for the piece
 		std::vector<Square> v = LegalMove::get(piece);
 
 		if(piece.type != KING)
 		{
-			bool backToNormal = false;
-
 			// loop all the possible moves 
 			for(auto i = v.begin(); i != v.end(); i++) 
 			{
-				// get original square
-				Piece originalSquare = Sqr::getSquare(i->x, i->y).piece;
+				// is everything back to normal?
+				bool backToNormal = false;
+
+				// get original value of square where the fake move happens
+				Piece moveSquare = Sqr::getSquare(i->x, i->y).piece;
 
 				// set the fake move
 				Sqr::getSquare(i->x, i->y).piece = piece;
 
-				// set original square to empty
+				// set pieces's square to empty
 				Sqr::getSquare(piece.x, piece.y).piece = ghost(piece.x, piece.y);
 
 				// getting the opponent's pieces
@@ -213,7 +213,7 @@ namespace LegalMove
 						if(k->piece.type == KING)
 						{
 							// set move back to normal
-							Sqr::getSquare(i->x, i->y).piece = originalSquare;
+							Sqr::getSquare(i->x, i->y).piece = moveSquare;
 							Sqr::getSquare(piece.x, piece.y).piece = piece;
 							backToNormal = true;
 
@@ -225,7 +225,7 @@ namespace LegalMove
 
 				if(!backToNormal)
 				{
-					Sqr::getSquare(i->x, i->y).piece = originalSquare;
+					Sqr::getSquare(i->x, i->y).piece = moveSquare;
 					Sqr::getSquare(piece.x, piece.y).piece = piece;
 				}
 			}
@@ -233,7 +233,7 @@ namespace LegalMove
 
 		else
 		{
-			// remove unlegal moves for a king
+			// remove illegal moves for a king
 			for(auto i = v.begin(); i != v.end(); i++)
 				if(kingInDanger(Sqr::getSquare(i->x, i->y), piece))
 					v.erase(i--);
@@ -251,36 +251,34 @@ namespace LegalMove
 		switch(piece.type)
 		{
 			case PAWN:
-
 				if(piece.user == PLAYER)
 					PawnFunc(piece, true);
 				else
 					PawnFunc(piece, false);
-
 				break;
-			case KNIGHT:
 
+			
+			case KNIGHT:
 				for(int i = -2; i < 3; i++)
 					for(int j = -2; j < 3; j++)
 						if((i != 0 && j != 0) && abs(i) != abs(j))
 							xyFindFunc(piece, i, j);
-
 				break;
-			case QUEEN:
 
+
+			case QUEEN:
 				for(int i = -1; i < 2; i++)
 					for(int j = -1; j < 2; j++)
 						if(!(i == 0 && j == 0))
 							LooperFunc(piece, i, j);
-
 				break;
-			case KING:
 
+
+			case KING:
 				for(int i = -1; i < 2; i++)
 					for(int j = -1; j < 2; j++)
 						if(!(i == 0 && j == 0))
 							xyFindFunc(piece, i, j);
-
 
 				if(piece.user == PLAYER)
 				{
@@ -299,24 +297,24 @@ namespace LegalMove
 					if(Global::engineCanCastleQ)
 						Castling(piece, false);
 				}
-
 				break;
-			case BISHOP:
 
+
+			case BISHOP:
 				LooperFunc(piece, 1, 1);
 				LooperFunc(piece, 1, -1);
 				LooperFunc(piece, -1, 1);
 				LooperFunc(piece, -1, -1);
-
 				break;
-			case ROOK:
 
+
+			case ROOK:
 				LooperFunc(piece, 1, 0);
 				LooperFunc(piece, 0, 1);
 				LooperFunc(piece, -1, 0);
 				LooperFunc(piece, 0, -1);
-
 				break;
+
 			case NONE: break;
 		}
 
