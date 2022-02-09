@@ -18,7 +18,7 @@ Game::Game()
 	Pieces::init();
 	
 	// white starts game
-	Settings::PlayerColor == WHITE ? playerTurn = true : playerTurn = false;
+	Settings::PlayerColor == WHITE ? Global::playerTurn = true : Global::playerTurn = false;
 }
 
 Game::~Game()
@@ -73,28 +73,29 @@ void Game::eventHandler()
 // update turns
 void Game::update()
 {
-	playerTurn ? playerPlayMove() : enginePlayMove();
-	
 	gameState();
+
+	Global::playerTurn ? playerPlayMove() : enginePlayMove();
 }
 
 void Game::gameState()
 {
-	switch(currentGameState)
+	switch(Global::state)
 	{
 		case VICTORY:
-			Settings::PlayerColor == WHITE ? std::cout << "1-0" : std::cout << "0-1";
+			Settings::PlayerColor == WHITE ? std::cout << "1-0\n" : std::cout << "0-1";
 			ApplicationShouldClose = true;
 			break;
 		
 		case DEFEAT:
-			Settings::PlayerColor == WHITE ? std::cout << "0-1" : std::cout << "1-0";
+			Settings::PlayerColor == WHITE ? std::cout << "0-1\n" : std::cout << "1-0";
 			ApplicationShouldClose = true;
 			break;
 
 		case DRAW:
-			std::cout << "1/2";
+			std::cout << "1/2\n";
 			ApplicationShouldClose = true;
+			break;
 
 		// game is in progress
 		default: break;
@@ -124,7 +125,7 @@ void Game::render()
 
 	for(auto& legalMove : legalMoves)
 	{
-		if(selectedSquare && playerTurn)
+		if(selectedSquare && Global::playerTurn)
 		{
 			// color legal moves
 			Renderer::setColor(255, 0, 0);
@@ -174,20 +175,21 @@ void Game::playerPlayMove()
 					{
 						GameManager::update(false);
 
+						if (legalMoves.empty())
+						{
+							if(Global::playerInCheck)
+								Global::state = DEFEAT;
+							else
+								Global::state = DRAW;
+						}
+
 						// make the move
 						Move::execute(Pieces::get(j), legalMove);
 
 						legalMoves.clear();
-						updateConsole();
+						//updateConsole();
 						isPieceSelected = false;
-						playerTurn = false;
-					}
-					else if (legalMoves.empty() && playerTurn)
-					{
-						if(Global::playerInCheck)
-							currentGameState = DEFEAT;
-						else
-							currentGameState = DRAW; 
+						Global::playerTurn = false;
 					}
 				}
 			}
@@ -203,16 +205,18 @@ void Game::enginePlayMove()
 	// ???
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	engine.PlayMove();
-	updateConsole();
-	playerTurn = true;
+	//updateConsole();
+	Global::playerTurn = true;
 }
 
 // update console output
 void Game::updateConsole()
 {
-	console.push_back(new Text(Move::getName(), playerTurn));
+	console.push_back(new Text(Move::getName(), Global::playerTurn));
 	consoleIndex++;
 
 	for (auto& i : console)
 		i->position.y -= 18;
 }
+
+

@@ -16,7 +16,7 @@ void Engine::PlayMove()
 
 	int n = pickPiece();
 
-	for(;;)
+	while(Global::state == GAME_ON)
 	{
 		if(moves.find(n) == moves.end())
 		{
@@ -26,7 +26,22 @@ void Engine::PlayMove()
 			break;
 	}
 
-	Move::execute(Pieces::get(moves.extract(n).key()), moves.at(n));
+	if(moves.empty())
+	{
+		if(Global::engineInCheck)
+		{
+			Global::state = VICTORY;
+			Global::playerTurn = true;
+		}
+		else
+		{
+			Global::state = DRAW;
+			Global::playerTurn = true;
+		}
+	}
+
+	else
+		Move::execute(Pieces::get(moves.extract(n).key()), moves.at(n));
 }
 
 int Engine::pickPiece()

@@ -3,12 +3,12 @@
 
 #include "Piece.hh"
 
-static enum { GAME_ON, VICTORY, DEFEAT, DRAW } currentGameState;
-static bool playerTurn;
 static Piece p[32];
 
 // return ghost struct
 Piece ghost(int x, int y);
+
+typedef enum { GAME_ON, VICTORY, DEFEAT, DRAW } currentGameState;
 
 class Global
 {
@@ -30,6 +30,10 @@ class Global
 		// check
 		static bool playerInCheck;
 		static bool engineInCheck;
+
+		static bool playerTurn;
+
+		static currentGameState state;
 };
 
 #endif
