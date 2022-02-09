@@ -6,44 +6,27 @@ Engine::~Engine() = default;
 
 void Engine::PlayMove()
 {
+	moves.clear();
+
+	// get fresh squares
 	getAllSquares();
+	
+	// get legal moves
+	getAllMoves();
 
-	// get random num
-	int piece = pickPiece();
-	int timer = 0;
+	int n = pickPiece();
 
-	// this is bad
-	Square s;
-
-	// get moves for random num
-	std::vector<Square> v = LegalMove::getLegal(Pieces::get(piece));
-
-	// get piece that has legal moves
-	for (;;)
+	for(;;)
 	{
-		if (timer > 30)
+		if(moves.find(n) == moves.end())
 		{
-			currentGameState = VICTORY;
-			break;
+			n = pickPiece();
 		}
-		if (!v.empty())
-			break;
 		else
-		{
-			piece = pickPiece();
-			v = LegalMove::getLegal(Pieces::get(piece));
-			std::this_thread::sleep_for(std::chrono::milliseconds(30));
-			timer++;
-		}
-	}
-
-	for (auto &i: v)
-	{
-		s = Sqr::getSquare(i.x, i.y);
-		if (Sqr::getSquare(i.x, i.y).piece.type != NONE && Sqr::getSquare(i.x, i.y).piece.type != KING && Sqr::getSquare(i.x, i.y).piece.user == PLAYER)
 			break;
 	}
-	Move::execute(Pieces::get(piece), s);
+
+	Move::execute(Pieces::get(moves.extract(n).key()), moves.at(n));
 }
 
 int Engine::pickPiece()
@@ -69,5 +52,18 @@ void Engine::makeFakeMove(Piece source, Square target)
 	squares[source.x][source.y]->piece = ghost(source.x, source.y);
 }
 
+
+void Engine::getAllMoves()
+{
+	for(int i = 0; i < 16; i++)
+	{
+		std::vector<Square> temp = LegalMove::getLegal(Pieces::get(i));
+
+		for(auto j = temp.begin(); j < temp.end(); j++)
+		{
+			moves.insert(std::pair<int, Square>(i, *j));
+		}
+	}
+}
 
 

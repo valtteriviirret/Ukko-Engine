@@ -9,19 +9,22 @@
 #include "SquareManager.hh"
 #include <vector>
 #include <iostream>
+#include <map>
 #include <thread>
 
 class Engine
 {
-public:
-	Engine();
-	~Engine();
-	void PlayMove();
-private:
-	void makeFakeMove(Piece source, Square target);
-	void getAllSquares();
-	Square* squares[8][8] = {};
-	static int pickPiece();
+	public:
+		Engine();
+		~Engine();
+		void PlayMove();
+	private:
+		std::map<int, Square> moves;
+		void makeFakeMove(Piece source, Square target);
+		void getAllMoves();
+		void getAllSquares();
+		Square* squares[8][8] = {};
+		static int pickPiece();
 };
 
 #endif
