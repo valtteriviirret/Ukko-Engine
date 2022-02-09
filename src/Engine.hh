@@ -9,6 +9,7 @@
 #include "SquareManager.hh"
 #include <vector>
 #include <iostream>
+#include <thread>
 
 class Engine
 {
@@ -19,7 +20,7 @@ public:
 private:
 	void getAllSquares();
 	Square* squares[8][8] = {};
-	int pickPiece();
+	static int pickPiece();
 };
 
 #endif

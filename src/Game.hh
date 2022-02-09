@@ -18,6 +18,9 @@
 #include "Text.hh"
 #include "GameManager.hh"
 #include <vector>
+#include <chrono>
+#include <thread>
+
 
 class Game
 {

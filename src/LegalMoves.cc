@@ -44,7 +44,6 @@ namespace LegalMove
 				}
 				else
 				{
-					// break the loop if see piece, add if enemy
 					if(s->piece.color != p.color)
 						sqrs.push_back(*s);
 					break;
@@ -77,7 +76,7 @@ namespace LegalMove
 				if(s->piece.type == NONE)
 					continue;
 
-				// something in the middle, cant castle
+				// something in the middle, can't castle
 				else if(s->piece.type != NONE && s->piece.type != ROOK)
 					break;
 
@@ -113,13 +112,13 @@ namespace LegalMove
 
 		// check that square is on the board
 		if(l != nullptr)
-			
+
 			// check if square is empty of pieces
 			if(l->piece.type != NONE)
-				
+
 				// check that the square color is different to piece
 				if(l->piece.color != p.color)
-				
+
 					// add square
 					sqrs.push_back(*l);
 
@@ -144,9 +143,6 @@ namespace LegalMove
 		int a = piece.user == PLAYER ? 0 : 16;
 		int b = piece.user == PLAYER ? 16 : 32;
 
-		// is everything back to normal?
-		bool backtoNormal = false;
-
 		// set the fake move
 		Sqr::getSquare(square.x, square.y).piece = piece;
 
@@ -166,17 +162,13 @@ namespace LegalMove
 					// back to normal
 					Sqr::getSquare(square.x, square.y).piece = square.piece;
 					Sqr::getSquare(piece.x, piece.y).piece = piece;
-					backtoNormal = true;
 					return true;
 				}
 			}
 		}
 
-		if(!backtoNormal)
-		{
-			Sqr::getSquare(square.x, square.y).piece = square.piece;
-			Sqr::getSquare(piece.x, piece.y).piece = piece;
-		}
+		Sqr::getSquare(square.x, square.y).piece = square.piece;
+		Sqr::getSquare(piece.x, piece.y).piece = piece;
 
 		return false;
 	}

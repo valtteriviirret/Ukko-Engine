@@ -10,6 +10,7 @@ void Engine::PlayMove()
 
 	// get random num
 	int piece = pickPiece();
+	int timer = 0;
 
 	// this is bad
 	Square s;
@@ -20,19 +21,26 @@ void Engine::PlayMove()
 	// get piece that has legal moves
 	for (;;)
 	{
+		if (timer > 30)
+		{
+			currentGameState = VICTORY;
+			break;
+		}
 		if (!v.empty())
 			break;
 		else
 		{
 			piece = pickPiece();
 			v = LegalMove::getLegal(Pieces::get(piece));
+			std::this_thread::sleep_for(std::chrono::milliseconds(30));
+			timer++;
 		}
 	}
 
 	for (auto &i: v)
 	{
 		s = Sqr::getSquare(i.x, i.y);
-		if (Sqr::getSquare(i.x, i.y).piece.type != NONE && Sqr::getSquare(i.x, i.y).piece.user == PLAYER)
+		if (Sqr::getSquare(i.x, i.y).piece.type != NONE && Sqr::getSquare(i.x, i.y).piece.type != KING && Sqr::getSquare(i.x, i.y).piece.user == PLAYER)
 			break;
 	}
 	Move::execute(Pieces::get(piece), s);

@@ -3,14 +3,12 @@
 
 #include "Piece.hh"
 
-// check these out!
-typedef enum { GAME_ON, VICTORY, DEFEAT, STALEMATE } currentGameState;
+static enum { GAME_ON, VICTORY, DEFEAT, STALEMATE } currentGameState;
 static bool playerTurn;
 static Piece p[32];
 
 // return ghost struct
 Piece ghost(int x, int y);
-Piece myPiece(Piece piece);
 
 class Global
 {

@@ -169,22 +169,24 @@ namespace Move
 
 					switch(choice)
 					{
-						case 1: 
-						source.type = QUEEN; 
-						promotion = 'Q';
-						break;
-						case 2: 
-						source.type = ROOK; 
-						promotion = 'R';
-						break;
-						case 3: 
-						source.type = BISHOP; 
-						promotion = 'B';
-						break;
-						case 4: 
-						source.type = KNIGHT; 
-						promotion = 'N';
-						break;
+						case 1:
+							source.type = QUEEN;
+							promotion = 'Q';
+							break;
+						case 2:
+							source.type = ROOK;
+							promotion = 'R';
+							break;
+						case 3:
+							source.type = BISHOP;
+							promotion = 'B';
+							break;
+						case 4:
+							source.type = KNIGHT;
+							promotion = 'N';
+							break;
+						default:
+							break;
 					}
 				}
 			}
@@ -207,6 +209,7 @@ namespace Move
 			{
 				if(Pieces::get(i).x == target.x && Pieces::get(i).y == target.y)
 				{
+
 					// kill the old piece
 					Pieces::get(i) = ghost(target.x, target.y);
 				}

@@ -74,6 +74,9 @@ void Game::eventHandler()
 void Game::update()
 {
 	playerTurn ? playerPlayMove() : enginePlayMove();
+
+	if (currentGameState == VICTORY || currentGameState == DEFEAT || currentGameState == STALEMATE)
+		ApplicationShouldClose = true;
 }
 
 void Game::render()
@@ -158,6 +161,8 @@ void Game::playerPlayMove()
 						isPieceSelected = false;
 						playerTurn = false;
 					}
+					else if (legalMoves.empty() && playerTurn)
+						currentGameState = DEFEAT;
 				}
 			}
 		}
@@ -168,12 +173,9 @@ void Game::playerPlayMove()
 void Game::enginePlayMove()
 {
 	GameManager::update(true);
-
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	engine.PlayMove();
-
 	updateConsole();
-
-	// players turn
 	playerTurn = true;
 }
 
