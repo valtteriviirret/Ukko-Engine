@@ -187,8 +187,8 @@ namespace LegalMove
 				// is everything back to normal?
 				bool backToNormal = false;
 
-				// get original value of square where the fake move happens
-				Piece moveSquare = Sqr::getSquare(i->x, i->y).piece;
+				// get original value of piece in the square where the move happens
+				Piece move = Sqr::getSquare(i->x, i->y).piece;
 
 				// set the fake move
 				Sqr::getSquare(i->x, i->y).piece = piece;
@@ -213,7 +213,7 @@ namespace LegalMove
 						if(k->piece.type == KING)
 						{
 							// set move back to normal
-							Sqr::getSquare(i->x, i->y).piece = moveSquare;
+							Sqr::getSquare(i->x, i->y).piece = move;
 							Sqr::getSquare(piece.x, piece.y).piece = piece;
 							backToNormal = true;
 
@@ -225,7 +225,7 @@ namespace LegalMove
 
 				if(!backToNormal)
 				{
-					Sqr::getSquare(i->x, i->y).piece = moveSquare;
+					Sqr::getSquare(i->x, i->y).piece = move;
 					Sqr::getSquare(piece.x, piece.y).piece = piece;
 				}
 			}
@@ -239,7 +239,7 @@ namespace LegalMove
 					v.erase(i--);
 		}
 		
-		// return filtered moves
+		// return legal moves
 		return v;
 	}
 

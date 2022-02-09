@@ -22,6 +22,7 @@ void Board::makeBoard() const
 			Sqr::getSquare(i, j).x = i;
 			Sqr::getSquare(i, j).y = j;
 			
+			// different colors to every other square
 			if((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0))
 			{
                 Renderer::setColor(64, 48, 0);

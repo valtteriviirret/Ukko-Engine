@@ -74,10 +74,31 @@ void Game::eventHandler()
 void Game::update()
 {
 	playerTurn ? playerPlayMove() : enginePlayMove();
+	
+	gameState();
+}
 
-	// ideally we want to ask for a new game, not just close everything
-	if (currentGameState == VICTORY || currentGameState == DEFEAT || currentGameState == STALEMATE)
-		ApplicationShouldClose = true;
+void Game::gameState()
+{
+	switch(currentGameState)
+	{
+		case VICTORY:
+			Settings::PlayerColor == WHITE ? std::cout << "1-0" : std::cout << "0-1";
+			ApplicationShouldClose = true;
+			break;
+		
+		case DEFEAT:
+			Settings::PlayerColor == WHITE ? std::cout << "0-1" : std::cout << "1-0";
+			ApplicationShouldClose = true;
+			break;
+
+		case DRAW:
+			std::cout << "1/2";
+			ApplicationShouldClose = true;
+
+		// game is in progress
+		default: break;
+	}
 }
 
 void Game::render()
@@ -162,7 +183,12 @@ void Game::playerPlayMove()
 						playerTurn = false;
 					}
 					else if (legalMoves.empty() && playerTurn)
-						currentGameState = DEFEAT;
+					{
+						if(Global::playerInCheck)
+							currentGameState = DEFEAT;
+						else
+							currentGameState = DRAW; 
+					}
 				}
 			}
 		}

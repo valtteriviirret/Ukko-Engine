@@ -30,6 +30,7 @@ class Game
 		void updateGame();
 		bool ApplicationShouldClose = false;
 	private:
+		void gameState();
 		Engine engine;
 		void updateConsole();
 		void playerPlayMove();

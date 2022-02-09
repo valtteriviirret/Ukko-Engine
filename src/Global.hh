@@ -3,7 +3,7 @@
 
 #include "Piece.hh"
 
-static enum { GAME_ON, VICTORY, DEFEAT, STALEMATE } currentGameState;
+static enum { GAME_ON, VICTORY, DEFEAT, DRAW } currentGameState;
 static bool playerTurn;
 static Piece p[32];
 
@@ -28,7 +28,7 @@ class Global
 		static bool engineCanCastleQ;
 
 		// check
-		[[maybe_unused]] static bool playerInCheck;
+		static bool playerInCheck;
 		static bool engineInCheck;
 };
 
