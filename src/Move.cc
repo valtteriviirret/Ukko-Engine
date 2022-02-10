@@ -162,31 +162,44 @@ namespace Move
 				// last row
 				if(target.y == 0)
 				{
-					int choice;
-					std::cout 	<< "PLAYER PAWN GETS PROMOTED IN " << nameX << nameY << "\n"
-								<< "CHOOSE PIECE:\n1:QUEEN\n2:ROOK\n3:BISHOP\n4:KNIGHT\n";
-					std::cin >> choice;
+					std::cout << "PLAYER PAWN GETS PROMOTED IN " << nameX << nameY << "\n";
+					std::cout << "CHOOSE PIECE:\n";
+					showPieces
 
-					switch(choice)
+					bool choiceMade = false;
+					char choice;
+
+					while(!choiceMade)
 					{
-						case 1:
-							source.type = QUEEN;
-							promotion = 'Q';
-							break;
-						case 2:
-							source.type = ROOK;
-							promotion = 'R';
-							break;
-						case 3:
-							source.type = BISHOP;
-							promotion = 'B';
-							break;
-						case 4:
-							source.type = KNIGHT;
-							promotion = 'N';
-							break;
-						default:
-							break;
+						std::cin >> choice;
+
+						switch(choice)
+						{
+							case 'Q':
+								source.type = QUEEN;
+								promotion = 'Q';
+								choiceMade = true;
+								break;
+							case 'R':
+								source.type = ROOK;
+								promotion = 'R';
+								choiceMade = true;
+								break;
+							case 'B':
+								source.type = BISHOP;
+								promotion = 'B';
+								choiceMade = true;
+								break;
+							case 'N':
+								source.type = KNIGHT;
+								promotion = 'N';
+								choiceMade = true;
+								break;
+							default:
+								std::cout << "INCORRECT OPTION\nCHOOSE AGAIN!\n";
+								showPieces
+								break;
+						}
 					}
 				}
 			}
@@ -236,4 +249,5 @@ namespace Move
 		readName();
 	}
 }
+
 

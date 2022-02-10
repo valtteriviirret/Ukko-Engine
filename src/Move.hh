@@ -9,6 +9,8 @@
 #include <iostream>
 #include <string>
 
+#define showPieces std::cout << "Q:QUEEN\nR:ROOK\nB:BISHOP\nN:KNIGHT\n";
+
 namespace Move
 {
 	void execute(Piece& source, Square target);
