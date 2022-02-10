@@ -198,24 +198,35 @@ void Game::updateConsole()
 	{
 		case GAME_ON:
 			console.push_back(new Text(Move::getName(), Global::playerTurn));
+			consoleIndex++;
+			for (auto& i : console)
+				i->position.y -= 18;
 			break;
 		case VICTORY:
 			console.push_back(new Text("Checkmate! You won!", true));
+			consoleIndex++;
+			for (auto& i : console)
+				i->position.y -= 18;
+			Global::state = END;
 			break;
 		case DEFEAT:
 			console.push_back(new Text("Checkmate! You lost.", false));
+			consoleIndex++;
+			for (auto& i : console)
+				i->position.y -= 18;
+			Global::state = END;
 			break;
-		case END:
+		default:
 			break;
 	}
 
-	consoleIndex++;
-
-	for (auto& i : console)
-		i->position.y -= 18;
-
-	if (Global::state != GAME_ON)
-		Global::state = END;
+	if (Global::state == END)
+	{
+		console.push_back(new Text("Hit 'R' to play again.", Global::playerTurn));
+		consoleIndex++;
+		for (auto &i: console)
+			i->position.y -= 18;
+	}
 }
 
 // reset game variables

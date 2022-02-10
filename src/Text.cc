@@ -3,7 +3,7 @@
 
 Text::Text(std::string _text, bool playerTurn) : text(_text)
 {
-	font = FontLoader::loadFont("Assets/Fonts/mytype.ttf", 15);
+	font = FontLoader::loadFont("Assets/Fonts/mytype.ttf", 14);
 	if (!playerTurn)
 		color = { 0, 255, 255, 255 };
 	else
