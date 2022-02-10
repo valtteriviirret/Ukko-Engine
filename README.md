@@ -1,4 +1,4 @@
-# Ukko Chess Engine v0.3.0 alpha
+# Ukko Chess Engine v0.3.1 alpha
 
 #### Known issues:
 - Captured pieces occasionally stay visible and behave like ghost pieces. (rendering issue?)
