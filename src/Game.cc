@@ -69,7 +69,7 @@ void Game::eventHandler()
 		}
 
 		// if game is over press 'R' to reset and play again :)
-		if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_r && Global::state == END)
+		if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_r)
 		{
 			console.clear();
 			resetGame();
