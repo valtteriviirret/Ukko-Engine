@@ -30,14 +30,13 @@ class Game
 		void updateGame();
 		bool ApplicationShouldClose = false;
 	private:
-		void gameState();
-		Engine engine;
 		void updateConsole();
 		void playerPlayMove();
 		void enginePlayMove();
 		void render();
 		void update();
 		void eventHandler();
+		Engine engine;
 		Board* board = nullptr;
 		PieceFactory* pieces = nullptr;
 		Window* window = nullptr;
@@ -49,6 +48,8 @@ class Game
 		std::vector<Square> legalMoves;
 		int consoleIndex = 0;
         bool isPieceSelected = false;
+		// static void gameState();
+		static void resetGame();
 };
 
 #endif

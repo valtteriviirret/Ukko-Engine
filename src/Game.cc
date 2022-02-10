@@ -67,39 +67,23 @@ void Game::eventHandler()
 				isPieceSelected = true;
 			}
 		}
+
+		// if game is over press 'R' to reset and play again :)
+		if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_r && Global::state == END)
+		{
+			console.clear();
+			resetGame();
+		}
 	}
 }
 
 // update turns
 void Game::update()
 {
-	gameState();
-
-	Global::playerTurn ? playerPlayMove() : enginePlayMove();
-}
-
-void Game::gameState()
-{
-	switch(Global::state)
-	{
-		case VICTORY:
-			Settings::PlayerColor == WHITE ? std::cout << "1-0\n" : std::cout << "0-1";
-			ApplicationShouldClose = true;
-			break;
-		
-		case DEFEAT:
-			Settings::PlayerColor == WHITE ? std::cout << "0-1\n" : std::cout << "1-0";
-			ApplicationShouldClose = true;
-			break;
-
-		case DRAW:
-			std::cout << "1/2\n";
-			ApplicationShouldClose = true;
-			break;
-
-		// game is in progress
-		default: break;
-	}
+	if (Global::state == GAME_ON)
+		Global::playerTurn ? playerPlayMove() : enginePlayMove();
+	if (Global::state == DEFEAT)
+		updateConsole();
 }
 
 void Game::render()
@@ -175,21 +159,21 @@ void Game::playerPlayMove()
 					{
 						GameManager::update(false);
 
-						if (legalMoves.empty())
+						if (legalMoves.empty() && Global::playerInCheck)
 						{
-							if(Global::playerInCheck)
-								Global::state = DEFEAT;
-							else
-								Global::state = DRAW;
+							legalMoves.clear();
+							isPieceSelected = false;
+							Global::state = DEFEAT;
 						}
-
-						// make the move
-						Move::execute(Pieces::get(j), legalMove);
-
-						legalMoves.clear();
-						//updateConsole();
-						isPieceSelected = false;
-						Global::playerTurn = false;
+						else
+						{
+							// make the move
+							Move::execute(Pieces::get(j), legalMove);
+							legalMoves.clear();
+							isPieceSelected = false;
+							updateConsole();
+							Global::playerTurn = false;
+						}
 					}
 				}
 			}
@@ -201,22 +185,55 @@ void Game::playerPlayMove()
 void Game::enginePlayMove()
 {
 	GameManager::update(true);
-
-	// ???
-	std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	std::this_thread::sleep_for(std::chrono::milliseconds(300));
 	engine.PlayMove();
-	//updateConsole();
+	updateConsole();
 	Global::playerTurn = true;
 }
 
 // update console output
 void Game::updateConsole()
 {
-	console.push_back(new Text(Move::getName(), Global::playerTurn));
+	switch (Global::state)
+	{
+		case GAME_ON:
+			console.push_back(new Text(Move::getName(), Global::playerTurn));
+			break;
+		case VICTORY:
+			console.push_back(new Text("Checkmate! You won!", true));
+			break;
+		case DEFEAT:
+			console.push_back(new Text("Checkmate! You lost.", false));
+			break;
+		case END:
+			break;
+	}
+
 	consoleIndex++;
 
 	for (auto& i : console)
 		i->position.y -= 18;
+
+	if (Global::state != GAME_ON)
+		Global::state = END;
 }
 
-
+// reset game variables
+void Game::resetGame()
+{
+	Pieces::init();
+	Global::playerKingMoved = false;
+	Global::engineKingMoved = false;
+	Global::playerQsideRookMoved = false;
+	Global::playerKsideRookMoved = false;
+	Global::engineQsideRookMoved = false;
+	Global::engineKsideRookMoved = false;
+	Global::playerCanCastleK = true;
+	Global::playerCanCastleQ = true;
+	Global::engineCanCastleK = true;
+	Global::engineCanCastleQ = true;
+	Global::playerInCheck = false;
+	Global::engineInCheck = false;
+	Global::state = GAME_ON;
+	Settings::PlayerColor == WHITE ? Global::playerTurn = true : Global::playerTurn = false;
+}

@@ -10,38 +10,25 @@ void Engine::PlayMove()
 
 	// get fresh squares
 	getAllSquares();
-	
+
 	// get legal moves
 	getAllMoves();
 
 	int n = pickPiece();
 
-	while(Global::state == GAME_ON)
+	while (!moves.empty())
 	{
-		if(moves.find(n) == moves.end())
+		if (moves.find(n) == moves.end())
 		{
 			n = pickPiece();
-		}
-		else
+		} else
 			break;
 	}
 
-	if(moves.empty())
-	{
-		if(Global::engineInCheck)
-		{
-			Global::state = VICTORY;
-			Global::playerTurn = true;
-		}
-		else
-		{
-			Global::state = DRAW;
-			Global::playerTurn = true;
-		}
-	}
-
-	else
+	if (!moves.empty())
 		Move::execute(Pieces::get(moves.extract(n).key()), moves.at(n));
+	else
+		Global::state = VICTORY;
 }
 
 int Engine::pickPiece()

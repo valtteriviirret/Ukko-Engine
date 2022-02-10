@@ -213,12 +213,17 @@ namespace LegalMove
 						if(k->piece.type == KING)
 						{
 							// set move back to normal
-							Sqr::getSquare(i->x, i->y).piece = move;
-							Sqr::getSquare(piece.x, piece.y).piece = piece;
+							if (!temp.empty())
+							{
+								Sqr::getSquare(i->x, i->y).piece = move;
+								Sqr::getSquare(piece.x, piece.y).piece = piece;
+							}
+
 							backToNormal = true;
 
 							// delete move, substract from moves after deletion
-							v.erase(i--);
+							if(!v.empty())
+								v.erase(i--);
 						}
 					}
 				}
