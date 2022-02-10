@@ -154,15 +154,18 @@ namespace LegalMove
 			// get all legal moves
 			std::vector<Square> v = LegalMove::get(Pieces::get(i));
 
-			for(auto j = v.begin(); j < v.end(); j++)
+			if(!v.empty())
 			{
-				// if king is in check
-				if(j->piece.type == KING)
+				for(auto j = v.begin(); j < v.end(); j++)
 				{
-					// back to normal
-					Sqr::getSquare(square.x, square.y).piece = square.piece;
-					Sqr::getSquare(piece.x, piece.y).piece = piece;
-					return true;
+					// if king is in check
+					if(j->piece.type == KING)
+					{
+						// back to normal
+						Sqr::getSquare(square.x, square.y).piece = square.piece;
+						Sqr::getSquare(piece.x, piece.y).piece = piece;
+						return true;
+					}
 				}
 			}
 		}
