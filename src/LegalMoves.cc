@@ -5,6 +5,8 @@ namespace LegalMove
 	// raw legal moves
 	std::vector<Square> sqrs;
 
+	Square* en_passant;
+
 	// KNIGHT, KING
 	void xyFindFunc(Piece p, int x, int y)
 	{
@@ -134,6 +136,12 @@ namespace LegalMove
 			if(r->piece.type != NONE)
 				if(r->piece.color != p.color)
 					sqrs.push_back(*r);
+
+		// en passant
+		if(Global::en_passant)
+			if(Global::en_passant->y == p.y + 1 * m)
+				if(Global::en_passant->x == p.x + 1 || Global::en_passant->x == p.x - 1)
+					sqrs.push_back(*Global::en_passant);
 	}
 
 	// get legal moves for king

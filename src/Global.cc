@@ -24,3 +24,5 @@ Piece ghost(int x, int y)
 
 bool Global::playerTurn = true;
 
+Square* Global::en_passant = nullptr;
+

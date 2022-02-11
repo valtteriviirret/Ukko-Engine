@@ -2,6 +2,7 @@
 #define GLOBAL_HH
 
 #include "Piece.hh"
+#include "Square.hh"
 
 static Piece p[32];
 
@@ -34,6 +35,8 @@ class Global
 		static bool playerTurn;
 
 		static currentGameState state;
+
+		static Square* en_passant;
 };
 
 #endif

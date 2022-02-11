@@ -11,9 +11,18 @@ namespace Move
 	char nameY;
 	std::string promotion;
 
-	void emptyPiece(int x, int y)
+	// make the square empty
+	void emptySquare(int x, int y)
 	{
 		Sqr::squareHelper(x, y)->piece = ghost(x, y);
+	}
+
+	// make the piece empty
+	void emptyPiece(int x, int y)
+	{
+		for(int i = 0; i < 32; i++)
+			if(Pieces::get(i).x == x && Pieces::get(i).y == y)
+				Pieces::get(i) = ghost(x, y);
 	}
 
 	void castlingFunc(Piece& source, Piece& rook, bool player, bool queenSide)
@@ -24,26 +33,26 @@ namespace Move
 		// make king's square empty
 		if(player)
 		{
-			emptyPiece(4, 7);
+			emptySquare(4, 7);
 			y = 7;
 		}
 		else
 		{
-			emptyPiece(4, 0);
+			emptySquare(4, 0);
 			y = 0;
 		}
 		
 		// make rook's square empty and move pieces
 		if(queenSide)
 		{
-			emptyPiece(0, y);
+			emptySquare(0, y);
 			source.x -= 2;
 			rook.x += 3;
 			name = "0-0-0";
 		}
 		else
 		{
-			emptyPiece(7, y);
+			emptySquare(7, y);
 			source.x += 2;
 			rook.x -= 2;
 			name = "0-0";
@@ -218,22 +227,55 @@ namespace Move
 		// capturing piece
 		if(target.piece.type != 6 && target.piece.type != 5)
 		{
-			for(int i = 0; i < 32; i++)
-			{
-				if(Pieces::get(i).x == target.x && Pieces::get(i).y == target.y)
-				{
+			emptyPiece(target.x, target.y);
+		}
 
-					// kill the old piece
-					Pieces::get(i) = ghost(target.x, target.y);
+		if(source.type == PAWN)
+		{
+			// here is the problem
+			if(&target == Global::en_passant)
+			{
+				if(source.user == PLAYER)
+				{
+					emptyPiece(target.x, (target.y + 1));
+					emptySquare(target.x, (target.y + 1));
 				}
+			
+				else
+				{
+					emptyPiece(target.x, (target.y - 1));
+					emptySquare(target.x, (target.y - 1));
+				}
+				
 			}
 		}
+
+		// make en passant squares
+		if(source.type == PAWN)
+		{
+			if(source.user == PLAYER)
+			{
+				if(source.y == 6 && target.y == 4)
+					Global::en_passant = Sqr::squareHelper(source.x, 5);
+				else
+					Global::en_passant = nullptr;
+			}
+			else
+			{
+				if(source.y == 1 && target.y == 3)
+					Global::en_passant = Sqr::squareHelper(source.x, 2);
+				else
+					Global::en_passant = nullptr;
+			}
+		}
+		else
+			Global::en_passant = nullptr;
+
 
 		// REGULAR MOVE
 
 		// create empty piece for source's place
-		Square* srcSquare = Sqr::squareHelper(source.x, source.y);
-		emptyPiece(srcSquare->x, srcSquare->y);
+		emptySquare(source.x, source.y);
 
 		// change source values to target
 		source.x = target.x;
