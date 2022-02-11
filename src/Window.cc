@@ -35,11 +35,16 @@ Window::Window()
 
 void Window::resize(SDL_Event e)
 {
-	if(e.window.event == SDL_WINDOWEVENT_RESIZED)
+	switch(e.type)
 	{
-		// get new screensize and set it accordingly
-		SDL_GetWindowSize(window, &width, &height);
-		setSizes();
+		case SDL_WINDOWEVENT:
+		if(e.window.event == SDL_WINDOWEVENT_RESIZED)
+		{
+			// get new screensize and set it accordingly
+			SDL_GetWindowSize(window, &width, &height);
+			setSizes();
+		}
+		break;
 	}
 }
 

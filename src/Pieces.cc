@@ -2,6 +2,8 @@
 
 namespace Pieces
 {
+	// the pieces
+	Piece p[32];
 
 	Piece& get(int n) { return p[n]; }
 

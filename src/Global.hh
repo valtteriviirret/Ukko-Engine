@@ -6,8 +6,6 @@
 
 #define ARRSIZE(arr) (int)(sizeof(arr)/sizeof(arr[0]))
 
-static Piece p[32];
-
 // return ghost struct
 Piece ghost(int x, int y);
 
