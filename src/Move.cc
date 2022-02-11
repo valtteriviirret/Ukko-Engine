@@ -230,23 +230,26 @@ namespace Move
 			emptyPiece(target.x, target.y);
 		}
 
+
+		// en passant move
 		if(source.type == PAWN)
 		{
-			// here is the problem
-			if(&target == Global::en_passant)
+			if(Global::en_passant)
 			{
-				if(source.user == PLAYER)
+				if(target.x == Global::en_passant->x && target.y == Global::en_passant->y)
 				{
-					emptyPiece(target.x, (target.y + 1));
-					emptySquare(target.x, (target.y + 1));
-				}
-			
-				else
-				{
-					emptyPiece(target.x, (target.y - 1));
-					emptySquare(target.x, (target.y - 1));
-				}
+					if(source.user == PLAYER)
+					{
+						emptyPiece(target.x, (target.y + 1));
+						emptySquare(target.x, (target.y + 1));
+					}
 				
+					else
+					{
+						emptyPiece(target.x, (target.y - 1));
+						emptySquare(target.x, (target.y - 1));
+					}
+				}
 			}
 		}
 
