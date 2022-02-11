@@ -5,8 +5,6 @@ namespace LegalMove
 	// raw legal moves
 	std::vector<Square> sqrs;
 
-	Square* en_passant;
-
 	// KNIGHT, KING
 	void xyFindFunc(Piece p, int x, int y)
 	{

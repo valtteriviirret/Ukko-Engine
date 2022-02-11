@@ -17,7 +17,6 @@
 #include "Global.hh"
 #include "Text.hh"
 #include "GameManager.hh"
-#include <vector>
 #include <chrono>
 #include <thread>
 
@@ -36,6 +35,7 @@ class Game
 		void render();
 		void update();
 		void eventHandler();
+		void resetGame();
 		Engine engine;
 		Board* board = nullptr;
 		PieceFactory* pieces = nullptr;
@@ -48,8 +48,6 @@ class Game
 		std::vector<Square> legalMoves;
 		int consoleIndex = 0;
         bool isPieceSelected = false;
-		// static void gameState();
-		static void resetGame();
 };
 
 #endif

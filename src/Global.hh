@@ -14,6 +14,11 @@ typedef enum { GAME_ON, VICTORY, DEFEAT, END } currentGameState;
 class Global
 {
 	public:
+		static int evaluation;
+		static bool playerTurn;
+		static currentGameState state;
+		static Square* en_passant;
+
 		// castling
 		static bool playerKingMoved;
 		static bool playerQsideRookMoved;
@@ -31,12 +36,6 @@ class Global
 		// check
 		static bool playerInCheck;
 		static bool engineInCheck;
-
-		static bool playerTurn;
-
-		static currentGameState state;
-
-		static Square* en_passant;
 };
 
 #endif
