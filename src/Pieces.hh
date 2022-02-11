@@ -6,8 +6,6 @@
 #include "Settings.hh"
 #include "Global.hh"
 
-#define ARRSIZE(arr) (int)(sizeof(arr)/sizeof(arr[0]))
-
 namespace Pieces
 {
 	// initializing pieces in their correct positions

@@ -4,6 +4,8 @@
 #include "Piece.hh"
 #include "Square.hh"
 
+#define ARRSIZE(arr) (int)(sizeof(arr)/sizeof(arr[0]))
+
 static Piece p[32];
 
 // return ghost struct
