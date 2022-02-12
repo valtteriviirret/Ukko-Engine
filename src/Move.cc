@@ -97,17 +97,15 @@ namespace Move
 
 		switch(target.y)
 		{
-			case 0: nameY = '8'; break;
-			case 1: nameY = '7'; break;
-			case 2: nameY = '6'; break;
-			case 3: nameY = '5'; break;
-			case 4: nameY = '4'; break;
-			case 5: nameY = '3'; break;
-			case 6: nameY = '2'; break;
-			case 7: nameY = '1'; break;
+			case 0: nameY = '1'; break;
+			case 1: nameY = '2'; break;
+			case 2: nameY = '3'; break;
+			case 3: nameY = '4'; break;
+			case 4: nameY = '5'; break;
+			case 5: nameY = '6'; break;
+			case 6: nameY = '7'; break;
+			case 7: nameY = '8'; break;
 		}
-
-
 
 		// castling
 		if(source.type == KING)
