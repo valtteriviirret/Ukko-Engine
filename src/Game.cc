@@ -172,7 +172,6 @@ void Game::playerPlayMove()
 							legalMoves.clear();
 							isPieceSelected = false;
 							updateConsole();
-							Global::playerTurn = false;
 						}
 					}
 				}
@@ -188,7 +187,6 @@ void Game::enginePlayMove()
 	std::this_thread::sleep_for(std::chrono::milliseconds(300));
 	engine.PlayMove();
 	updateConsole();
-	Global::playerTurn = true;
 }
 
 // update console output

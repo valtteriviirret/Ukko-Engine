@@ -182,6 +182,8 @@ namespace Move
 					{
 						std::cin >> choice;
 
+						Piece orig = source;
+
 						switch(choice)
 						{
 							case 'Q':
@@ -209,6 +211,10 @@ namespace Move
 								showPieces
 								break;
 						}
+
+						source.color = orig.color;
+						source.alive = true;
+						source.user = orig.user;
 					}
 				}
 			}
@@ -223,13 +229,6 @@ namespace Move
 				}
 			}
 		}
-
-		// capturing piece
-		if(target.piece.type != 6 && target.piece.type != 5)
-		{
-			emptyPiece(target.x, target.y);
-		}
-
 
 		// en passant move
 		if(source.type == PAWN)
@@ -276,22 +275,38 @@ namespace Move
 
 
 		// REGULAR MOVE
+			
+		// if piece is captured
+		if(target.piece.type != 6)
+		{
+			// destroy old piece
+			emptyPiece(target.x, target.y);
+		}
 
-		// create empty piece for source's place
+		// make source square empty
 		emptySquare(source.x, source.y);
 
 		// change source values to target
 		source.x = target.x;
 		source.y = target.y;
 
-		// update moved piece
-		Sqr::squareHelper(source.x, source.y)->piece = source;
+		// update square
+		Sqr::squareHelper(target.x, target.y)->piece = source;
+
+
 
 		// make the notation
 		name = name + nameSource + " to " + nameX + nameY + promotion;
 
 		// read info of the move in console
 		readName();
+
+		// change turn
+		if(source.user == PLAYER)
+			Global::playerTurn = false;
+		else
+			Global::playerTurn = true;
+
 	}
 }
 
