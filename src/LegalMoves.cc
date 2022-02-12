@@ -212,27 +212,31 @@ namespace LegalMove
 				// loop all opponent's pieces
 				for(int j = a; j < b; j++)
 				{
-					// get all raw legal moves for the opponent's pieces
-					std::vector<Square> temp = LegalMove::get(Pieces::get(j));
-
-					// loop legal moves for the piece
-					for(auto k = temp.begin(); k != temp.end(); k++)
+					// if piece isn't captured in opponents move
+					if(Sqr::getSquare(Pieces::get(j).x, Pieces::get(j).y).piece.user != piece.user)
 					{
-						// king is in check
-						if(k->piece.type == KING)
+						// get all raw legal moves for the opponent's pieces
+						std::vector<Square> temp = LegalMove::get(Pieces::get(j));
+
+						// loop legal moves for the piece
+						for(auto k = temp.begin(); k != temp.end(); k++)
 						{
-							// set move back to normal
-							if (!temp.empty())
+							// king is in check
+							if(k->piece.type == KING)
 							{
-								Sqr::getSquare(i->x, i->y).piece = move;
-								Sqr::getSquare(piece.x, piece.y).piece = piece;
+								// set move back to normal
+								if (!temp.empty())
+								{
+									Sqr::getSquare(i->x, i->y).piece = move;
+									Sqr::getSquare(piece.x, piece.y).piece = piece;
+								}
+
+								backToNormal = true;
+
+								// delete move, substract from moves after deletion
+								if(!v.empty())
+									v.erase(i--);
 							}
-
-							backToNormal = true;
-
-							// delete move, substract from moves after deletion
-							if(!v.empty())
-								v.erase(i--);
 						}
 					}
 				}

@@ -141,17 +141,6 @@ namespace Pieces
 		// initialize empty squares as empty
 		for (int y = 2; y < 6; y++)
 			for (int x = 0; x < 8; x++)
-			{
-				Piece piece =
-						{
-								NONE,
-								UNDEFINED,
-								true,
-								x,
-								y,
-								GHOST
-						};
-				Sqr::getSquare(x, y).piece = piece;
-			}
+				Sqr::getSquare(x, y).piece = ghost(x, y);
 	}
 }
