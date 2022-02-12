@@ -222,7 +222,11 @@ namespace Move
 				// engine always picks queen, at least for now
 				if(target.y == 7)
 				{
+					Piece orig = source;
 					source.type = QUEEN;
+					source.color = orig.color;
+					source.alive = true;
+					source.user = orig.user;
 					promotion = 'Q';
 				}
 			}
