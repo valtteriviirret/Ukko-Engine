@@ -168,7 +168,7 @@ void Game::playerPlayMove()
 						else
 						{
 							// make the move
-							Move::execute(Pieces::get(j), legalMove);
+							Move::execute(&Pieces::get(j), legalMove);
 							legalMoves.clear();
 							isPieceSelected = false;
 							updateConsole();

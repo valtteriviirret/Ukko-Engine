@@ -4,31 +4,27 @@ Engine::Engine() = default;
 
 Engine::~Engine() = default;
 
-void Engine::PlayMove()
+bool Engine::PlayMove()
 {
-	moves.clear();
+	pieces.clear();
 
 	// get fresh squares
 	getAllSquares();
 
-	// get legal moves
 	getAllMoves();
 
 	int n = pickPiece();
 
-	while (!moves.empty())
-	{
-		if (moves.find(n) == moves.end())
-		{
-			n = pickPiece();
-		} else
-			break;
-	}
-
 	if (!moves.empty())
-		Move::execute(Pieces::get(moves.extract(n).key()), moves.at(n));
+	{
+		Move::execute(moves.at(n).first, moves.at(n).second);
+		return true;
+	}
 	else
+	{
 		Global::state = VICTORY;
+		return false;
+	}
 }
 
 int Engine::pickPiece()
@@ -55,17 +51,38 @@ void Engine::makeFakeMove(Piece source, Square target)
 }
 
 
-void Engine::getAllMoves()
+void Engine::getAllPieces()
 {
+	for(int i = 0; i < 8; i++)
+		for(int j = 0; j < 8; j++)
+			if(squares[i][j]->piece.user == ENGINE)
+			{
+				pieces.push_back(&squares[i][j]->piece);
+				std::cout << &squares[i][j]->piece.type << "\n";
+			}
+	
+
+	std::cout << "\n\n";
+
 	for(int i = 0; i < 16; i++)
 	{
-		std::vector<Square> temp = LegalMove::getLegal(Pieces::get(i));
-
-		for(auto j = temp.begin(); j < temp.end(); j++)
-		{
-			moves.insert(std::pair<int, Square>(i, *j));
-		}
+		//pieces.push_back(&Pieces::get(i));
+		std::cout << &Pieces::get(i) << "\n";
 	}
 }
 
+void Engine::getAllMoves()
+{
+	getAllPieces();
+
+	for(int i = 0; i < (int)pieces.size(); i++)
+	{
+		std::vector<Square> temp = LegalMove::getLegal(Pieces::get(i));
+
+		for(int j = 0; j < (int)temp.size(); j++)
+		{
+			moves.push_back(std::make_pair(pieces[i], temp[j]));
+		}
+	}
+}
 
