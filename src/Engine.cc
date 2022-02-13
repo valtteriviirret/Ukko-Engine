@@ -18,6 +18,7 @@ bool Engine::PlayMove()
 
 	int n = evaluate();
 
+
 	if (!moves.empty())
 	{
 		Move::execute(moves.at(n).first, moves.at(n).second);
@@ -39,6 +40,7 @@ int Engine::evaluate()
 
 	int n = rand() % 16;
 
+	// check that the piece to be moved is not captured
 	if(Pieces::get(n).type != 6)
 	{
 		return n;
@@ -90,8 +92,7 @@ void Engine::makeFakeMove(std::pair<Piece*, Square> move)
 void Engine::getAllPieces()
 {
 	for(int i = 0; i < 16; i++)
-		if(Pieces::get(i).type != 6)
-			pieces.push_back(&Pieces::get(i));
+		pieces.push_back(&Pieces::get(i));
 }
 
 void Engine::getAllMoves()
@@ -101,12 +102,16 @@ void Engine::getAllMoves()
 
 	for(int i = 0; i < (int)pieces.size(); i++)
 	{
-		// get legal moves for the piece
-		std::vector<Square> temp = LegalMove::getLegal(Pieces::get(i));
+		// don't include captured pieces
+		if(pieces[i]->type != 6)
+		{
+			// get legal moves for the piece
+			std::vector<Square> temp = LegalMove::getLegal(Pieces::get(i));
 
-		// make pairs from piece and where the 
-		for(int j = 0; j < (int)temp.size(); j++)
-			moves.push_back(std::make_pair(pieces[i], temp[j]));
+			// make pairs from piece and where the 
+			for(int j = 0; j < (int)temp.size(); j++)
+				moves.push_back(std::make_pair(pieces[i], temp[j]));
+		}
 	}
 }
 
