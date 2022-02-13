@@ -7,7 +7,6 @@ Piece ghost(int x, int y)
 	return { NONE, UNDEFINED, true, x, y, GHOST };
 }
 
-
 bool Global::playerTurn = true;
 
 Square* Global::en_passant = nullptr;

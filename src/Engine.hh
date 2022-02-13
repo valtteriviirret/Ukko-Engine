@@ -23,6 +23,7 @@ class Engine
 		void getAllMoves();
 		void getAllSquares();
 		int evaluate();
+		double materialValue(bool player);
 		Square* squares[8][8] = {};
 		std::vector<Piece*> pieces;
 		std::vector<std::pair<Piece*, Square>> moves;

@@ -33,7 +33,42 @@ bool Engine::PlayMove()
 int Engine::evaluate()
 {
 	// TODO: Evaluate the board. Pick pieces based on player's and AI's legal moves.
-	return rand() % 16;
+	
+	double engineMaterial = materialValue(false);
+	double playerMaterial = materialValue(true);
+
+	int n = rand() % 16;
+
+	if(Pieces::get(n).type != 6)
+	{
+		return n;
+	}
+	
+	else return evaluate();
+}
+
+double Engine::materialValue(bool player)
+{
+	int a = player ? 16 : 0;
+	int b = player ? 32 : 16;
+	double n = 0;
+
+	for(int i = a; i < b; i++)
+	{
+		switch(Pieces::get(i).type)
+		{
+			case KING: break;
+			case NONE: break;
+			case ROOK: n += 5; break;
+			case PAWN: n += 1; break;
+			case QUEEN: n += 9; break;
+			case KNIGHT: n += 3; break;
+			case BISHOP: n += 3.25; break;
+		}	
+	}
+
+	// return materialvalue
+	return n;
 }
 
 void Engine::getAllSquares()
@@ -55,7 +90,8 @@ void Engine::makeFakeMove(std::pair<Piece*, Square> move)
 void Engine::getAllPieces()
 {
 	for(int i = 0; i < 16; i++)
-		pieces.push_back(&Pieces::get(i));
+		if(Pieces::get(i).type != 6)
+			pieces.push_back(&Pieces::get(i));
 }
 
 void Engine::getAllMoves()
