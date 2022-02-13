@@ -33,7 +33,6 @@ int Engine::pickPiece()
 	return rand() % 16;
 }
 
-// get all squares
 void Engine::getAllSquares()
 {
 	for(int i = 0; i < 8; i++)
@@ -53,22 +52,8 @@ void Engine::makeFakeMove(Piece source, Square target)
 
 void Engine::getAllPieces()
 {
-	for(int i = 0; i < 8; i++)
-		for(int j = 0; j < 8; j++)
-			if(squares[i][j]->piece.user == ENGINE)
-			{
-				pieces.push_back(&squares[i][j]->piece);
-				std::cout << &squares[i][j]->piece.type << "\n";
-			}
-	
-
-	std::cout << "\n\n";
-
 	for(int i = 0; i < 16; i++)
-	{
-		//pieces.push_back(&Pieces::get(i));
-		std::cout << &Pieces::get(i) << "\n";
-	}
+		pieces.push_back(&Pieces::get(i));
 }
 
 void Engine::getAllMoves()
