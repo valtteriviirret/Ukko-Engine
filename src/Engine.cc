@@ -6,14 +6,17 @@ Engine::~Engine() = default;
 
 bool Engine::PlayMove()
 {
+	// clear existing stuff
 	pieces.clear();
+	moves.clear();
 
 	// get fresh squares
 	getAllSquares();
 
+	// get all the avainable moves
 	getAllMoves();
 
-	int n = pickPiece();
+	int n = evaluate();
 
 	if (!moves.empty())
 	{
@@ -27,7 +30,7 @@ bool Engine::PlayMove()
 	}
 }
 
-int Engine::pickPiece()
+int Engine::evaluate()
 {
 	// TODO: Evaluate the board. Pick pieces based on player's and AI's legal moves.
 	return rand() % 16;
@@ -40,15 +43,14 @@ void Engine::getAllSquares()
 			squares[i][j] = Sqr::squareHelper(i, j);
 }
 
-void Engine::makeFakeMove(Piece source, Square target)
+void Engine::makeFakeMove(std::pair<Piece*, Square> move)
 {
 	// source goes to target
-	squares[target.x][target.y]->piece = source;
+	squares[move.second.x][move.second.y]->piece = *move.first;
 
 	// source is set to zero
-	squares[source.x][source.y]->piece = ghost(source.x, source.y);
+	squares[move.first->x][move.first->y]->piece = ghost(move.first->x, move.first->y);
 }
-
 
 void Engine::getAllPieces()
 {
@@ -58,16 +60,17 @@ void Engine::getAllPieces()
 
 void Engine::getAllMoves()
 {
+	// get all pieces first
 	getAllPieces();
 
 	for(int i = 0; i < (int)pieces.size(); i++)
 	{
+		// get legal moves for the piece
 		std::vector<Square> temp = LegalMove::getLegal(Pieces::get(i));
 
+		// make pairs from piece and where the 
 		for(int j = 0; j < (int)temp.size(); j++)
-		{
 			moves.push_back(std::make_pair(pieces[i], temp[j]));
-		}
 	}
 }
 

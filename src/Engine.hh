@@ -18,12 +18,12 @@ class Engine
 		~Engine();
 		bool PlayMove();
 	private:
-		void makeFakeMove(Piece source, Square target);
+		void makeFakeMove(std::pair<Piece*, Square> move);
 		void getAllPieces();
 		void getAllMoves();
 		void getAllSquares();
+		int evaluate();
 		Square* squares[8][8] = {};
-		static int pickPiece();
 		std::vector<Piece*> pieces;
 		std::vector<std::pair<Piece*, Square>> moves;
 };

@@ -279,14 +279,18 @@ namespace Move
 		// REGULAR MOVE
 			
 		// if piece is captured
+		//
+		//
+		// make source square empty
+		emptySquare(source->x, source->y);
+
 		if(target.piece.type != 6)
 		{
 			// destroy old piece
 			emptyPiece(target.x, target.y);
 		}
 
-		// make source square empty
-		emptySquare(source->x, source->y);
+
 
 		// change source values to target
 		source->x = target.x;
@@ -294,6 +298,7 @@ namespace Move
 
 		// update square
 		Sqr::squareHelper(target.x, target.y)->piece = *source;
+
 
 
 
