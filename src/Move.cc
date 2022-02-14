@@ -297,14 +297,15 @@ namespace Move
 
 			// read info of the move in console
 			readName();
+
+			// change turn
+			if(source->user == PLAYER)
+				Global::playerTurn = false;
+			else
+				Global::playerTurn = true;
+
+
 		}
-
-		// change turn
-		if(source->user == PLAYER)
-			Global::playerTurn = false;
-		else
-			Global::playerTurn = true;
-
 	}
 }
 
