@@ -9,7 +9,6 @@ typedef struct Piece
 {
 	Type type;
 	Color color;
-	bool alive;
     int x, y;
 	User user;
 } Piece;

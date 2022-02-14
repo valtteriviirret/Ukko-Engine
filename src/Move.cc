@@ -211,7 +211,6 @@ namespace Move
 						}
 
 						source->color = orig->color;
-						source->alive = true;
 						source->user = orig->user;
 					}
 				}
@@ -225,7 +224,6 @@ namespace Move
 					Piece* orig = source;
 					source->type = QUEEN;
 					source->color = orig->color;
-					source->alive = true;
 					source->user = orig->user;
 					promotion = 'Q';
 				}

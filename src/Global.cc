@@ -4,7 +4,7 @@ currentGameState Global::state = GAME_ON;
 
 Piece ghost(int x, int y)
 {
-	return { NONE, UNDEFINED, true, x, y, GHOST };
+	return { NONE, UNDEFINED, x, y, GHOST };
 }
 
 bool Global::playerTurn = true;

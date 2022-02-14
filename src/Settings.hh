@@ -7,6 +7,7 @@ class Settings
 {
 	public:
 		static int PlayerColor;
+		static int EngineColor;
 		static bool showEnemyLegalMoves;
 
 };
