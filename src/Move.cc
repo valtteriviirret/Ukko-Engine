@@ -20,9 +20,7 @@ namespace Move
 	// make the piece empty
 	void emptyPiece(int x, int y)
 	{
-		for(int i = 0; i < 32; i++)
-			if(Pieces::get(i).x == x && Pieces::get(i).y == y)
-				Pieces::get(i) = ghost(x, y);
+		Pieces::set(ghost(x, y), x, y);
 	}
 
 	void castlingFunc(Piece* source, Piece& rook, bool player, bool queenSide)
@@ -275,24 +273,23 @@ namespace Move
 
 
 		// REGULAR MOVE
-			
-		emptySquare(source->x, source->y);
-
+		
 		if(target.piece.type != 6)
 		{
 			// destroy old piece
 			emptyPiece(target.x, target.y);
-			emptySquare(target.x, target.y);
 		}
+
+		emptySquare(source->x, source->y);
 
 		// change source values to target
 		source->x = target.x;
 		source->y = target.y;
 
 		// update square
-		Sqr::squareHelper(target.x, target.y)->piece = *source;
+		Sqr::squareHelper(source->x, source->y)->piece = *source;
 
-
+	
 
 		// make the notation
 		name = name + nameSource + " to " + nameX + nameY + promotion;

@@ -9,6 +9,10 @@ typedef struct Square
 	SDL_Rect rect;
 	Piece piece;
 	int x, y;
+	//void operator=(const Square&) = delete;
+
 } Square;
 
+
 #endif
+

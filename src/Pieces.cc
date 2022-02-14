@@ -3,9 +3,20 @@
 namespace Pieces
 {
 	// the pieces
-	Piece p[32];
+	static Piece p[32];
 
 	Piece& get(int n) { return p[n]; }
+
+	void set(Piece piece, int x, int y)
+	{
+		for(int i = 0; i < 32; i++)
+		{
+			if(get(i).x == x && get(i).y == y)
+			{
+				p[i] = piece;
+			}
+		}
+	}
 
 	void init()
 	{

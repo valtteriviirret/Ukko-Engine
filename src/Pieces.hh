@@ -14,6 +14,10 @@ namespace Pieces
 	// getting individual piece
 	Piece& get(int n);
 
+	Piece* getByXY(int x, int y);
+
+	// set piece
+	void set(Piece p, int x, int y);
 }
 
 #endif
