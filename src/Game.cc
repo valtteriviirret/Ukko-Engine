@@ -184,7 +184,7 @@ void Game::playerPlayMove()
 void Game::enginePlayMove()
 {
 	GameManager::update(true);
-	//std::this_thread::sleep_for(std::chrono::milliseconds(300));
+	std::this_thread::sleep_for(std::chrono::milliseconds(300));
 	engine.PlayMove();
 	updateConsole();
 }

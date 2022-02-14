@@ -274,28 +274,30 @@ namespace Move
 
 		// REGULAR MOVE
 		
-		if(target.piece.type != 6)
+		if(source->type != 6)
 		{
-			// destroy old piece
-			emptyPiece(target.x, target.y);
+			if(target.piece.type != 6)
+			{
+				// destroy old piece
+				emptyPiece(target.x, target.y);
+			}
+
+			emptySquare(source->x, source->y);
+
+			// change source values to target
+			source->x = target.x;
+			source->y = target.y;
+
+			// update square
+			Sqr::squareHelper(source->x, source->y)->piece = *source;
+
+
+			// make the notation
+			name = name + nameSource + " to " + nameX + nameY + promotion;
+
+			// read info of the move in console
+			readName();
 		}
-
-		emptySquare(source->x, source->y);
-
-		// change source values to target
-		source->x = target.x;
-		source->y = target.y;
-
-		// update square
-		Sqr::squareHelper(source->x, source->y)->piece = *source;
-
-	
-
-		// make the notation
-		name = name + nameSource + " to " + nameX + nameY + promotion;
-
-		// read info of the move in console
-		readName();
 
 		// change turn
 		if(source->user == PLAYER)
