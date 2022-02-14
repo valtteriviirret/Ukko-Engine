@@ -34,19 +34,15 @@ bool Engine::PlayMove()
 int Engine::evaluate()
 {
 	// TODO: Evaluate the board. Pick pieces based on player's and AI's legal moves.
-	
-	double engineMaterial = materialValue(false);
-	double playerMaterial = materialValue(true);
+	getMaterialBalance();
 
-	int n = rand() % 16;
+	return 0;
+}
 
-	// check that the piece to be moved is not captured
-	if(Pieces::get(n).type != 6)
-	{
-		return n;
-	}
-	
-	else return evaluate();
+void Engine::getMaterialBalance()
+{
+	engineMaterial = materialValue(false);
+	playerMaterial = materialValue(true);
 }
 
 double Engine::materialValue(bool player)
@@ -103,7 +99,7 @@ void Engine::getAllMoves()
 	for(int i = 0; i < (int)pieces.size(); i++)
 	{
 		// don't include captured pieces
-		if(pieces[i]->type != 6)
+		if(pieces[i]->type != 6 && pieces[i]->user == ENGINE)
 		{
 			// get legal moves for the piece
 			std::vector<Square> temp = LegalMove::getLegal(Pieces::get(i));

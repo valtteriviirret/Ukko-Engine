@@ -22,11 +22,14 @@ class Engine
 		void getAllPieces();
 		void getAllMoves();
 		void getAllSquares();
+		void getMaterialBalance();
 		int evaluate();
 		double materialValue(bool player);
 		Square* squares[8][8] = {};
 		std::vector<Piece*> pieces;
 		std::vector<std::pair<Piece*, Square>> moves;
+		double engineMaterial;
+		double playerMaterial;
 };
 
 #endif

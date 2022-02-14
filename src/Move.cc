@@ -278,9 +278,6 @@ namespace Move
 
 		// REGULAR MOVE
 			
-		// if piece is captured
-		//
-		//
 		// make source square empty
 		emptySquare(source->x, source->y);
 
@@ -289,8 +286,6 @@ namespace Move
 			// destroy old piece
 			emptyPiece(target.x, target.y);
 		}
-
-
 
 		// change source values to target
 		source->x = target.x;
