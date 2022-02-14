@@ -229,9 +229,8 @@ namespace LegalMove
 								{
 									Sqr::getSquare(i->x, i->y).piece = move;
 									Sqr::getSquare(piece.x, piece.y).piece = piece;
+									backToNormal = true;
 								}
-
-								backToNormal = true;
 
 								// delete move, substract from moves after deletion
 								if(!v.empty())
