@@ -9,7 +9,7 @@
 // return ghost struct
 Piece ghost(int x, int y);
 
-typedef enum { GAME_ON, VICTORY, DEFEAT, END } currentGameState;
+typedef enum { GAME_ON, VICTORY, DEFEAT, DRAW, END } currentGameState;
 
 class Global
 {

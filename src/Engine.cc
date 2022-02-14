@@ -16,17 +16,18 @@ bool Engine::PlayMove()
 	// get all the avainable moves
 	getAllMoves();
 
-	int n = evaluate();
-
-
 	if (!moves.empty())
 	{
+		int n = evaluate();
 		Move::execute(moves.at(n).first, moves.at(n).second);
 		return true;
 	}
 	else
 	{
-		Global::state = VICTORY;
+		if(Global::engineInCheck)
+			Global::state = VICTORY;
+		else
+			Global::state = DRAW;
 		return false;
 	}
 }

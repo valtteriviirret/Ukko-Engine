@@ -165,6 +165,12 @@ void Game::playerPlayMove()
 							isPieceSelected = false;
 							Global::state = DEFEAT;
 						}
+						else if(legalMoves.empty() && !Global::playerInCheck)
+						{
+							legalMoves.clear();
+							isPieceSelected = false;
+							Global::state = DRAW;
+						}
 						else
 						{
 							// make the move
@@ -214,6 +220,14 @@ void Game::updateConsole()
 				i->position.y -= 18;
 			Global::state = END;
 			break;
+		case DRAW:
+			console.push_back(new Text("1/2", true));
+			consoleIndex++;
+			for (auto& i : console)
+				i->position.y -= 18;
+			Global::state = END;
+			break;
+
 		default:
 			break;
 	}
