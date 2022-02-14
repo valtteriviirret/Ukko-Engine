@@ -82,8 +82,6 @@ void Game::update()
 {
 	if (Global::state == GAME_ON)
 		Global::playerTurn ? playerPlayMove() : enginePlayMove();
-	if (Global::state == DEFEAT)
-		updateConsole();
 }
 
 void Game::render()
@@ -164,12 +162,14 @@ void Game::playerPlayMove()
 							legalMoves.clear();
 							isPieceSelected = false;
 							Global::state = DEFEAT;
+							updateConsole();
 						}
-						else if(legalMoves.empty() && !Global::playerInCheck)
+						else if(legalMoves.empty() && Global::playerInCheck)
 						{
 							legalMoves.clear();
 							isPieceSelected = false;
 							Global::state = DRAW;
+							updateConsole();
 						}
 						else
 						{
@@ -260,3 +260,4 @@ void Game::resetGame()
 	Global::state = GAME_ON;
 	Settings::PlayerColor == WHITE ? Global::playerTurn = true : Global::playerTurn = false;
 }
+

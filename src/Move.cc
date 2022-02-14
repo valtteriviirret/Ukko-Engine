@@ -284,9 +284,18 @@ namespace Move
 
 			emptySquare(source->x, source->y);
 
+			Piece x =
+			{
+				source->type,
+				source->color,
+				target.x,
+				target.y,
+				source->user
+			};
+
+
 			// change source values to target
-			source->x = target.x;
-			source->y = target.y;
+			*source = x;
 
 			// update square
 			Sqr::squareHelper(source->x, source->y)->piece = *source;
