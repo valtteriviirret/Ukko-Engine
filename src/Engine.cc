@@ -106,8 +106,8 @@ void Engine::getAllMoves()
 			std::vector<Square> temp = LegalMove::getLegal(Pieces::get(i));
 
 			// make pairs from piece and where the 
-			for(int j = 0; j < (int)temp.size(); j++)
-				moves.push_back(std::make_pair(pieces[i], temp[j]));
+			for(auto & j : temp)
+				moves.emplace_back(pieces[i], j);
 		}
 	}
 }

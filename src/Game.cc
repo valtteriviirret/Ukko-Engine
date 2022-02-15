@@ -181,36 +181,11 @@ void Game::playerPlayMove()
 		{
 			// loop legal moves for the selected piece
 			for (auto& i : legalMoves)
-			{
-				// if new click is in legal moves
 				if (selectedSquare->x == i.x && selectedSquare->y == i.y)
-				{
-					// loop players pieces to find the correct one
-					for(int j = 16; j < 32; j++)
-					{
-						// filter moves
-						if(Pieces::get(j).user == PLAYER && Pieces::get(j).type != 6)
-						{
-							// loop pieces and find correct one
-							if (originalSquare == &Sqr::getSquare(Pieces::get(j).x, Pieces::get(j).y))
-							{
-								// make the move
-								Move::execute(&Pieces::get(j), i);
-
-								legalMoves.clear();
-								isPieceSelected = false;
-								updateConsole();
-								Global::playerTurn = false;
-								return;
-							}
-						}
-					}
-				}
-			}
+					executePlayerMove(i);
 		}
 	}
 }
-
 
 // Engine's move:
 void Game::enginePlayMove()
@@ -227,44 +202,26 @@ void Game::updateConsole()
 	switch (Global::state)
 	{
 		case GAME_ON:
-			console.push_back(new Text(Move::getName(), Global::playerTurn));
-			consoleIndex++;
-			for (auto& i : console)
-				i->position.y -= 18;
+			updateConsoleText(Move::getName());
 			break;
 		case VICTORY:
-			console.push_back(new Text("Checkmate! You won!", true));
-			consoleIndex++;
-			for (auto& i : console)
-				i->position.y -= 18;
+			updateConsoleText("Checkmate! You won!");
 			Global::state = END;
 			break;
 		case DEFEAT:
-			console.push_back(new Text("Checkmate! You lost.", false));
-			consoleIndex++;
-			for (auto& i : console)
-				i->position.y -= 18;
+			updateConsoleText("Checkmate! You lost.");
 			Global::state = END;
 			break;
 		case DRAW:
-			console.push_back(new Text("1/2", true));
-			consoleIndex++;
-			for (auto& i : console)
-				i->position.y -= 18;
+			updateConsoleText("Draw!");
 			Global::state = END;
 			break;
-
 		default:
 			break;
 	}
 
 	if (Global::state == END)
-	{
-		console.push_back(new Text("Hit 'R' to play again.", Global::playerTurn));
-		consoleIndex++;
-		for (auto &i: console)
-			i->position.y -= 18;
-	}
+		updateConsoleText("Hit 'R' to play again.");
 }
 
 // reset game variables
@@ -287,3 +244,35 @@ void Game::resetGame()
 	Settings::PlayerColor == WHITE ? Global::playerTurn = true : Global::playerTurn = false;
 }
 
+void Game::updateConsoleText(const std::string& text)
+{
+	console.push_back(new Text(text, Global::playerTurn));
+	consoleIndex++;
+
+	for (auto &i: console)
+		i->position.y -= 18;
+}
+
+void Game::executePlayerMove(Square& sq)
+{
+	// loop players pieces to find the correct one
+	for (int j = 16; j < 32; j++)
+	{
+		// filter moves
+		if (Pieces::get(j).user == PLAYER && Pieces::get(j).type != 6)
+		{
+			// loop pieces and find correct one
+			if (originalSquare == &Sqr::getSquare(Pieces::get(j).x, Pieces::get(j).y))
+			{
+				// make the move
+				Move::execute(&Pieces::get(j), sq);
+
+				legalMoves.clear();
+				isPieceSelected = false;
+				updateConsole();
+				Global::playerTurn = false;
+				return;
+			}
+		}
+	}
+}
