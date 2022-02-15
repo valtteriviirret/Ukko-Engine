@@ -7,7 +7,7 @@
 
 namespace GameManager
 {
-	void update(bool player);
+	void update();
 }
 
 

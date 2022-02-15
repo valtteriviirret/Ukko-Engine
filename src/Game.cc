@@ -165,7 +165,7 @@ bool Game::moveSetup()
 
 void Game::playerPlayMove()
 {
-	GameManager::update(false);
+	GameManager::update();
 
 	if(!moveSetup())
 	{
@@ -216,7 +216,7 @@ void Game::playerPlayMove()
 // Engine's move:
 void Game::enginePlayMove()
 {
-	GameManager::update(true);
+	GameManager::update();
 	std::this_thread::sleep_for(std::chrono::milliseconds(300));
 	engine.PlayMove();
 	updateConsole();
