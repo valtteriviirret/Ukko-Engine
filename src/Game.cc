@@ -180,29 +180,28 @@ void Game::playerPlayMove()
 		if (selectedSquare != originalSquare && isPieceSelected)
 		{
 			// loop legal moves for the selected piece
-			for (auto &legalMove: legalMoves)
+			for (auto& i : legalMoves)
 			{
 				// if new click is in legal moves
-				if (selectedSquare->x == legalMove.x && selectedSquare->y == legalMove.y)
+				if (selectedSquare->x == i.x && selectedSquare->y == i.y)
 				{
-					// I have no idea why only this way works, however it does.
-					// I'll clean this up later
-					int t = 15;
 					// loop players pieces to find the correct one
-					for (auto& j : playerPieces)
+					for(int j = 16; j < 32; j++)
 					{
-						++t;
 						// filter moves
-						if(j.user == PLAYER && j.type != 6)
+						if(Pieces::get(j).user == PLAYER && Pieces::get(j).type != 6)
 						{
 							// loop pieces and find correct one
-							if (originalSquare == &Sqr::getSquare(j.x, j.y))
+							if (originalSquare == &Sqr::getSquare(Pieces::get(j).x, Pieces::get(j).y))
 							{
 								// make the move
-								Move::execute(&Pieces::get(t), legalMove);
+								Move::execute(&Pieces::get(j), i);
+
 								legalMoves.clear();
 								isPieceSelected = false;
 								updateConsole();
+								Global::playerTurn = false;
+								return;
 							}
 						}
 					}
