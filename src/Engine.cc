@@ -158,30 +158,15 @@ void Engine::getEngineMoves()
 			std::vector<Square> temp = LegalMove::getLegal(Pieces::get(i));
 
 			// make pairs from piece and where the 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> a744273 (refactoring)
 			for(int j = 0; j < (int)temp.size(); j++)
 			{
 				moves.push_back(std::make_pair(enginePieces[i], temp[j]));
 				engineMoves.push_back(temp[j]);
 			}
-<<<<<<< HEAD
-=======
 			for(auto & j : temp)
-				moves.emplace_back(pieces[i], j);
->>>>>>> daa3566 (refactoring)
-<<<<<<< HEAD
-=======
+				moves.emplace_back(enginePieces[i], j);
 			for(auto & j : temp)
-				moves.emplace_back(pieces[i], j);
->>>>>>> daa3566 (refactoring)
-=======
->>>>>>> a744273 (refactoring)
-=======
->>>>>>> origin/main
+				moves.emplace_back(enginePieces[i], j);
 		}
 	}
 }
