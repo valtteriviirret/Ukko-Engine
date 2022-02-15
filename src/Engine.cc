@@ -7,14 +7,14 @@ Engine::~Engine() = default;
 bool Engine::PlayMove()
 {
 	// clear existing stuff
-	pieces.clear();
+	enginePieces.clear();
 	moves.clear();
 
 	// get fresh squares
 	getAllSquares();
 
 	// get all the avainable moves
-	getAllMoves();
+	getEngineMoves();
 
 	if (!moves.empty())
 	{
@@ -37,14 +37,43 @@ int Engine::evaluate()
 	// TODO: Evaluate the board. Pick pieces based on player's and AI's legal moves.
 	getMaterialBalance();
 
+	double calc = engineMaterial - playerMaterial;
+	double eval = calc / 20;
+	Global::evaluation = eval;	
+
+	std::cout << Global::evaluation;
+	
+	// return eval
 	return 0;
 }
+
 
 void Engine::getMaterialBalance()
 {
 	engineMaterial = materialValue(false);
 	playerMaterial = materialValue(true);
 }
+
+/*
+double Engine::max(int depth)
+{
+	if(depth == 0)
+		return evaluate();
+
+	double max = std::numeric_limits<double>::infinity();
+
+	//for(int i = 0; i < 16; i++)
+	//{
+	//}
+
+	return evaluate();
+}
+
+double Engine::min(int depth)
+{
+
+}
+*/
 
 double Engine::materialValue(bool player)
 {
@@ -86,28 +115,28 @@ void Engine::makeFakeMove(std::pair<Piece*, Square> move)
 	squares[move.first->x][move.first->y]->piece = ghost(move.first->x, move.first->y);
 }
 
-void Engine::getAllPieces()
+void Engine::getEnginePieces()
 {
 	for(int i = 0; i < 16; i++)
-		pieces.push_back(&Pieces::get(i));
+		enginePieces.push_back(&Pieces::get(i));
 }
 
-void Engine::getAllMoves()
+void Engine::getEngineMoves()
 {
 	// get all pieces first
-	getAllPieces();
+	getEnginePieces();
 
-	for(int i = 0; i < (int)pieces.size(); i++)
+	for(int i = 0; i < (int)enginePieces.size(); i++)
 	{
 		// don't include captured pieces
-		if(pieces[i]->type != 6 && pieces[i]->user == ENGINE)
+		if(enginePieces[i]->type != 6 && enginePieces[i]->user == ENGINE)
 		{
 			// get legal moves for the piece
 			std::vector<Square> temp = LegalMove::getLegal(Pieces::get(i));
 
 			// make pairs from piece and where the 
 			for(int j = 0; j < (int)temp.size(); j++)
-				moves.push_back(std::make_pair(pieces[i], temp[j]));
+				moves.push_back(std::make_pair(enginePieces[i], temp[j]));
 		}
 	}
 }

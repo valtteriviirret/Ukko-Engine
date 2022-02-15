@@ -14,7 +14,10 @@ typedef enum { GAME_ON, VICTORY, DEFEAT, DRAW, END } currentGameState;
 class Global
 {
 	public:
-		static int evaluation;
+
+		// 1 ENGINE WIN -- -1 ENGINE LOSE
+		static double evaluation;
+
 		static bool playerTurn;
 		static currentGameState state;
 		static Square* en_passant;
