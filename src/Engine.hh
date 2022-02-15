@@ -32,6 +32,8 @@ class Engine
 		Square* squares[8][8] = {};
 		std::vector<Piece*> enginePieces;
 		std::vector<Piece*> playerPieces;
+		std::vector<Square> engineMoves;
+		std::vector<Square> playerMoves;
 		std::vector<std::pair<Piece*, Square>> moves;
 		double engineMaterial;
 		double playerMaterial;
