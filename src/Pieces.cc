@@ -7,6 +7,8 @@ namespace Pieces
 
 	Piece& get(int n) { return p[n]; }
 
+	Piece* getModify(int n) { return &p[n]; }
+
 	void set(Piece piece, int x, int y)
 	{
 		for(int i = 0; i < 32; i++)

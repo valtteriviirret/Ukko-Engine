@@ -95,14 +95,14 @@ namespace Move
 
 		switch(target.y)
 		{
-			case 0: nameY = '1'; break;
-			case 1: nameY = '2'; break;
-			case 2: nameY = '3'; break;
-			case 3: nameY = '4'; break;
-			case 4: nameY = '5'; break;
-			case 5: nameY = '6'; break;
-			case 6: nameY = '7'; break;
-			case 7: nameY = '8'; break;
+			case 0: nameY = '8'; break;
+			case 1: nameY = '7'; break;
+			case 2: nameY = '6'; break;
+			case 3: nameY = '5'; break;
+			case 4: nameY = '4'; break;
+			case 5: nameY = '3'; break;
+			case 6: nameY = '2'; break;
+			case 7: nameY = '1'; break;
 		}
 
 		// castling
@@ -274,47 +274,52 @@ namespace Move
 
 		// REGULAR MOVE
 		
-		if(source->type != 6)
+		//if(source->type != 6)
+		//{
+		
+		if(target.piece.type != 6)
 		{
-			if(target.piece.type != 6)
+			// destroy old piece
+			//emptyPiece(target.x, target.y);
+
+			for(int i = 0; i < 32; i++)
 			{
-				// destroy old piece
-				emptyPiece(target.x, target.y);
+				if(Pieces::get(i).x == target.x && Pieces::get(i).y == target.y)
+				{
+					Piece* x = Pieces::getModify(i);
+					x->type = NONE;
+					x->color = UNDEFINED;
+					x->user = GHOST;
+				}
 			}
 
-			emptySquare(source->x, source->y);
-
-			Piece x =
-			{
-				source->type,
-				source->color,
-				target.x,
-				target.y,
-				source->user
-			};
-
-
-			// change source values to target
-			*source = x;
-
-			// update square
-			Sqr::squareHelper(source->x, source->y)->piece = *source;
-
-
-			// make the notation
-			name = name + nameSource + " to " + nameX + nameY + promotion;
-
-			// read info of the move in console
-			readName();
-
-			// change turn
-			if(source->user == PLAYER)
-				Global::playerTurn = false;
-			else
-				Global::playerTurn = true;
-
-
 		}
+
+		
+		emptySquare(source->x, source->y);
+
+		source->x = target.x;
+		source->y = target.y;
+
+		// update square
+		Sqr::squareHelper(source->x, source->y)->piece = *source;
+
+	
+
+		// make the notation
+		name = name + nameSource + " to " + nameX + nameY + promotion;
+
+		// read info of the move in console
+		readName();
+
+		// change turn
+		if(source->user == PLAYER)
+			Global::playerTurn = false;
+		else
+			Global::playerTurn = true;
+
+
+		//}
 	}
 }
 
