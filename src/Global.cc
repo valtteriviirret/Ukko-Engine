@@ -11,7 +11,7 @@ bool Global::playerTurn = true;
 
 Square* Global::en_passant = nullptr;
 
-int Global::evaluation = 0;
+double Global::evaluation = 0;
 
 
 bool Global::playerKingMoved = false;
