@@ -41,7 +41,6 @@ int Engine::evaluate()
 	double eval = calc / 20;
 	Global::evaluation = eval;	
 
-	std::cout << Global::evaluation;
 	
 	// return eval
 	return 0;
@@ -54,26 +53,43 @@ void Engine::getMaterialBalance()
 	playerMaterial = materialValue(true);
 }
 
-/*
 double Engine::max(int depth)
 {
 	if(depth == 0)
 		return evaluate();
 
-	double max = std::numeric_limits<double>::infinity();
+	double max = -std::numeric_limits<double>::infinity();
+	int score;
 
-	//for(int i = 0; i < 16; i++)
-	//{
-	//}
-
-	return evaluate();
+	getEngineMoves();
+	for(int i = 0; i < (int)engineMoves.size(); i++)
+	{
+		score = min(depth - 1);
+		if(score > max)
+			max = score;
+	}
+	
+	return max;
 }
 
 double Engine::min(int depth)
 {
-
+	if(depth == 0)
+		return evaluate();
+	
+	double min = -std::numeric_limits<double>::infinity();
+	int score;
+	
+	getPlayerMoves();
+	for(int i = 0; i < (int)playerMoves.size(); i++)
+	{
+		score = max(depth - 1);
+		if(score < min)
+			min = score;
+	}
+	
+	return min;
 }
-*/
 
 double Engine::materialValue(bool player)
 {
@@ -121,14 +137,21 @@ void Engine::getEnginePieces()
 		enginePieces.push_back(&Pieces::get(i));
 }
 
+void Engine::getPlayerPieces()
+{
+	for(int i = 16; i < 32; i++)
+		playerPieces.push_back(&Pieces::get(i));
+}
+
 void Engine::getEngineMoves()
 {
 	// get all pieces first
+	engineMoves.clear();
 	getEnginePieces();
 
 	for(int i = 0; i < (int)enginePieces.size(); i++)
 	{
-		// don't include captured pieces
+		// filter pieces
 		if(enginePieces[i]->type != 6 && enginePieces[i]->user == ENGINE)
 		{
 			// get legal moves for the piece
@@ -136,8 +159,36 @@ void Engine::getEngineMoves()
 
 			// make pairs from piece and where the 
 			for(int j = 0; j < (int)temp.size(); j++)
+			{
 				moves.push_back(std::make_pair(enginePieces[i], temp[j]));
+				engineMoves.push_back(temp[j]);
+			}
 		}
 	}
 }
+
+void Engine::getPlayerMoves()
+{
+	playerMoves.clear();
+	getPlayerPieces();
+
+	for(int i = 16; i < 32; i++)
+	{
+		if(playerPieces[i]->type != 6 && playerPieces[i]->user == PLAYER)
+		{
+			// get legal moves
+			std::vector<Square> temp = LegalMove::get(Pieces::get(i));
+
+			for(int j = 0; j < (int)temp.size(); j++)
+			{
+				playerMoves.push_back(temp[j]);
+			}
+		}
+	}
+}
+
+
+
+
+
 
