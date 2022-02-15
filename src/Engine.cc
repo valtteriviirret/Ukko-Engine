@@ -168,6 +168,7 @@ void Engine::getEngineMoves()
 				moves.push_back(std::make_pair(enginePieces[i], temp[j]));
 				engineMoves.push_back(temp[j]);
 			}
+<<<<<<< HEAD
 =======
 			for(auto & j : temp)
 				moves.emplace_back(pieces[i], j);
@@ -179,6 +180,8 @@ void Engine::getEngineMoves()
 >>>>>>> daa3566 (refactoring)
 =======
 >>>>>>> a744273 (refactoring)
+=======
+>>>>>>> origin/main
 		}
 	}
 }
