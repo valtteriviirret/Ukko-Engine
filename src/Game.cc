@@ -137,47 +137,73 @@ void Game::render()
 }
 
 
-// Player's move logic:
+bool Game::moveSetup()
+{
+	playerPieces.clear();
+	playerMoves.clear();
+
+	// "raw pieces"
+	for(int i = 16; i < 32; i++)
+		playerPieces.push_back(Pieces::get(i));
+
+	// loop all pieces
+	for(auto& i : playerPieces)
+	{
+		// filter pieces
+		if(i.type != 6 && i.user == PLAYER)
+		{
+			// get all legal moves
+			std::vector<Square> temp = LegalMove::getLegal(i);
+
+			for(auto& j : temp)
+				playerMoves.push_back(j);
+		}
+	}
+
+	return !playerMoves.empty();
+}
+
 void Game::playerPlayMove()
 {
-	// if selected new square
-	if (selectedSquare != originalSquare && isPieceSelected)
-	{
-		// get legal moves
-		for (auto &legalMove: legalMoves)
-		{
-			// if new click is in legal moves
-			if (selectedSquare->x == legalMove.x && selectedSquare->y == legalMove.y)
-			{
-				// loop players pieces to find the correct one
-				for (int j = 16; j < 32; j++)
-				{
-					// loop pieces and find correct one
-					if (originalSquare == &Sqr::getSquare(Pieces::get(j).x, Pieces::get(j).y))
-					{
-						GameManager::update(false);
+	GameManager::update(false);
 
-						if (legalMoves.empty() && Global::playerInCheck)
+	if(!moveSetup())
+	{
+		if(Global::playerInCheck)
+			Global::state = DEFEAT;
+		else
+			Global::state = DRAW;
+	}
+	else
+	{
+		// if selected new square
+		if (selectedSquare != originalSquare && isPieceSelected)
+		{
+			// loop legal moves for the selected piece
+			for (auto &legalMove: legalMoves)
+			{
+				// if new click is in legal moves
+				if (selectedSquare->x == legalMove.x && selectedSquare->y == legalMove.y)
+				{
+					// I have no idea why only this way works, however it does.
+					// I'll clean this up later
+					int t = 15;
+					// loop players pieces to find the correct one
+					for (auto& j : playerPieces)
+					{
+						++t;
+						// filter moves
+						if(j.user == PLAYER && j.type != 6)
 						{
-							legalMoves.clear();
-							isPieceSelected = false;
-							Global::state = DEFEAT;
-							updateConsole();
-						}
-						else if(legalMoves.empty() && Global::playerInCheck)
-						{
-							legalMoves.clear();
-							isPieceSelected = false;
-							Global::state = DRAW;
-							updateConsole();
-						}
-						else
-						{
-							// make the move
-							Move::execute(&Pieces::get(j), legalMove);
-							legalMoves.clear();
-							isPieceSelected = false;
-							updateConsole();
+							// loop pieces and find correct one
+							if (originalSquare == &Sqr::getSquare(j.x, j.y))
+							{
+								// make the move
+								Move::execute(&Pieces::get(t), legalMove);
+								legalMoves.clear();
+								isPieceSelected = false;
+								updateConsole();
+							}
 						}
 					}
 				}
@@ -185,6 +211,7 @@ void Game::playerPlayMove()
 		}
 	}
 }
+
 
 // Engine's move:
 void Game::enginePlayMove()

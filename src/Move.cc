@@ -274,14 +274,9 @@ namespace Move
 
 		// REGULAR MOVE
 		
-		//if(source->type != 6)
-		//{
-		
+		// capturing piece
 		if(target.piece.type != 6)
 		{
-			// destroy old piece
-			//emptyPiece(target.x, target.y);
-
 			for(int i = 0; i < 32; i++)
 			{
 				if(Pieces::get(i).x == target.x && Pieces::get(i).y == target.y)
@@ -292,7 +287,6 @@ namespace Move
 					x->user = GHOST;
 				}
 			}
-
 		}
 
 		
@@ -303,7 +297,6 @@ namespace Move
 
 		// update square
 		Sqr::squareHelper(source->x, source->y)->piece = *source;
-
 	
 
 		// make the notation
@@ -318,8 +311,6 @@ namespace Move
 		else
 			Global::playerTurn = true;
 
-
-		//}
 	}
 }
 
