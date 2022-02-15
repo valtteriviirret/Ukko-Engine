@@ -7,6 +7,8 @@
 #include "Renderer.hh"
 #include "ScreenSize.hh"
 #include "FontLoader.hh"
+#include "Piece.hh"
+
 
 class Text
 {

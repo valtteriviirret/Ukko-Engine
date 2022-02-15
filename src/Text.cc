@@ -1,5 +1,5 @@
 #include "Text.hh"
-#include "ScreenSize.hh"
+
 
 Text::Text(std::string _text, bool playerTurn) : text(_text)
 {
