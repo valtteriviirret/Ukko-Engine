@@ -160,6 +160,9 @@ void Engine::getEngineMoves()
 			// make pairs from piece and where the 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a744273 (refactoring)
 			for(int j = 0; j < (int)temp.size(); j++)
 			{
 				moves.push_back(std::make_pair(enginePieces[i], temp[j]));
@@ -169,10 +172,13 @@ void Engine::getEngineMoves()
 			for(auto & j : temp)
 				moves.emplace_back(pieces[i], j);
 >>>>>>> daa3566 (refactoring)
+<<<<<<< HEAD
 =======
 			for(auto & j : temp)
 				moves.emplace_back(pieces[i], j);
 >>>>>>> daa3566 (refactoring)
+=======
+>>>>>>> a744273 (refactoring)
 		}
 	}
 }
