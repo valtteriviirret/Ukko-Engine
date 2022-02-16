@@ -13,9 +13,7 @@ namespace Sqr
 			return nullptr;
 	}
 
-	// getting individual square
-	Square& getSquare(int x, int y) 
-	{
-		return squares[x][y];
-	}
+	Square& getSquare(int x, int y) { return squares[x][y]; }
+
+	Square squareCopy(int x, int y) { return squares[x][y]; }
 }

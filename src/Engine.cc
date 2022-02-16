@@ -8,7 +8,12 @@ bool Engine::PlayMove()
 {
 	// clear existing stuff
 	enginePieces.clear();
-	moves.clear();
+	playerPieces.clear();
+	engineMoves.clear();
+	playerMoves.clear();
+	enginePairs.clear();
+	playerPairs.clear();
+
 
 	// get fresh squares
 	getAllSquares();
@@ -16,10 +21,17 @@ bool Engine::PlayMove()
 	// get all the avainable moves
 	getEngineMoves();
 
-	if (!moves.empty())
+	if(!enginePairs.empty())
 	{
-		int n = evaluate();
-		Move::execute(moves.at(n).first, moves.at(n).second);
+		int n = 0;
+
+		std::pair<Piece*, Square>* xd = test();
+		std::cout << "BEST MOVE: " << xd->second.x << " " << xd->second.y << "\n";
+
+		Move::execute(enginePairs.at(n).first, enginePairs.at(n).second);
+
+
+		//Move::execute(xd->first, xd->second);
 		return true;
 	}
 	else
@@ -32,7 +44,40 @@ bool Engine::PlayMove()
 	}
 }
 
-int Engine::evaluate()
+std::pair<Piece*, Square>* Engine::test()
+{
+	getEngineMoves();
+
+	int x = -1;
+
+	std::pair<Piece*, Square>* m = nullptr; 
+
+	for(int i = 0; i < (int)enginePairs.size(); i++)
+	{
+		getAllSquares();
+		makeFakeMove(enginePairs[i]);
+		double a = evaluate();
+
+		//std::cout << a << "\n";
+
+		if(a >= x)
+		{
+			m = &enginePairs[i];
+			x = a;
+		}
+	}
+
+	// set all squares back to normal
+	getAllSquares();
+
+	// if "good move" is not selected return first possible move
+	if(!m)
+		m = &enginePairs[0];
+
+	return m;
+}
+
+double Engine::evaluate()
 {
 	getMaterialBalance();
 
@@ -40,9 +85,7 @@ int Engine::evaluate()
 	double eval = calc / 20;
 	Global::evaluation = eval;	
 
-	
-	// return eval
-	return 0;
+	return eval;
 }
 
 
@@ -52,6 +95,7 @@ void Engine::getMaterialBalance()
 	playerMaterial = materialValue(true);
 }
 
+/*
 double Engine::max(int depth)
 {
 	if(depth == 0)
@@ -76,7 +120,7 @@ double Engine::min(int depth)
 	if(depth == 0)
 		return evaluate();
 	
-	double min = -std::numeric_limits<double>::infinity();
+	double min = std::numeric_limits<double>::infinity();
 	int score;
 	
 	getPlayerMoves();
@@ -89,28 +133,39 @@ double Engine::min(int depth)
 	
 	return min;
 }
+*/
 
 double Engine::materialValue(bool player)
 {
-	int a = player ? 16 : 0;
-	int b = player ? 32 : 16;
 	double n = 0;
-
-	for(int i = a; i < b; i++)
+	for(int i = 0; i < 8; i++)
 	{
-		switch(Pieces::get(i).type)
+		for(int j = 0; j < 8; j++)
 		{
-			case KING: break;
-			case NONE: break;
-			case ROOK: n += 5; break;
-			case PAWN: n += 1; break;
-			case QUEEN: n += 9; break;
-			case KNIGHT: n += 3; break;
-			case BISHOP: n += 3.25; break;
-		}	
-	}
+			if(player && squares[i][j].piece.user == PLAYER)
+				n += getValue(squares[i][j]);
 
-	// return materialvalue
+			if((!player) && squares[i][j].piece.user == ENGINE)
+				n += getValue(squares[i][j]);
+		}
+	}
+	
+	return n;
+}
+
+double Engine::getValue(Square square)
+{
+	double n = 0;
+	switch(square.piece.type)
+	{
+		case KING: break;
+		case NONE: break;
+		case ROOK: n += 5; break;
+		case PAWN: n += 1; break;
+		case QUEEN: n += 9; break;
+		case KNIGHT: n += 3; break;
+		case BISHOP: n += 3.25; break;
+	}
 	return n;
 }
 
@@ -118,16 +173,16 @@ void Engine::getAllSquares()
 {
 	for(int i = 0; i < 8; i++)
 		for(int j = 0; j < 8; j++)
-			squares[i][j] = Sqr::squareHelper(i, j);
+			squares[i][j] = Sqr::squareCopy(i, j);
 }
 
 void Engine::makeFakeMove(std::pair<Piece*, Square> move)
 {
 	// source goes to target
-	squares[move.second.x][move.second.y]->piece = *move.first;
+	squares[move.second.x][move.second.y].piece = *move.first;
 
 	// source is set to zero
-	squares[move.first->x][move.first->y]->piece = ghost(move.first->x, move.first->y);
+	squares[move.first->x][move.first->y].piece = ghost(move.first->x, move.first->y);
 }
 
 void Engine::getEnginePieces()
@@ -159,13 +214,9 @@ void Engine::getEngineMoves()
 			// make pairs from piece and where the 
 			for(int j = 0; j < (int)temp.size(); j++)
 			{
-				moves.push_back(std::make_pair(enginePieces[i], temp[j]));
+				enginePairs.push_back(std::make_pair(enginePieces[i], temp[j]));
 				engineMoves.push_back(temp[j]);
 			}
-			for(auto & j : temp)
-				moves.emplace_back(enginePieces[i], j);
-			for(auto & j : temp)
-				moves.emplace_back(enginePieces[i], j);
 		}
 	}
 }
