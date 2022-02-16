@@ -28,10 +28,9 @@ bool Engine::PlayMove()
 		std::pair<Piece*, Square>* xd = test();
 		std::cout << "BEST MOVE: " << xd->second.x << " " << xd->second.y << "\n";
 
-		Move::execute(enginePairs.at(n).first, enginePairs.at(n).second);
+		//Move::execute(enginePairs.at(n).first, enginePairs.at(n).second);
+		Move::execute(xd->first, xd->second);
 
-
-		//Move::execute(xd->first, xd->second);
 		return true;
 	}
 	else
@@ -46,24 +45,28 @@ bool Engine::PlayMove()
 
 std::pair<Piece*, Square>* Engine::test()
 {
+	// get fresh engine moves
 	getEngineMoves();
-
-	int x = -1;
 
 	std::pair<Piece*, Square>* m = nullptr; 
 
+	double balance = evaluate();
+
 	for(int i = 0; i < (int)enginePairs.size(); i++)
 	{
+		// start from beginning
 		getAllSquares();
+
+		// do the fake move
 		makeFakeMove(enginePairs[i]);
+
+		// evaluate move
 		double a = evaluate();
 
-		//std::cout << a << "\n";
-
-		if(a >= x)
+		if(a > balance)
 		{
 			m = &enginePairs[i];
-			x = a;
+			balance = a;
 		}
 	}
 
