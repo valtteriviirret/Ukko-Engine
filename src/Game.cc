@@ -71,10 +71,7 @@ void Game::eventHandler()
 
 		// if game is over press 'R' to reset and play again :)
 		if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_r)
-		{
-			console.clear();
 			resetGame();
-		}
 	}
 }
 
@@ -260,7 +257,10 @@ void Game::updateConsoleText(const std::string& text)
 // reset game variables
 void Game::resetGame()
 {
+	// pieces to their correct places
 	Pieces::init();
+
+	// gameplay settings to normal
 	Global::playerKingMoved = false;
 	Global::engineKingMoved = false;
 	Global::playerQsideRookMoved = false;
@@ -273,7 +273,18 @@ void Game::resetGame()
 	Global::engineCanCastleQ = true;
 	Global::playerInCheck = false;
 	Global::engineInCheck = false;
+
+	// set game to ON
 	Global::state = GAME_ON;
+
+	// white starts game
 	Settings::PlayerColor == WHITE ? Global::playerTurn = true : Global::playerTurn = false;
+
+	// unselect square
+	originalSquare = nullptr;
+	selectedSquare = nullptr;
+
+	// clear console
+	console.clear();
 }
 
