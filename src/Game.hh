@@ -20,7 +20,6 @@
 #include <chrono>
 #include <thread>
 
-
 class Game
 {
 	public:
@@ -35,6 +34,9 @@ class Game
 		void render();
 		void update();
 		void eventHandler();
+		void resetGame();
+		void updateConsoleText(const std::string& text);
+		void executePlayerMove(Square& sq);
 
 		std::vector<Square> playerMoves;
 		std::vector<Square> legalMoves;
@@ -45,7 +47,6 @@ class Game
 		int consoleIndex = 0;
         bool isPieceSelected = false;
 		void updateConsole();
-		void updateConsoleText(const std::string& text);
 
 		Engine engine;
 		Board* board = nullptr;
@@ -56,8 +57,6 @@ class Game
         Square* selectedSquare = nullptr;
         Square* originalSquare = nullptr;
 
-		void executePlayerMove(Square& sq);
-		static void resetGame();
 };
 
 #endif
