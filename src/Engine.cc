@@ -34,7 +34,6 @@ bool Engine::PlayMove()
 
 int Engine::evaluate()
 {
-	// TODO: Evaluate the board. Pick pieces based on player's and AI's legal moves.
 	getMaterialBalance();
 
 	double calc = engineMaterial - playerMaterial;

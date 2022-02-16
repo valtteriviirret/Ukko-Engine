@@ -136,7 +136,6 @@ void Game::render()
 	Renderer::render();
 }
 
-
 bool Game::moveSetup()
 {
 	playerPieces.clear();
@@ -187,6 +186,30 @@ void Game::playerPlayMove()
 	}
 }
 
+void Game::executePlayerMove(Square& sq)
+{
+	// loop players pieces to find the correct one
+	for (int j = 16; j < 32; j++)
+	{
+		// filter moves
+		if (Pieces::get(j).user == PLAYER && Pieces::get(j).type != 6)
+		{
+			// loop pieces and find correct one
+			if (originalSquare == &Sqr::getSquare(Pieces::get(j).x, Pieces::get(j).y))
+			{
+				// make the move
+				Move::execute(&Pieces::get(j), sq);
+
+				legalMoves.clear();
+				isPieceSelected = false;
+				updateConsole();
+				Global::playerTurn = false;
+				return;
+			}
+		}
+	}
+}
+
 // Engine's move:
 void Game::enginePlayMove()
 {
@@ -224,6 +247,15 @@ void Game::updateConsole()
 		updateConsoleText("Hit 'R' to play again.");
 }
 
+void Game::updateConsoleText(const std::string& text)
+{
+	console.push_back(new Text(text, Global::playerTurn));
+	consoleIndex++;
+
+	for (auto &i: console)
+		i->position.y -= 18;
+}
+
 // reset game variables
 void Game::resetGame()
 {
@@ -242,37 +274,4 @@ void Game::resetGame()
 	Global::engineInCheck = false;
 	Global::state = GAME_ON;
 	Settings::PlayerColor == WHITE ? Global::playerTurn = true : Global::playerTurn = false;
-}
-
-void Game::updateConsoleText(const std::string& text)
-{
-	console.push_back(new Text(text, Global::playerTurn));
-	consoleIndex++;
-
-	for (auto &i: console)
-		i->position.y -= 18;
-}
-
-void Game::executePlayerMove(Square& sq)
-{
-	// loop players pieces to find the correct one
-	for (int j = 16; j < 32; j++)
-	{
-		// filter moves
-		if (Pieces::get(j).user == PLAYER && Pieces::get(j).type != 6)
-		{
-			// loop pieces and find correct one
-			if (originalSquare == &Sqr::getSquare(Pieces::get(j).x, Pieces::get(j).y))
-			{
-				// make the move
-				Move::execute(&Pieces::get(j), sq);
-
-				legalMoves.clear();
-				isPieceSelected = false;
-				updateConsole();
-				Global::playerTurn = false;
-				return;
-			}
-		}
-	}
 }

@@ -29,14 +29,12 @@ class Game
 		void updateGame();
 		bool ApplicationShouldClose = false;
 	private:
-		void updateConsole();
 		bool moveSetup();
 		void playerPlayMove();
 		void enginePlayMove();
 		void render();
 		void update();
 		void eventHandler();
-		void resetGame();
 
 		std::vector<Square> playerMoves;
 		std::vector<Square> legalMoves;
@@ -46,18 +44,20 @@ class Game
 		std::vector<Text*> console;
 		int consoleIndex = 0;
         bool isPieceSelected = false;
+		void updateConsole();
+		void updateConsoleText(const std::string& text);
 
 		Engine engine;
 		Board* board = nullptr;
 		PieceFactory* pieces = nullptr;
 		Window* window = nullptr;
-		SDL_Event e;
+		SDL_Event e{};
         SDL_Point mousePos = { 0, 0 };
         Square* selectedSquare = nullptr;
         Square* originalSquare = nullptr;
 
-		void updateConsoleText(const std::string& text);
 		void executePlayerMove(Square& sq);
+		static void resetGame();
 };
 
 #endif
