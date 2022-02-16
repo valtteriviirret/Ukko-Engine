@@ -39,6 +39,7 @@ void Game::eventHandler()
 {
 	while (SDL_PollEvent(&e))
 	{
+		// rezise window
 		window->resize(e);
 
 		// close application

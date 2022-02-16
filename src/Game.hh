@@ -20,7 +20,6 @@
 #include <chrono>
 #include <thread>
 
-
 class Game
 {
 	public:
@@ -37,6 +36,8 @@ class Game
 		void update();
 		void eventHandler();
 		void resetGame();
+		void updateConsoleText(const std::string& text);
+		void executePlayerMove(Square& sq);
 
 		std::vector<Square> playerMoves;
 		std::vector<Square> legalMoves;
@@ -55,9 +56,6 @@ class Game
         SDL_Point mousePos = { 0, 0 };
         Square* selectedSquare = nullptr;
         Square* originalSquare = nullptr;
-
-		void updateConsoleText(const std::string& text);
-		void executePlayerMove(Square& sq);
 };
 
 #endif

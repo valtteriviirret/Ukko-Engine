@@ -14,6 +14,5 @@ namespace Renderer
 	void clear() { SDL_RenderClear(renderer); }
 	void render() { SDL_RenderPresent(renderer); }
 	void fillRect(SDL_Rect r) { SDL_RenderFillRect(renderer, &r); }
-
 }
 

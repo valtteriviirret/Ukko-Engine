@@ -36,20 +36,14 @@ namespace Pieces
 		// engine pawns
 		for(int i = 0; i < 8; i++)
 		{
-			p[i] = 
-			{
-				PAWN, engineColor, i, 1, ENGINE
-			};
+			p[i] = { PAWN, engineColor, i, 1, ENGINE };
 			Sqr::getSquare(i, 1).piece = p[i];
 		}
 
 		// player pawns
 		for(int i = 16; i < 24; i++)
 		{
-			p[i] = 
-			{
-				PAWN, PlayerColor, (i - 16), 6, PLAYER
-			};
+			p[i] = { PAWN, PlayerColor, (i - 16), 6, PLAYER };
 			Sqr::getSquare((i - 16), 6).piece = p[i];
 		}
 
