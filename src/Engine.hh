@@ -6,6 +6,7 @@
 #include "Global.hh"
 #include "LegalMoves.hh"
 #include "Move.hh"
+#include "MinMax.hh"
 #include "SquareManager.hh"
 #include <vector>
 #include <iostream>
@@ -18,28 +19,41 @@ class Engine
 		~Engine();
 		bool PlayMove();
 	private:
-		void makeFakeMove(std::pair<Piece*, Square> move);
+		// get all pieces
 		void getEnginePieces();
-		void getEngineMoves();
 		void getPlayerPieces();
+
+		// get all possible moves
+		void getEngineMoves();
 		void getPlayerMoves();
+
+		// get the best possible move
+		MinMax engineBest();
+		MinMax playerBest();
+	
+		// helping functions
 		void getAllSquares();
 		void getMaterialBalance();
-		std::pair<Piece*, Square>* test();
+		void makeFakeMove(std::pair<Piece*, Square> move);
 		double evaluate();
-		double min(int depth);
-		double max(int depth);
 		double materialValue(bool player);
 		double getValue(Square square);
+
+		// minmax
+		MinMax min(int depth);
+		MinMax max(int depth);
+
+		// moves
+		std::vector<std::pair<Piece*, Square>> enginePairs;
+		std::vector<std::pair<Piece*, Square>> playerPairs;
+		double engineMaterial;
+		double playerMaterial;
+
 		Square squares[8][8] = {};
 		std::vector<Piece*> enginePieces;
 		std::vector<Piece*> playerPieces;
 		std::vector<Square> engineMoves;
 		std::vector<Square> playerMoves;
-		std::vector<std::pair<Piece*, Square>> enginePairs;
-		std::vector<std::pair<Piece*, Square>> playerPairs;
-		double engineMaterial;
-		double playerMaterial;
 };
 
 #endif
