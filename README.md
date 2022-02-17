@@ -1,7 +1,14 @@
-# Ukko Chess Engine v1.0 alpha
+# Ukko Chess Engine v1.1 alpha
+
+#### Changes:
+- More agressive AI.
+- Most major bugs fixed including "ghost pieces".
+
+#### TODO:
+- MinMax-algorithm.
+- High res chess piece textures.
+- UI/UX improvements,
 
 #### Known issues:
-- Captured pieces occasionally stay visible and behave like ghost pieces.
-- Random crashes
-- Sometimes pieces disappear when near the left upper corner. This seems to happen a lot with knights.
-- Game sort of freezes if you lose.
+- Occasional SIGSEGV crashes.
+- Game does not end when player is in checkmate.
