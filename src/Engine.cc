@@ -9,8 +9,10 @@ bool Engine::PlayMove()
 	// clear existing stuff
 	enginePieces.clear();
 	playerPieces.clear();
+
 	engineMoves.clear();
 	playerMoves.clear();
+
 	enginePairs.clear();
 	playerPairs.clear();
 
@@ -26,7 +28,9 @@ bool Engine::PlayMove()
 		//Move::execute(enginePairs.at(n).first, enginePairs.at(n).second);
 
 		MinMax xd = engineBest();
-		Move::execute(xd.bestMove.first, xd.bestMove.second);
+		Move::execute(xd._bestMove.first, xd._bestMove.second);
+		//MinMax m = max(4);
+		//Move::execute(m._bestMove.first, m._bestMove.second);
 		return true;
 	}
 	else
@@ -42,8 +46,6 @@ bool Engine::PlayMove()
 // returns the best move for the engine
 MinMax Engine::engineBest()
 {
-	MinMax obj;
-
 	// get fresh engine moves
 	getEngineMoves();
 
@@ -75,17 +77,12 @@ MinMax Engine::engineBest()
 	// if "good move" is not selected return first possible move
 	if(!m)
 		m = &enginePairs[0];
-	
-	obj.evaluation = balance;
-	obj.bestMove = *m;
 
-	return obj;
+	return MinMax(balance, *m);
 }
 
 MinMax Engine::playerBest()
 {
-	MinMax obj;
-
 	getPlayerMoves();
 	
 	std::pair<Piece*, Square>* m = nullptr;
@@ -112,8 +109,7 @@ MinMax Engine::playerBest()
 	if(!m)
 		m = &enginePairs[0];
 	
-	obj.evaluation = balance;
-	obj.bestMove = *m;
+	MinMax obj(balance, *m);
 
 	return obj;
 }
@@ -140,45 +136,57 @@ void Engine::getMaterialBalance()
 	playerMaterial = materialValue(true);
 }
 
-/*
 MinMax Engine::max(int depth)
 {
 	if(depth == 0)
-		return evaluate();
+		return engineBest();
 
-	double max = -std::numeric_limits<double>::infinity();
+	//double max = -std::numeric_limits<double>::infinity();
+
 	int score;
+	int currentScore = -1;
+
+	MinMax bestMove;
 
 	getEngineMoves();
 	for(int i = 0; i < (int)engineMoves.size(); i++)
 	{
-		score = min(depth - 1).evaluation;
-		if(score > max)
-			max = score;
+		score = min(depth - 1)._evaluation;
+		if(score > currentScore)
+		{
+			currentScore = score;
+			bestMove._evaluation = score;
+			bestMove._bestMove = min(depth - 1)._bestMove;
+		}
 	}
-	
-	return max;
+
+	return bestMove;
 }
 
 MinMax Engine::min(int depth)
 {
 	if(depth == 0)
-		return evaluate();
+		return playerBest();
 	
-	double min = std::numeric_limits<double>::infinity();
+	//double min = std::numeric_limits<double>::infinity();
+	MinMax bestMove;
 	int score;
+	int currentScore = 1;
 	
-	getPlayerMoves();
+	//getPlayerMoves();
 	for(int i = 0; i < (int)playerMoves.size(); i++)
 	{
-		score = max(depth - 1).evaluation;
-		if(score < min)
-			min = score;
+		score = max(depth - 1)._evaluation;
+		if(score < currentScore)
+		{
+			currentScore = score;
+			bestMove._bestMove = max(depth - 1)._bestMove;
+			bestMove._evaluation = score;
+		}
 	}
 	
-	return min;
+	return bestMove;
 }
-*/
 
 double Engine::materialValue(bool player)
 {
@@ -238,8 +246,8 @@ void Engine::getEnginePieces()
 
 void Engine::getPlayerPieces()
 {
-	for(int i = 16; i < 32; i++)
-		playerPieces.push_back(&Pieces::get(i));
+	for(int i = 0; i < 16; i++)
+		playerPieces.push_back(&Pieces::get(i + 16));
 }
 
 void Engine::getEngineMoves()
@@ -271,12 +279,12 @@ void Engine::getPlayerMoves()
 	playerMoves.clear();
 	getPlayerPieces();
 
-	for(int i = 16; i < 32; i++)
+	for(int i = 0; i < (int)playerPieces.size(); i++)
 	{
 		if(playerPieces[i]->type != 6 && playerPieces[i]->user == PLAYER)
 		{
 			// get legal moves
-			std::vector<Square> temp = LegalMove::get(Pieces::get(i));
+			std::vector<Square> temp = LegalMove::getLegal(Pieces::get(i + 16));
 
 			for(int j = 0; j < (int)temp.size(); j++)
 			{

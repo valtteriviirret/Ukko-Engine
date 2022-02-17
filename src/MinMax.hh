@@ -8,8 +8,11 @@
 class MinMax
 {
 	public:
-		double evaluation;
-		std::pair<Piece*, Square> bestMove;
+		MinMax(double evaluation, std::pair<Piece*, Square> bestMove) 
+			: _evaluation(evaluation), _bestMove(bestMove) {}
+		MinMax() {};
+		double _evaluation;
+		std::pair<Piece*, Square> _bestMove;
 };
 
 #endif
