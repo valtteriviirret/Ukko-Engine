@@ -14,7 +14,6 @@ bool Engine::PlayMove()
 	enginePairs.clear();
 	playerPairs.clear();
 
-
 	// get fresh squares
 	getAllSquares();
 
@@ -26,9 +25,8 @@ bool Engine::PlayMove()
 		//int n = 0;
 		//Move::execute(enginePairs.at(n).first, enginePairs.at(n).second);
 
-		std::pair<Piece*, Square>* xd = test();
-		Move::execute(xd->first, xd->second);
-
+		MinMax xd = engineBest();
+		Move::execute(xd.bestMove.first, xd.bestMove.second);
 		return true;
 	}
 	else
@@ -41,8 +39,11 @@ bool Engine::PlayMove()
 	}
 }
 
-std::pair<Piece*, Square>* Engine::test()
+// returns the best move for the engine
+MinMax Engine::engineBest()
 {
+	MinMax obj;
+
 	// get fresh engine moves
 	getEngineMoves();
 
@@ -74,13 +75,56 @@ std::pair<Piece*, Square>* Engine::test()
 	// if "good move" is not selected return first possible move
 	if(!m)
 		m = &enginePairs[0];
+	
+	obj.evaluation = balance;
+	obj.bestMove = *m;
 
-	return m;
+	return obj;
+}
+
+MinMax Engine::playerBest()
+{
+	MinMax obj;
+
+	getPlayerMoves();
+	
+	std::pair<Piece*, Square>* m = nullptr;
+
+	double balance = evaluate();
+
+	for(int i = 0; i < (int)playerPairs.size(); i++)
+	{
+		getAllSquares();
+
+		makeFakeMove(playerPairs[i]);
+
+		double a = evaluate();
+
+		if(a > balance)
+		{
+			m = &playerPairs[i];
+			balance = a;
+		}
+	}
+
+	getAllSquares();
+
+	if(!m)
+		m = &enginePairs[0];
+	
+	obj.evaluation = balance;
+	obj.bestMove = *m;
+
+	return obj;
 }
 
 double Engine::evaluate()
 {
 	getMaterialBalance();
+
+	// king multiplier
+	// center multiplier
+	// line multiplier
 
 	double calc = engineMaterial - playerMaterial;
 	double eval = calc / 20;
@@ -97,7 +141,7 @@ void Engine::getMaterialBalance()
 }
 
 /*
-double Engine::max(int depth)
+MinMax Engine::max(int depth)
 {
 	if(depth == 0)
 		return evaluate();
@@ -108,7 +152,7 @@ double Engine::max(int depth)
 	getEngineMoves();
 	for(int i = 0; i < (int)engineMoves.size(); i++)
 	{
-		score = min(depth - 1);
+		score = min(depth - 1).evaluation;
 		if(score > max)
 			max = score;
 	}
@@ -116,7 +160,7 @@ double Engine::max(int depth)
 	return max;
 }
 
-double Engine::min(int depth)
+MinMax Engine::min(int depth)
 {
 	if(depth == 0)
 		return evaluate();
@@ -127,7 +171,7 @@ double Engine::min(int depth)
 	getPlayerMoves();
 	for(int i = 0; i < (int)playerMoves.size(); i++)
 	{
-		score = max(depth - 1);
+		score = max(depth - 1).evaluation;
 		if(score < min)
 			min = score;
 	}
@@ -236,6 +280,7 @@ void Engine::getPlayerMoves()
 
 			for(int j = 0; j < (int)temp.size(); j++)
 			{
+				playerPairs.push_back(std::make_pair(playerPieces[i], temp[j]));
 				playerMoves.push_back(temp[j]);
 			}
 		}
