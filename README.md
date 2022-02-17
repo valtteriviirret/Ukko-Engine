@@ -8,6 +8,7 @@
 - MinMax-algorithm.
 - High res chess piece textures.
 - UI/UX improvements,
+- Proper defeat when player loses.
 
 #### Known issues:
 - Occasional SIGSEGV crashes.
