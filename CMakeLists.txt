@@ -46,6 +46,8 @@ add_executable(UkkoShakki
 	src/Text.hh
 	src/GameManager.cc
 	src/GameManager.hh
+	src/MinMax.hh
+	src/MinMax.cc
 	)
 
 target_link_libraries(UkkoShakki ${SDL2_LIBRARIES} -lSDL2_image -lSDL2_ttf)
