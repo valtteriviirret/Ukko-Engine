@@ -19,17 +19,27 @@ bool Engine::PlayMove()
 	// get fresh squares
 	getAllSquares();
 
-	// get all the avainable moves
-	getPlayerMoves();
+	// check if engine has moves
 	getEngineMoves();
 
 	if(!enginePairs.empty())
 	{
-		MinMax m = max(2);
+		enginePieces.clear();
+		engineMoves.clear();
+		enginePairs.clear();
 
-		Move::execute(m._bestMove.first, m._bestMove.second);
-
+		MinMax xd = engineBest();
+		Move::execute(xd._bestMove.first, xd._bestMove.second);
 		
+
+
+
+		//MinMax m = max(2);
+
+		//std::cout << m._bestMove.second.piece.type;
+
+		//Move::execute(m._bestMove.first, m._bestMove.second);
+	
 		return true;
 	}
 	else
@@ -45,17 +55,16 @@ bool Engine::PlayMove()
 // returns the best move for the engine
 MinMax Engine::engineBest()
 {
+	getEngineMoves();
+
 	std::pair<Piece*, Square>* m = nullptr; 
 
 	double balance = evaluate();
 
 	for(int i = 0; i < (int)enginePairs.size(); i++)
 	{
-		// get fresh squares
-		getAllSquares();
-
 		// do the fake move
-		makeFakeMove(enginePairs[i]);
+		//makeFakeMove(enginePairs[i]);
 
 		// evaluate move
 		double a = evaluate() + 0.01;
@@ -81,8 +90,6 @@ MinMax Engine::playerBest()
 
 	for(int i = 0; i < (int)playerPairs.size(); i++)
 	{
-		getAllSquares();
-
 		makeFakeMove(playerPairs[i]);
 
 		double a = evaluate() + 0.01;
@@ -101,16 +108,18 @@ MinMax Engine::playerBest()
 
 double Engine::evaluate()
 {
-	getMaterialBalance();
-
 	// king multiplier
 	// center multiplier
 	// line multiplier
 
+	getMaterialBalance();
 	double calc = engineMaterial - playerMaterial;
+	
+	// this is just an example conversion
 	double eval = calc / 20;
+	
+	// maybe we have some use for this later dunno
 	Global::evaluation = eval;
-
 	return eval;
 }
 
@@ -125,12 +134,20 @@ MinMax Engine::max(int depth)
 {
 	if(depth == 0) return engineBest();
 
+	getEngineMoves();
+
 	int score;
 	int max = INT_MIN;
 	MinMax bestMove;
 
-	for(int i = 0; i < (int)engineMoves.size(); i++)
+	for(int i = 0; i < (int)enginePairs.size(); i++)
 	{
+		//getAllSquares();
+
+		// make fake move
+		//makeFakeMove(enginePairs[i]);
+
+		// call to min
 		MinMax move = min(depth - 1);
 		score = move._evaluation;
 		if(score > max)
@@ -140,6 +157,8 @@ MinMax Engine::max(int depth)
 		}
 	}
 
+
+
 	return bestMove;
 }
 
@@ -147,12 +166,15 @@ MinMax Engine::min(int depth)
 {
 	if(depth == 0) return playerBest();
 
+	getPlayerMoves();
+
 	int score;
 	int min = INT_MAX;
 	MinMax bestMove;
 	
-	for(int i = 0; i < (int)playerMoves.size(); i++)
+	for(int i = 0; i < (int)playerPairs.size(); i++)
 	{
+		//makeFakeMove(playerPairs[i]);
 		MinMax move = max(depth - 1);
 		score = move._evaluation;
 		if(score < min)
@@ -218,34 +240,40 @@ void Engine::makeFakeMove(std::pair<Piece*, Square> move)
 
 void Engine::getEnginePieces()
 {
-	for(int i = 0; i < 16; i++)
-		enginePieces.push_back(&Pieces::get(i));
+	for(int i = 0; i < 8; i++)
+		for(int j = 0; j < 8; j++)
+			if(squares[i][i].piece.user == ENGINE)
+				enginePieces.push_back(&Pieces::getReal(&squares[i][j].piece));
 }
 
 void Engine::getPlayerPieces()
 {
-	for(int i = 0; i < 16; i++)
-		playerPieces.push_back(&Pieces::get(i + 16));
+	for(int i = 0; i < 8; i++)
+		for(int j = 0; j < 8; j++)
+			if(squares[i][j].piece.user == PLAYER)
+				enginePieces.push_back(&Pieces::getReal(&squares[i][j].piece));
 }
 
 void Engine::getEngineMoves()
 {
 	// get all pieces first
+	playerPieces.clear();
 	engineMoves.clear();
+	enginePairs.clear();
 	getEnginePieces();
 
-	for(int i = 0; i < (int)enginePieces.size(); i++)
+	for(auto& i : enginePieces)
 	{
 		// filter pieces
-		if(enginePieces[i]->type != 6 && enginePieces[i]->user == ENGINE)
+		if(i->type != 6 && i->user == ENGINE)
 		{
 			// get legal moves for the piece
-			std::vector<Square> temp = LegalMove::getLegal(Pieces::get(i));
+			std::vector<Square> temp = LegalMove::getLegal(Pieces::getReal(i));
 
 			// make pairs from piece and where the 
 			for(int j = 0; j < (int)temp.size(); j++)
 			{
-				enginePairs.push_back(std::make_pair(enginePieces[i], temp[j]));
+				enginePairs.push_back(std::make_pair(i, temp[j]));
 				engineMoves.push_back(temp[j]);
 			}
 		}
@@ -254,19 +282,21 @@ void Engine::getEngineMoves()
 
 void Engine::getPlayerMoves()
 {
+	playerPieces.clear();
 	playerMoves.clear();
+	playerPairs.clear();
 	getPlayerPieces();
 
-	for(int i = 0; i < (int)playerPieces.size(); i++)
+	for(auto& i : playerPieces)
 	{
-		if(playerPieces[i]->type != 6 && playerPieces[i]->user == PLAYER)
+		if(i->type != 6 && i->user == PLAYER)
 		{
 			// get legal moves
-			std::vector<Square> temp = LegalMove::getLegal(Pieces::get(i + 16));
+			std::vector<Square> temp = LegalMove::getLegal(Pieces::getReal(i));
 
 			for(int j = 0; j < (int)temp.size(); j++)
 			{
-				playerPairs.push_back(std::make_pair(playerPieces[i], temp[j]));
+				playerPairs.push_back(std::make_pair(i, temp[j]));
 				playerMoves.push_back(temp[j]);
 			}
 		}

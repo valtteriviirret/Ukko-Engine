@@ -23,6 +23,17 @@ namespace Pieces
 		}
 	}
 
+	Piece& getReal(Piece* piece)
+	{
+		for(int i = 0; i < 32; i++)
+			if(p[i].x == piece->x && p[i].y == piece->y)
+				return p[i];
+
+		// TODO fix this, although this should never happen
+		
+		return p[31];
+	}
+
 	void init()
 	{
 		// 0-7 		ENGINE PAWNS
