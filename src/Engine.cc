@@ -20,23 +20,16 @@ bool Engine::PlayMove()
 	getAllSquares();
 
 	// get all the avainable moves
+	getPlayerMoves();
 	getEngineMoves();
 
 	if(!enginePairs.empty())
 	{
-		//int n = 0;
-		//Move::execute(enginePairs.at(n).first, enginePairs.at(n).second);
+		MinMax m = max(2);
 
-		MinMax xd = engineBest();
-		Move::execute(xd._bestMove.first, xd._bestMove.second);
+		Move::execute(m._bestMove.first, m._bestMove.second);
+
 		
-		
-	//	MinMax m = max(2);
-
-		//std::cout << m._bestMove.second.x << m._bestMove.second.y;
-		//std::cout << m._bestMove.second.piece.x;
-
-		//Move::execute(m._bestMove.first, m._bestMove.second);
 		return true;
 	}
 	else
@@ -52,9 +45,6 @@ bool Engine::PlayMove()
 // returns the best move for the engine
 MinMax Engine::engineBest()
 {
-	// get fresh engine moves
-	getEngineMoves();
-
 	std::pair<Piece*, Square>* m = nullptr; 
 
 	double balance = evaluate();
@@ -68,7 +58,7 @@ MinMax Engine::engineBest()
 		makeFakeMove(enginePairs[i]);
 
 		// evaluate move
-		double a = evaluate();
+		double a = evaluate() + 0.01;
 
 		if(a > balance)
 		{
@@ -80,17 +70,11 @@ MinMax Engine::engineBest()
 	// set all squares back to normal
 	getAllSquares();
 
-	// if "good move" is not selected return first possible move
-	if(!m)
-		m = &enginePairs[0];
-
 	return MinMax(balance, *m);
 }
 
 MinMax Engine::playerBest()
 {
-	getPlayerMoves();
-	
 	std::pair<Piece*, Square>* m = nullptr;
 
 	double balance = evaluate();
@@ -101,7 +85,7 @@ MinMax Engine::playerBest()
 
 		makeFakeMove(playerPairs[i]);
 
-		double a = evaluate();
+		double a = evaluate() + 0.01;
 
 		if(a > balance)
 		{
@@ -112,10 +96,7 @@ MinMax Engine::playerBest()
 
 	getAllSquares();
 
-	if(!m)
-		m = &enginePairs[0];
-	
-	return MinMax (balance, *m);
+	return MinMax(balance, *m);
 }
 
 double Engine::evaluate()
@@ -128,7 +109,7 @@ double Engine::evaluate()
 
 	double calc = engineMaterial - playerMaterial;
 	double eval = calc / 20;
-	Global::evaluation = eval;	
+	Global::evaluation = eval;
 
 	return eval;
 }
@@ -142,24 +123,20 @@ void Engine::getMaterialBalance()
 
 MinMax Engine::max(int depth)
 {
-	if(depth == 0)
-		return engineBest();
+	if(depth == 0) return engineBest();
 
-	//double max = -std::numeric_limits<double>::infinity();
-
-	int score = 0;
-	int currentScore = -1;
-
+	int score;
+	int max = INT_MIN;
 	MinMax bestMove;
 
 	for(int i = 0; i < (int)engineMoves.size(); i++)
 	{
-		score = min(depth - 1)._evaluation;
-		if(score > currentScore)
+		MinMax move = min(depth - 1);
+		score = move._evaluation;
+		if(score > max)
 		{
-			currentScore = score;
-			bestMove.setEval(score);
-			bestMove.setMove(min(depth - 1)._bestMove);
+			max = score;
+			bestMove = MinMax(move._evaluation, move._bestMove);
 		}
 	}
 
@@ -168,27 +145,26 @@ MinMax Engine::max(int depth)
 
 MinMax Engine::min(int depth)
 {
-	if(depth == 0)
-		return playerBest();
-	
-	//double min = std::numeric_limits<double>::infinity();
+	if(depth == 0) return playerBest();
+
+	int score;
+	int min = INT_MAX;
 	MinMax bestMove;
-	int score = 0;
-	int currentScore = 1;
 	
 	for(int i = 0; i < (int)playerMoves.size(); i++)
 	{
-		score = max(depth - 1)._evaluation;
-		if(score < currentScore)
+		MinMax move = max(depth - 1);
+		score = move._evaluation;
+		if(score < min)
 		{
-			currentScore = score;
-			bestMove.setEval(score);
-			bestMove.setMove(max(depth - 1)._bestMove);
+			min = score;
+			bestMove = MinMax(move._evaluation, move._bestMove);
 		}
 	}
 	
 	return bestMove;
 }
+
 
 double Engine::materialValue(bool player)
 {
@@ -296,9 +272,6 @@ void Engine::getPlayerMoves()
 		}
 	}
 }
-
-
-
 
 
 

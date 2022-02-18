@@ -11,6 +11,7 @@
 #include <vector>
 #include <iostream>
 #include <map>
+#include <climits>
 
 class Engine
 {
