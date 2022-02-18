@@ -7,14 +7,8 @@ Engine::~Engine() = default;
 bool Engine::PlayMove()
 {
 	// clear existing stuff
-	enginePieces.clear();
-	playerPieces.clear();
-
-	engineMoves.clear();
-	playerMoves.clear();
-
-	enginePairs.clear();
-	playerPairs.clear();
+	clearEngine();
+	clearPlayer();
 
 	// get fresh squares
 	getAllSquares();
@@ -24,9 +18,7 @@ bool Engine::PlayMove()
 
 	if(!enginePairs.empty())
 	{
-		enginePieces.clear();
-		engineMoves.clear();
-		enginePairs.clear();
+		clearEngine();
 
 		MinMax xd = engineBest();
 		Move::execute(xd._bestMove.first, xd._bestMove.second);
@@ -64,7 +56,7 @@ MinMax Engine::engineBest()
 	for(int i = 0; i < (int)enginePairs.size(); i++)
 	{
 		// do the fake move
-		//makeFakeMove(enginePairs[i]);
+		makeFakeMove(enginePairs[i]);
 
 		// evaluate move
 		double a = evaluate() + 0.01;
@@ -156,8 +148,6 @@ MinMax Engine::max(int depth)
 			bestMove = MinMax(move._evaluation, move._bestMove);
 		}
 	}
-
-
 
 	return bestMove;
 }
@@ -257,50 +247,51 @@ void Engine::getPlayerPieces()
 void Engine::getEngineMoves()
 {
 	// get all pieces first
-	playerPieces.clear();
-	engineMoves.clear();
-	enginePairs.clear();
+	clearEngine();
 	getEnginePieces();
 
 	for(auto& i : enginePieces)
 	{
-		// filter pieces
-		if(i->type != 6 && i->user == ENGINE)
-		{
-			// get legal moves for the piece
-			std::vector<Square> temp = LegalMove::getLegal(Pieces::getReal(i));
+		// get legal moves for the piece
+		std::vector<Square> moves = LegalMove::getLegal(*i);
 
-			// make pairs from piece and where the 
-			for(int j = 0; j < (int)temp.size(); j++)
-			{
-				enginePairs.push_back(std::make_pair(i, temp[j]));
-				engineMoves.push_back(temp[j]);
-			}
+		// make pairs from piece and where the 
+		for(auto& j : moves)
+		{
+			enginePairs.push_back(std::make_pair(i, j));
+			engineMoves.push_back(j);
 		}
 	}
 }
 
 void Engine::getPlayerMoves()
 {
-	playerPieces.clear();
-	playerMoves.clear();
-	playerPairs.clear();
+	clearPlayer();
 	getPlayerPieces();
 
 	for(auto& i : playerPieces)
 	{
-		if(i->type != 6 && i->user == PLAYER)
+		std::vector<Square> moves = LegalMove::getLegal(*i);
+		for(auto& j : moves)
 		{
-			// get legal moves
-			std::vector<Square> temp = LegalMove::getLegal(Pieces::getReal(i));
-
-			for(int j = 0; j < (int)temp.size(); j++)
-			{
-				playerPairs.push_back(std::make_pair(i, temp[j]));
-				playerMoves.push_back(temp[j]);
-			}
+			playerPairs.push_back(std::make_pair(i, j));
+			playerMoves.push_back(j);
 		}
 	}
+}
+
+void Engine::clearEngine()
+{
+	playerPieces.clear();
+	engineMoves.clear();
+	enginePairs.clear();
+}
+
+void Engine::clearPlayer()
+{
+	playerPieces.clear();
+	playerMoves.clear();
+	playerPairs.clear();
 }
 
 

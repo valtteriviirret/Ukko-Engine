@@ -39,6 +39,8 @@ class Engine
 		double evaluate();
 		double materialValue(bool player);
 		double getValue(Square square);
+		void clearEngine();
+		void clearPlayer();
 
 		// minmax
 		MinMax min(int depth);
