@@ -298,7 +298,6 @@ namespace Move
 		// update square
 		Sqr::squareHelper(source->x, source->y)->piece = *source;
 	
-
 		// make the notation
 		name = name + nameSource + " to " + nameX + nameY + promotion;
 

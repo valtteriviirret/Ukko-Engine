@@ -36,6 +36,7 @@ class Engine
 		void getAllSquares();
 		void getMaterialBalance();
 		void makeFakeMove(std::pair<Piece*, Square> move);
+		void fakeMoveNormal(std::pair<Piece*, Square> move);
 		double evaluate();
 		double materialValue(bool player);
 		double getValue(Square square);
@@ -57,6 +58,7 @@ class Engine
 		std::vector<Piece*> playerPieces;
 		std::vector<Square> engineMoves;
 		std::vector<Square> playerMoves;
+		Piece* target = nullptr;
 };
 
 #endif

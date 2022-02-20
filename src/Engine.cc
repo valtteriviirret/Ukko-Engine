@@ -23,9 +23,6 @@ bool Engine::PlayMove()
 		MinMax xd = engineBest();
 		Move::execute(xd._bestMove.first, xd._bestMove.second);
 		
-
-
-
 		//MinMax m = max(2);
 
 		//std::cout << m._bestMove.second.piece.type;
@@ -56,7 +53,7 @@ MinMax Engine::engineBest()
 	for(int i = 0; i < (int)enginePairs.size(); i++)
 	{
 		// do the fake move
-		makeFakeMove(enginePairs[i]);
+		//makeFakeMove(enginePairs[i]);
 
 		// evaluate move
 		double a = evaluate() + 0.01;
@@ -66,10 +63,12 @@ MinMax Engine::engineBest()
 			m = &enginePairs[i];
 			balance = a;
 		}
+
+		//fakeMoveNormal(enginePairs[i]);
 	}
 
 	// set all squares back to normal
-	getAllSquares();
+	//getAllSquares();
 
 	return MinMax(balance, *m);
 }
@@ -91,6 +90,7 @@ MinMax Engine::playerBest()
 			m = &playerPairs[i];
 			balance = a;
 		}
+
 	}
 
 	getAllSquares();
@@ -147,6 +147,7 @@ MinMax Engine::max(int depth)
 			max = score;
 			bestMove = MinMax(move._evaluation, move._bestMove);
 		}
+
 	}
 
 	return bestMove;
@@ -177,7 +178,7 @@ MinMax Engine::min(int depth)
 	return bestMove;
 }
 
-
+//TODO rewrite this
 double Engine::materialValue(bool player)
 {
 	double n = 0;
@@ -219,8 +220,13 @@ void Engine::getAllSquares()
 			squares[i][j] = Sqr::squareCopy(i, j);
 }
 
+// something is up with these
+
 void Engine::makeFakeMove(std::pair<Piece*, Square> move)
 {
+	// get the target piece
+	target = &squares[move.second.x][move.second.y].piece;
+
 	// source goes to target
 	squares[move.second.x][move.second.y].piece = *move.first;
 
@@ -228,20 +234,29 @@ void Engine::makeFakeMove(std::pair<Piece*, Square> move)
 	squares[move.first->x][move.first->y].piece = ghost(move.first->x, move.first->y);
 }
 
+void Engine::fakeMoveNormal(std::pair<Piece*, Square> move)
+{
+	// source goes to normal
+	squares[move.first->x][move.first->y].piece = *move.first;
+
+	// target goes to normal
+	squares[move.second.x][move.second.y].piece = *target;
+}
+
 void Engine::getEnginePieces()
 {
 	for(int i = 0; i < 8; i++)
 		for(int j = 0; j < 8; j++)
-			if(squares[i][i].piece.user == ENGINE)
-				enginePieces.push_back(&Pieces::getReal(&squares[i][j].piece));
+			if(Sqr::getSquare(i, j).piece.user == ENGINE)
+				enginePieces.push_back(&Pieces::getReal(&Sqr::getSquare(i, j).piece));
 }
 
 void Engine::getPlayerPieces()
 {
 	for(int i = 0; i < 8; i++)
 		for(int j = 0; j < 8; j++)
-			if(squares[i][j].piece.user == PLAYER)
-				enginePieces.push_back(&Pieces::getReal(&squares[i][j].piece));
+			if(Sqr::getSquare(i, j).piece.user == PLAYER)
+				enginePieces.push_back(&Pieces::getReal(&Sqr::getSquare(i, j).piece));
 }
 
 void Engine::getEngineMoves()
@@ -255,7 +270,6 @@ void Engine::getEngineMoves()
 		// get legal moves for the piece
 		std::vector<Square> moves = LegalMove::getLegal(*i);
 
-		// make pairs from piece and where the 
 		for(auto& j : moves)
 		{
 			enginePairs.push_back(std::make_pair(i, j));
@@ -282,7 +296,7 @@ void Engine::getPlayerMoves()
 
 void Engine::clearEngine()
 {
-	playerPieces.clear();
+	enginePieces.clear();
 	engineMoves.clear();
 	enginePairs.clear();
 }

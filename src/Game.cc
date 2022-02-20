@@ -203,7 +203,6 @@ void Game::executePlayerMove(Square& sq)
 				isPieceSelected = false;
 				updateConsole();
 				Global::playerTurn = false;
-				return;
 			}
 		}
 	}
