@@ -43,8 +43,8 @@ class Engine
 		void clearPlayer();
 
 		// minmax
-		MinMax min(int depth);
-		MinMax max(int depth);
+		MinMax mini(int depth);
+		MinMax maxi(int depth);
 
 		// moves
 		std::vector<std::pair<Piece*, Square>> enginePairs;

@@ -17,11 +17,7 @@ bool Engine::PlayMove()
 	{
 		clearEngine();
 
-		MinMax m = max(0);
-
-		//std::cout << m._evaluation;
-		//if(!m._bestMove)
-		//	std::cout << "Bestmove is nullptr";
+		MinMax m = maxi(2);
 
 		Move::execute(m._bestMove->first, m._bestMove->second);
 	
@@ -107,9 +103,10 @@ void Engine::getMaterialBalance()
 	playerMaterial = materialValue(true);
 }
 
-MinMax Engine::max(int depth)
+MinMax Engine::maxi(int depth)
 {
-	if(depth == 0) return engineBest();
+	if(depth == 0)
+		return engineBest();
 
 	getEngineMoves();
 
@@ -125,7 +122,8 @@ MinMax Engine::max(int depth)
 		//makeFakeMove(enginePairs[i]);
 
 		// call to min
-		MinMax move = min(depth - 1);
+		MinMax move = mini(depth - 1);
+
 		score = move._evaluation;
 
 		// make fake move normal
@@ -139,24 +137,26 @@ MinMax Engine::max(int depth)
 
 	}
 	
+	
 	return MinMax(max, m);
 }
 
-MinMax Engine::min(int depth)
+MinMax Engine::mini(int depth)
 {
-	if(depth == 0) return playerBest();
+	if(depth == 0) 
+		return playerBest();
 
 	getPlayerMoves();
 
 	int score = 0;
 	int min = INT_MAX;
 	std::pair<Piece*, Square>* m = nullptr;
-	
+
 	for(int i = 0; i < (int)playerPairs.size(); i++)
 	{
-		//makeFakeMove(playerPairs[i]);
-
-		MinMax move = max(depth - 1);
+		 //makeFakeMove(playerPairs[i]);
+		
+		MinMax move = maxi(depth - 1);
 		score = move._evaluation;
 
 		//fakeMoveNormal(playerPairs[i]);
@@ -225,9 +225,6 @@ void Engine::fakeMoveNormal(std::pair<Piece*, Square> move)
 
 	// target goes to normal
 	Sqr::squareHelper(move.first->x, move.first->y)->piece = *target;
-
-	// target is set to null
-	target = nullptr;
 }
 
 void Engine::getEnginePieces()
@@ -243,7 +240,7 @@ void Engine::getPlayerPieces()
 	for(int i = 0; i < 8; i++)
 		for(int j = 0; j < 8; j++)
 			if(Sqr::getSquare(i, j).piece.user == PLAYER)
-				enginePieces.push_back(&Pieces::getReal(&Sqr::getSquare(i, j).piece));
+				playerPieces.push_back(&Pieces::getReal(&Sqr::getSquare(i, j).piece));
 }
 
 void Engine::getEngineMoves()
