@@ -17,14 +17,13 @@ bool Engine::PlayMove()
 	{
 		clearEngine();
 
-		MinMax xd = engineBest();
-		Move::execute(xd._bestMove.first, xd._bestMove.second);
-		
-		//MinMax m = max(2);
+		MinMax m = max(0);
 
-		//std::cout << m._bestMove.second.piece.type;
+		//std::cout << m._evaluation;
+		//if(!m._bestMove)
+		//	std::cout << "Bestmove is nullptr";
 
-		//Move::execute(m._bestMove.first, m._bestMove.second);
+		Move::execute(m._bestMove->first, m._bestMove->second);
 	
 		return true;
 	}
@@ -59,7 +58,7 @@ MinMax Engine::engineBest()
 		}
 	}
 
-	return MinMax(balance, *m);
+	return MinMax(balance, m);
 }
 
 MinMax Engine::playerBest()
@@ -81,7 +80,7 @@ MinMax Engine::playerBest()
 		}
 	}
 
-	return MinMax(balance, *m);
+	return MinMax(balance, m);
 }
 
 double Engine::evaluate()
@@ -114,8 +113,10 @@ MinMax Engine::max(int depth)
 
 	getEngineMoves();
 
-	int score;
+	int score = 0;
 	int max = INT_MIN;
+	std::pair<Piece*, Square>* m = nullptr;
+
 	MinMax bestMove;
 
 	for(int i = 0; i < (int)enginePairs.size(); i++)
@@ -126,15 +127,19 @@ MinMax Engine::max(int depth)
 		// call to min
 		MinMax move = min(depth - 1);
 		score = move._evaluation;
+
+		// make fake move normal
+		//fakeMoveNormal(enginePairs[i]);
+
 		if(score > max)
 		{
 			max = score;
-			bestMove = MinMax(move._evaluation, move._bestMove);
+			m = move._bestMove;
 		}
 
 	}
-
-	return bestMove;
+	
+	return MinMax(max, m);
 }
 
 MinMax Engine::min(int depth)
@@ -143,23 +148,27 @@ MinMax Engine::min(int depth)
 
 	getPlayerMoves();
 
-	int score;
+	int score = 0;
 	int min = INT_MAX;
-	MinMax bestMove;
+	std::pair<Piece*, Square>* m = nullptr;
 	
 	for(int i = 0; i < (int)playerPairs.size(); i++)
 	{
 		//makeFakeMove(playerPairs[i]);
+
 		MinMax move = max(depth - 1);
 		score = move._evaluation;
+
+		//fakeMoveNormal(playerPairs[i]);
+
 		if(score < min)
 		{
 			min = score;
-			bestMove = MinMax(move._evaluation, move._bestMove);
+			m = move._bestMove;
 		}
 	}
 	
-	return bestMove;
+	return MinMax(min, m);
 }
 
 //TODO rewrite this
@@ -204,7 +213,7 @@ void Engine::makeFakeMove(std::pair<Piece*, Square> move)
 
 	// source goes to target
 	Sqr::squareHelper(move.second.x, move.second.y)->piece = *move.first;
-	
+
 	// source is set to zero
 	Sqr::squareHelper(move.first->x, move.first->y)->piece = ghost(move.first->x, move.first->x);
 }
