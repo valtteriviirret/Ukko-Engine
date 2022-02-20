@@ -33,7 +33,6 @@ class Engine
 		MinMax playerBest();
 	
 		// helping functions
-		void getAllSquares();
 		void getMaterialBalance();
 		void makeFakeMove(std::pair<Piece*, Square> move);
 		void fakeMoveNormal(std::pair<Piece*, Square> move);
@@ -53,7 +52,6 @@ class Engine
 		double engineMaterial;
 		double playerMaterial;
 
-		Square squares[8][8] = {};
 		std::vector<Piece*> enginePieces;
 		std::vector<Piece*> playerPieces;
 		std::vector<Square> engineMoves;

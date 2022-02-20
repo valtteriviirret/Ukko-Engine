@@ -3,7 +3,7 @@
 namespace Sqr
 {
 	// the actual squares
-	Square squares[8][8];
+	static Square squares[8][8];
 
 	Square* squareHelper(int x, int y)
 	{

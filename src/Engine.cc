@@ -10,9 +10,6 @@ bool Engine::PlayMove()
 	clearEngine();
 	clearPlayer();
 
-	// get fresh squares
-	getAllSquares();
-
 	// check if engine has moves
 	getEngineMoves();
 
@@ -52,9 +49,6 @@ MinMax Engine::engineBest()
 
 	for(int i = 0; i < (int)enginePairs.size(); i++)
 	{
-		// do the fake move
-		//makeFakeMove(enginePairs[i]);
-
 		// evaluate move
 		double a = evaluate() + 0.01;
 
@@ -63,26 +57,21 @@ MinMax Engine::engineBest()
 			m = &enginePairs[i];
 			balance = a;
 		}
-
-		//fakeMoveNormal(enginePairs[i]);
 	}
-
-	// set all squares back to normal
-	//getAllSquares();
 
 	return MinMax(balance, *m);
 }
 
 MinMax Engine::playerBest()
 {
+	getPlayerMoves();
+
 	std::pair<Piece*, Square>* m = nullptr;
 
 	double balance = evaluate();
 
 	for(int i = 0; i < (int)playerPairs.size(); i++)
 	{
-		makeFakeMove(playerPairs[i]);
-
 		double a = evaluate() + 0.01;
 
 		if(a > balance)
@@ -90,10 +79,7 @@ MinMax Engine::playerBest()
 			m = &playerPairs[i];
 			balance = a;
 		}
-
 	}
-
-	getAllSquares();
 
 	return MinMax(balance, *m);
 }
@@ -134,8 +120,6 @@ MinMax Engine::max(int depth)
 
 	for(int i = 0; i < (int)enginePairs.size(); i++)
 	{
-		//getAllSquares();
-
 		// make fake move
 		//makeFakeMove(enginePairs[i]);
 
@@ -186,11 +170,11 @@ double Engine::materialValue(bool player)
 	{
 		for(int j = 0; j < 8; j++)
 		{
-			if(player && squares[i][j].piece.user == PLAYER)
-				n += getValue(squares[i][j]);
+			if(player && Sqr::getSquare(i, j).piece.user == PLAYER)
+				n += getValue(Sqr::getSquare(i, j));
 
-			if((!player) && squares[i][j].piece.user == ENGINE)
-				n += getValue(squares[i][j]);
+			if((!player) && Sqr::getSquare(i, j).piece.user == ENGINE)
+				n += getValue(Sqr::getSquare(i, j));
 		}
 	}
 	
@@ -213,34 +197,28 @@ double Engine::getValue(Square square)
 	return n;
 }
 
-void Engine::getAllSquares()
-{
-	for(int i = 0; i < 8; i++)
-		for(int j = 0; j < 8; j++)
-			squares[i][j] = Sqr::squareCopy(i, j);
-}
-
-// something is up with these
-
 void Engine::makeFakeMove(std::pair<Piece*, Square> move)
 {
 	// get the target piece
-	target = &squares[move.second.x][move.second.y].piece;
+	target = &Sqr::squareHelper(move.second.x, move.second.y)->piece;
 
 	// source goes to target
-	squares[move.second.x][move.second.y].piece = *move.first;
-
+	Sqr::squareHelper(move.second.x, move.second.y)->piece = *move.first;
+	
 	// source is set to zero
-	squares[move.first->x][move.first->y].piece = ghost(move.first->x, move.first->y);
+	Sqr::squareHelper(move.first->x, move.first->y)->piece = ghost(move.first->x, move.first->x);
 }
 
 void Engine::fakeMoveNormal(std::pair<Piece*, Square> move)
 {
 	// source goes to normal
-	squares[move.first->x][move.first->y].piece = *move.first;
+	Sqr::squareHelper(move.first->x, move.first->y)->piece = *move.first;
 
 	// target goes to normal
-	squares[move.second.x][move.second.y].piece = *target;
+	Sqr::squareHelper(move.first->x, move.first->y)->piece = *target;
+
+	// target is set to null
+	target = nullptr;
 }
 
 void Engine::getEnginePieces()
