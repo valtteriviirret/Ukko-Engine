@@ -10,7 +10,7 @@ namespace Pieces
 	Piece* getModify(int n) { return &p[n]; }
 
 	void set(Piece piece, int x, int y)
-{
+	{
 		for(int i = 0; i < 32; i++)
 		{
 			if(get(i).x == x && get(i).y == y)
@@ -26,8 +26,8 @@ namespace Pieces
 	Piece& getReal(Piece* piece)
 	{
 		for(int i = 0; i < 32; i++)
-			if(p[i].x == piece->x && p[i].y == piece->y)
-			//&& p[i].user == piece->user && p[i].type == piece->type)
+			if(p[i].x == piece->x && p[i].y == piece->y
+			&& p[i].user == piece->user && p[i].type == piece->type)
 				return p[i];
 
 		// TODO fix this, although this should never happen

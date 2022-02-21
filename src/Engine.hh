@@ -34,8 +34,8 @@ class Engine
 	
 		// helping functions
 		void getMaterialBalance();
-		void makeFakeMove(std::pair<Piece*, Square> move);
-		void fakeMoveNormal(std::pair<Piece*, Square> move);
+		void makeFakeMove(std::pair<Piece*, Square>* move);
+		void fakeMoveNormal(std::pair<Piece*, Square>* move);
 		double evaluate();
 		double materialValue(bool player);
 		double getValue(Square square);

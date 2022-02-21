@@ -119,7 +119,7 @@ MinMax Engine::maxi(int depth)
 	for(int i = 0; i < (int)enginePairs.size(); i++)
 	{
 		// make fake move
-		//makeFakeMove(enginePairs[i]);
+		makeFakeMove(&enginePairs[i]);
 
 		// call to min
 		MinMax move = mini(depth - 1);
@@ -127,16 +127,14 @@ MinMax Engine::maxi(int depth)
 		score = move._evaluation;
 
 		// make fake move normal
-		//fakeMoveNormal(enginePairs[i]);
+		fakeMoveNormal(&enginePairs[i]);
 
 		if(score > max)
 		{
 			max = score;
 			m = move._bestMove;
 		}
-
 	}
-	
 	
 	return MinMax(max, m);
 }
@@ -154,12 +152,12 @@ MinMax Engine::mini(int depth)
 
 	for(int i = 0; i < (int)playerPairs.size(); i++)
 	{
-		 //makeFakeMove(playerPairs[i]);
+		makeFakeMove(&playerPairs[i]);
 		
 		MinMax move = maxi(depth - 1);
 		score = move._evaluation;
 
-		//fakeMoveNormal(playerPairs[i]);
+		fakeMoveNormal(&playerPairs[i]);
 
 		if(score < min)
 		{
@@ -206,25 +204,25 @@ double Engine::getValue(Square square)
 	return n;
 }
 
-void Engine::makeFakeMove(std::pair<Piece*, Square> move)
+void Engine::makeFakeMove(std::pair<Piece*, Square>* move)
 {
 	// get the target piece
-	target = &Sqr::squareHelper(move.second.x, move.second.y)->piece;
+	target = &Sqr::squareHelper(move->second.x, move->second.y)->piece;
 
 	// source goes to target
-	Sqr::squareHelper(move.second.x, move.second.y)->piece = *move.first;
+	Sqr::squareHelper(move->second.x, move->second.y)->piece = *move->first;
 
 	// source is set to zero
-	Sqr::squareHelper(move.first->x, move.first->y)->piece = ghost(move.first->x, move.first->x);
+	Sqr::squareHelper(move->first->x, move->first->y)->piece = ghost(move->first->x, move->first->x);
 }
 
-void Engine::fakeMoveNormal(std::pair<Piece*, Square> move)
+void Engine::fakeMoveNormal(std::pair<Piece*, Square>* move)
 {
 	// source goes to normal
-	Sqr::squareHelper(move.first->x, move.first->y)->piece = *move.first;
+	Sqr::squareHelper(move->second.x, move->second.y)->piece = *target;
 
 	// target goes to normal
-	Sqr::squareHelper(move.first->x, move.first->y)->piece = *target;
+	Sqr::squareHelper(move->first->x, move->first->y)->piece = *move->first;
 }
 
 void Engine::getEnginePieces()

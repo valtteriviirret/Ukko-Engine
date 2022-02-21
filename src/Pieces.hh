@@ -20,6 +20,8 @@ namespace Pieces
 
 	// set piece
 	void set(Piece p, int x, int y);
+
+	void setSquare(Piece* p, Square s);
 }
 
 #endif
