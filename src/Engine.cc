@@ -119,7 +119,7 @@ MinMax Engine::maxi(int depth)
 	for(int i = 0; i < (int)enginePairs.size(); i++)
 	{
 		// make fake move
-		makeFakeMove(&enginePairs[i]);
+		//makeFakeMove(&enginePairs[i]);
 
 		// call to min
 		MinMax move = mini(depth - 1);
@@ -127,7 +127,7 @@ MinMax Engine::maxi(int depth)
 		score = move._evaluation;
 
 		// make fake move normal
-		fakeMoveNormal(&enginePairs[i]);
+		//fakeMoveNormal(&enginePairs[i]);
 
 		if(score > max)
 		{
@@ -152,12 +152,12 @@ MinMax Engine::mini(int depth)
 
 	for(int i = 0; i < (int)playerPairs.size(); i++)
 	{
-		makeFakeMove(&playerPairs[i]);
+		//makeFakeMove(&playerPairs[i]);
 		
 		MinMax move = maxi(depth - 1);
 		score = move._evaluation;
 
-		fakeMoveNormal(&playerPairs[i]);
+		//fakeMoveNormal(&playerPairs[i]);
 
 		if(score < min)
 		{
