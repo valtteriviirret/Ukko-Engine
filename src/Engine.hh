@@ -46,9 +46,9 @@ private:
     MinMax maxi(int depth);
 
     // moves
-    std::vector<std::pair<Piece*, Square>> moves;
     std::vector<std::pair<Piece*, Square>> enginePairs;
     std::vector<std::pair<Piece*, Square>> playerPairs;
+
     double engineMaterial;
     double playerMaterial;
 
