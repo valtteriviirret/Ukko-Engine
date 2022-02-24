@@ -36,6 +36,7 @@ private:
     void makeFakeMove(std::pair<Piece*, Square>* move);
     void fakeMoveNormal(std::pair<Piece*, Square>* move);
     int evaluate();
+	double oldEvaluate();
     double materialValue(bool player);
     static double getValue(Square square);
     void clearEngine();

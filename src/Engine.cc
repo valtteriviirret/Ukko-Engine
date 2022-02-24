@@ -40,12 +40,12 @@ MinMax Engine::engineBest()
 
 	std::pair<Piece*, Square>* m = nullptr; 
 
-	double balance = evaluate();
+	double balance = oldEvaluate();
 
 	for(int i = 0; i < (int)enginePairs.size(); i++)
 	{
 		// evaluate move
-		double a = evaluate() + 0.01;
+		double a = oldEvaluate() + 0.01;
 
 		if(a > balance)
 		{
@@ -63,11 +63,11 @@ MinMax Engine::playerBest()
 
 	std::pair<Piece*, Square>* m = nullptr;
 
-	double balance = evaluate();
+	double balance = oldEvaluate();
 
 	for(int i = 0; i < (int)playerPairs.size(); i++)
 	{
-		double a = evaluate() + 0.01;
+		double a = oldEvaluate() + 0.01;
 
 		if(a > balance)
 		{
@@ -78,6 +78,24 @@ MinMax Engine::playerBest()
 
 	return MinMax(balance, m);
 }
+
+double Engine::oldEvaluate()
+{
+	// king multiplier
+	// center multiplier
+	// line multiplier
+
+	getMaterialBalance();
+	double calc = engineMaterial - playerMaterial;
+	
+	// this is just an example conversion
+	double eval = calc / 20;
+	
+	// maybe we have some use for this later dunno
+	Global::evaluation = eval;
+	return eval;
+}
+
 
 int Engine::evaluate()
 {
