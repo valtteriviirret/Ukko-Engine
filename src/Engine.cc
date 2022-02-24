@@ -79,21 +79,29 @@ MinMax Engine::playerBest()
 	return MinMax(balance, m);
 }
 
-double Engine::evaluate()
+int Engine::evaluate()
 {
-	// king multiplier
-	// center multiplier
-	// line multiplier
+    int selection = 0;
+    double score = 0;
 
-	getMaterialBalance();
-	double calc = engineMaterial - playerMaterial;
-	
-	// this is just an example conversion
-	double eval = calc / 20;
-	
-	// maybe we have some use for this later dunno
-	Global::evaluation = eval;
-	return eval;
+    for (int i = rand() % 16; i < (int)enginePairs.size(); i++)
+    {
+        Square initialPos = Sqr::getSquare(enginePairs.at(i).first->x, enginePairs.at(i).first->y);
+        Piece& initialPiece = enginePairs.at(i).second.piece;
+        Move::execute(enginePairs.at(i).first, enginePairs.at(i).second);
+        getMaterialBalance();
+
+        if (score < engineMaterial / playerMaterial)
+        {
+            selection = i;
+            score = engineMaterial / playerMaterial;
+        }
+
+        Move::execute(enginePairs.at(i).first, initialPos);
+        Sqr::squareHelper(enginePairs.at(i).second.x, enginePairs.at(i).second.y)->piece = initialPiece;
+    }
+
+    return selection;
 }
 
 

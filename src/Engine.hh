@@ -18,7 +18,7 @@ class Engine
 public:
     Engine();
     ~Engine();
-    void PlayMove();
+    bool PlayMove();
 private:
     // get all pieces
     void getEnginePieces();
