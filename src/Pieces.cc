@@ -35,6 +35,33 @@ namespace Pieces
 		return p[31];
 	}
 
+	Piece* getXY(int x, int y)
+	{
+		for(int i = 0; i < 32; i++)
+			if(p[i].x == x && p[i].y == y)
+				return &p[i];
+
+		return nullptr;
+	}
+
+	// make the piece empty
+	void emptyPiece(int x, int y)
+	{
+		Piece* piece = getXY(x, y);
+		piece->color = UNDEFINED;
+		piece->type = NONE;
+		piece->user = GHOST;
+	}
+
+	// make the square empty
+	void emptySquare(int x, int y)
+	{
+		Piece* s = &Sqr::squareHelper(x, y)->piece;
+		s->color = UNDEFINED;
+		s->type = NONE;
+		s->user = GHOST;
+	}
+
 	void init()
 	{
 		// 0-7 		ENGINE PAWNS

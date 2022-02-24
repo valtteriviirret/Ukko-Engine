@@ -240,7 +240,8 @@ void Engine::makeFakeMove(std::pair<Piece*, Square>* move)
 	Sqr::squareHelper(move->second.x, move->second.y)->piece = *move->first;
 
 	// source is set to zero
-	Sqr::squareHelper(move->first->x, move->first->y)->piece = ghost(move->first->x, move->first->x);
+	Pieces::emptySquare(move->first->x, move->first->y);
+	//Sqr::squareHelper(move->first->x, move->first->y)->piece = ghost(move->first->x, move->first->x);
 }
 
 void Engine::fakeMoveNormal(std::pair<Piece*, Square>* move)

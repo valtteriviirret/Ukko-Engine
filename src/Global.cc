@@ -2,12 +2,6 @@
 
 currentGameState Global::state = GAME_ON;
 
-// TODO
-Piece ghost(int x, int y)
-{
-	return { NONE, UNDEFINED, x, y, GHOST };
-}
-
 bool Global::playerTurn = true;
 
 Square* Global::en_passant = nullptr;

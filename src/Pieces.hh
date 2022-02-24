@@ -18,10 +18,16 @@ namespace Pieces
 
 	Piece& getReal(Piece* piece);
 
+	Piece* getXY(int x, int y);
+
 	// set piece
 	void set(Piece p, int x, int y);
 
 	void setSquare(Piece* p, Square s);
+
+	void emptyPiece(int x, int y); 
+
+	void emptySquare(int x, int y);
 }
 
 #endif
