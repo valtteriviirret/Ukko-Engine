@@ -39,7 +39,7 @@ void Game::eventHandler()
 {
 	while (SDL_PollEvent(&e))
 	{
-		// rezise window
+		// resize window
 		window->resize(e);
 
 		// close application
@@ -184,7 +184,6 @@ void Game::playerPlayMove()
 	}
 }
 
-//TODO rewrite this with new function from Pieces
 void Game::executePlayerMove(Square& sq)
 {
 	// loop players pieces to find the correct one
