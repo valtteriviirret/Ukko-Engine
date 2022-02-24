@@ -105,7 +105,7 @@ void Game::render()
 
 	for(auto& legalMove : legalMoves)
 	{
-		if(selectedSquare && Global::playerTurn)
+		if(selectedSquare && isPieceSelected)
 		{
 			// color legal moves
 			Renderer::setColor(255, 0, 0);
@@ -147,7 +147,7 @@ bool Game::moveSetup()
 	for(auto& i : playerPieces)
 	{
 		// filter pieces
-		if(i.type != 6 && i.user == PLAYER)
+		if(i.type != NONE && i.user == PLAYER)
 		{
 			// get all legal moves
 			std::vector<Square> temp = LegalMove::getLegal(i);
@@ -178,8 +178,12 @@ void Game::playerPlayMove()
 		{
 			// loop legal moves for the selected piece
 			for (auto& i : legalMoves)
-				if (selectedSquare->x == i.x && selectedSquare->y == i.y)
-					executePlayerMove(i);
+            {
+                if (selectedSquare->x == i.x && selectedSquare->y == i.y)
+                    executePlayerMove(i);
+                else
+                    isPieceSelected = false;
+            }
 		}
 	}
 }
@@ -190,7 +194,7 @@ void Game::executePlayerMove(Square& sq)
 	for (int j = 16; j < 32; j++)
 	{
 		// filter moves
-		if (Pieces::get(j).user == PLAYER && Pieces::get(j).type != 6)
+		if (Pieces::get(j).user == PLAYER && Pieces::get(j).type != NONE)
 		{
 			// loop pieces and find correct one
 			if (originalSquare == &Sqr::getSquare(Pieces::get(j).x, Pieces::get(j).y))
