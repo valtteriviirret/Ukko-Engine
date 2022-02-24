@@ -149,11 +149,14 @@ namespace LegalMove
 		int a = piece.user == PLAYER ? 0 : 16;
 		int b = piece.user == PLAYER ? 16 : 32;
 
+		// get the king
+		Piece king = Sqr::getSquare(square.x, square.y).piece;
+
 		// set the fake move
 		Sqr::getSquare(square.x, square.y).piece = piece;
 
 		// set original square to empty
-		Sqr::getSquare(piece.x, piece.y).piece = ghost(piece.x, piece.y);
+		Sqr::getSquare(piece.x, piece.y).piece = king;
 
 		for(int i = a; i < b; i++)
 		{
@@ -168,7 +171,7 @@ namespace LegalMove
 					if(j->piece.type == KING)
 					{
 						// back to normal
-						Sqr::getSquare(square.x, square.y).piece = square.piece;
+						Sqr::getSquare(square.x, square.y).piece = king;
 						Sqr::getSquare(piece.x, piece.y).piece = piece;
 						return true;
 					}
@@ -176,7 +179,7 @@ namespace LegalMove
 			}
 		}
 
-		Sqr::getSquare(square.x, square.y).piece = square.piece;
+		Sqr::getSquare(square.x, square.y).piece = king;
 		Sqr::getSquare(piece.x, piece.y).piece = piece;
 		return false;
 	}
@@ -202,8 +205,8 @@ namespace LegalMove
 				// set the fake move
 				Sqr::getSquare(i->x, i->y).piece = piece;
 
-				// set pieces's square to empty
-				Sqr::getSquare(piece.x, piece.y).piece = ghost(piece.x, piece.y);
+				// set pieces's square to piece what is in move
+				Sqr::getSquare(piece.x, piece.y).piece = move;
 
 				// getting the opponent's pieces
 				int a = piece.user == PLAYER ? 0 : 16;

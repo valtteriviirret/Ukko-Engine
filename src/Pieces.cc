@@ -3,8 +3,7 @@
 namespace Pieces
 {
 	// the pieces
-	// TODO
-	static Piece p[32];
+	static Piece p[64];
 
 	Piece& get(int n) { return p[n]; }
 
@@ -99,10 +98,15 @@ namespace Pieces
 		Sqr::getSquare(3, 7).piece = p[30];
 		Sqr::getSquare(4, 7).piece = p[31];
 
-		// TODO
-		// initialize empty squares as empty
-		for (int y = 2; y < 6; y++)
-			for (int x = 0; x < 8; x++)
-				Sqr::getSquare(x, y).piece = ghost(x, y);
+		int c = 32;
+		for(int x = 0; x < 8; x++)
+		{
+			for(int y = 2; y < 6; y++)
+			{
+				p[c] = { NONE, UNDEFINED, x, y, GHOST };
+				Sqr::getSquare(x, y).piece = p[c];
+				c++;
+			}
+		}
 	}
 }
