@@ -57,7 +57,9 @@ private:
     std::vector<Piece*> playerPieces;
     std::vector<Square> engineMoves;
     std::vector<Square> playerMoves;
-    Piece* target = nullptr;
+
+    Piece* target;
+	Piece* source;
 };
 
 #endif
