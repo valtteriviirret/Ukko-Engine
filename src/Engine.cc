@@ -204,6 +204,7 @@ double Engine::getValue(Square square)
 	return n;
 }
 
+// TODO
 void Engine::makeFakeMove(std::pair<Piece*, Square>* move)
 {
 	// get the target piece
