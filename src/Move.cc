@@ -166,27 +166,31 @@ namespace Move
 					{
 						std::cin >> choice;
 
-						Piece* orig = source;
+						Piece* sqrOrig = &Sqr::squareHelper(target.x, target.y)->piece;
 
 						switch(choice)
 						{
 							case 'Q':
 								source->type = QUEEN;
+								sqrOrig->type = QUEEN;
 								promotion = 'Q';
 								choiceMade = true;
 								break;
 							case 'R':
 								source->type = ROOK;
+								sqrOrig->type = ROOK;
 								promotion = 'R';
 								choiceMade = true;
 								break;
 							case 'B':
 								source->type = BISHOP;
+								sqrOrig->type = BISHOP;
 								promotion = 'B';
 								choiceMade = true;
 								break;
 							case 'N':
 								source->type = KNIGHT;
+								sqrOrig->type = KNIGHT;
 								promotion = 'N';
 								choiceMade = true;
 								break;
@@ -195,9 +199,6 @@ namespace Move
 								showPieces
 								break;
 						}
-
-						source->color = orig->color;
-						source->user = orig->user;
 					}
 				}
 			}
@@ -207,10 +208,10 @@ namespace Move
 				// engine always picks queen, at least for now
 				if(target.y == 7)
 				{
-					Piece* orig = source;
 					source->type = QUEEN;
-					source->color = orig->color;
-					source->user = orig->user;
+					
+					Piece* sqrOrig = &Sqr::squareHelper(target.x, target.y)->piece;
+					sqrOrig->type = QUEEN;
 					promotion = 'Q';
 				}
 			}

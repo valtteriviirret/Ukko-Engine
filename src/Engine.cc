@@ -19,7 +19,7 @@ bool Engine::PlayMove()
 
 		MinMax m = maxi(2);
 
-		Move::execute(m._bestMove->first, m._bestMove->second);
+		Move::execute(&Pieces::getReal(m._bestMove->first), m._bestMove->second);
 	
 		return true;
 	}
@@ -145,7 +145,7 @@ MinMax Engine::maxi(int depth)
 	for(int i = 0; i < (int)enginePairs.size(); i++)
 	{
 		// make fake move
-		makeFakeMove(&enginePairs[i]);
+		//makeFakeMove(&enginePairs[i]);
 
 		// call to min
 		MinMax move = mini(depth - 1);
@@ -153,7 +153,7 @@ MinMax Engine::maxi(int depth)
 		score = move._evaluation;
 
 		// make fake move normal
-		fakeMoveNormal(&enginePairs[i]);
+		//fakeMoveNormal(&enginePairs[i]);
 
 		if(score > max)
 		{
@@ -178,12 +178,12 @@ MinMax Engine::mini(int depth)
 
 	for(int i = 0; i < (int)playerPairs.size(); i++)
 	{
-		makeFakeMove(&playerPairs[i]);
+		//makeFakeMove(&playerPairs[i]);
 		
 		MinMax move = maxi(depth - 1);
 		score = move._evaluation;
 
-		fakeMoveNormal(&playerPairs[i]);
+		//fakeMoveNormal(&playerPairs[i]);
 
 		if(score < min)
 		{
@@ -232,23 +232,32 @@ double Engine::getValue(Square square)
 void Engine::makeFakeMove(std::pair<Piece*, Square>* move)
 {
 	// get the target piece
-	target = Pieces::getXY(move->second.x, move->second.y);
+	target = Sqr::squareHelper(move->second.x, move->second.y)->piece;
 
 	// get the source piece
-	source = Pieces::getXY(move->first->x, move->first->y);
+	source = Sqr::squareHelper(move->first->x, move->first->y)->piece;
+
+	// change target to source
+	Sqr::squareHelper(move->second.x, move->second.y)->piece = source;
 
 	// change source to target
-	Piece* x = source;
-	source = target;
-	target = x; 
+	Sqr::squareHelper(move->first->x, move->first->y)->piece = target;
+
 }
 
 void Engine::fakeMoveNormal(std::pair<Piece*, Square>* move)
 {
-	target = Pieces::getXY(move->second.x, move->second.y);	
-	source = Pieces::getXY(move->first->x, move->first->y);
-	target = source;
-	source = target;
+	// get the target piece
+	target = Sqr::squareHelper(move->second.x, move->second.y)->piece;
+
+	// get the source piece
+	source = Sqr::squareHelper(move->first->x, move->first->y)->piece;
+	
+	// change target to source
+	Sqr::squareHelper(move->second.x, move->second.y)->piece = source;
+
+	// change source to target
+	Sqr::squareHelper(move->first->x, move->first->y)->piece = target;
 }
 
 void Engine::getEnginePieces()
@@ -256,7 +265,7 @@ void Engine::getEnginePieces()
 	for(int i = 0; i < 8; i++)
 		for(int j = 0; j < 8; j++)
 			if(Sqr::getSquare(i, j).piece.user == ENGINE)
-				enginePieces.push_back(&Pieces::getReal(&Sqr::getSquare(i, j).piece));
+				enginePieces.push_back(&Sqr::getSquare(i, j).piece);
 }
 
 void Engine::getPlayerPieces()
@@ -264,7 +273,7 @@ void Engine::getPlayerPieces()
 	for(int i = 0; i < 8; i++)
 		for(int j = 0; j < 8; j++)
 			if(Sqr::getSquare(i, j).piece.user == PLAYER)
-				playerPieces.push_back(&Pieces::getReal(&Sqr::getSquare(i, j).piece));
+				playerPieces.push_back(&Sqr::getSquare(i, j).piece);
 }
 
 void Engine::getEngineMoves()
@@ -279,10 +288,7 @@ void Engine::getEngineMoves()
 		std::vector<Square> moves = LegalMove::getLegal(*i);
 
 		for(auto& j : moves)
-		{
 			enginePairs.push_back(std::make_pair(i, j));
-			engineMoves.push_back(j);
-		}
 	}
 }
 
@@ -295,24 +301,19 @@ void Engine::getPlayerMoves()
 	{
 		std::vector<Square> moves = LegalMove::getLegal(*i);
 		for(auto& j : moves)
-		{
 			playerPairs.push_back(std::make_pair(i, j));
-			playerMoves.push_back(j);
-		}
 	}
 }
 
 void Engine::clearEngine()
 {
 	enginePieces.clear();
-	engineMoves.clear();
 	enginePairs.clear();
 }
 
 void Engine::clearPlayer()
 {
 	playerPieces.clear();
-	playerMoves.clear();
 	playerPairs.clear();
 }
 

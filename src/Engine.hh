@@ -55,11 +55,9 @@ private:
 
     std::vector<Piece*> enginePieces;
     std::vector<Piece*> playerPieces;
-    std::vector<Square> engineMoves;
-    std::vector<Square> playerMoves;
 
-    Piece* target;
-	Piece* source;
+    Piece target;
+	Piece source;
 };
 
 #endif

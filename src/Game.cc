@@ -188,6 +188,7 @@ void Game::playerPlayMove()
 	}
 }
 
+// TODO this could be prettier
 void Game::executePlayerMove(Square& sq)
 {
 	// loop players pieces to find the correct one
@@ -263,6 +264,7 @@ void Game::resetGame()
 	// pieces to their correct places
 	Pieces::init();
 
+	//TODO function in global for reset
 	// gameplay settings to normal
 	Global::playerKingMoved = false;
 	Global::engineKingMoved = false;
