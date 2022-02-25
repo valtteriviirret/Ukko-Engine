@@ -23,16 +23,14 @@ namespace Pieces
 		}
 	}
 
-	Piece& getReal(Piece* piece)
+	Piece* getReal(Piece* piece)
 	{
 		for(int i = 0; i < 32; i++)
-			if(p[i].x == piece->x && p[i].y == piece->y
-			&& p[i].user == piece->user && p[i].type == piece->type)
-				return p[i];
+			if(p[i].x == piece->x && p[i].y == piece->y)
+			//&& p[i].user == piece->user && p[i].type == piece->type)
+				return &p[i];
 
-		// TODO fix this, although this should never happen
-		
-		return p[31];
+		return nullptr;
 	}
 
 	Piece* getXY(int x, int y)

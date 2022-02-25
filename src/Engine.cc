@@ -19,7 +19,7 @@ bool Engine::PlayMove()
 
 		MinMax m = maxi(2);
 
-		Move::execute(&Pieces::getReal(m._bestMove->first), m._bestMove->second);
+		Move::execute(Pieces::getReal(m._bestMove->first), m._bestMove->second);
 	
 		return true;
 	}
@@ -63,11 +63,11 @@ MinMax Engine::playerBest()
 
 	std::pair<Piece*, Square>* m = nullptr;
 
-	double balance = oldEvaluate() + 0.01;
+	double balance = oldEvaluate();
 
 	for(int i = 0; i < (int)playerPairs.size(); i++)
 	{
-		double a = oldEvaluate();
+		double a = oldEvaluate() + 0.01;
 
 		if(a > balance)
 		{
@@ -82,6 +82,24 @@ MinMax Engine::playerBest()
 double Engine::oldEvaluate()
 {
 	// king multiplier
+	
+	Piece* engineKing = nullptr;
+	Piece* playerKing = nullptr;
+	
+	// FOR ENGINE
+	for(int i = 0; i < 8; i++)
+		for(int j = 0; j < 8; j++)
+			if(Sqr::getSquare(i, j).piece.user == ENGINE)
+				if(Sqr::getSquare(i, j).piece.type == KING)
+					engineKing = &Sqr::getSquare(i, j).piece;
+					
+	// POSITION
+	// OWN PIECES NEAR ++
+	// ENEMY PIECES NEAR --
+	
+	
+	
+	
 	// center multiplier
 	// line multiplier
 
@@ -232,32 +250,45 @@ double Engine::getValue(Square square)
 void Engine::makeFakeMove(std::pair<Piece*, Square>* move)
 {
 	// get the target piece
-	target = Sqr::squareHelper(move->second.x, move->second.y)->piece;
+	target = &Sqr::squareHelper(move->second.x, move->second.y)->piece;
 
 	// get the source piece
-	source = Sqr::squareHelper(move->first->x, move->first->y)->piece;
+	source = &Sqr::squareHelper(move->first->x, move->first->y)->piece;
 
-	// change target to source
-	Sqr::squareHelper(move->second.x, move->second.y)->piece = source;
+	Piece* example = source;
 
 	// change source to target
-	Sqr::squareHelper(move->first->x, move->first->y)->piece = target;
+	source->color = target->color;
+	source->type = target->type;
+	source->user = target->user;
+
+	// change target to source
+	target->color = example->color;
+	target->type = example->type;
+	target->user = example->user;
 
 }
 
 void Engine::fakeMoveNormal(std::pair<Piece*, Square>* move)
 {
 	// get the target piece
-	target = Sqr::squareHelper(move->second.x, move->second.y)->piece;
+	target = &Sqr::squareHelper(move->second.x, move->second.y)->piece;
 
 	// get the source piece
-	source = Sqr::squareHelper(move->first->x, move->first->y)->piece;
-	
-	// change target to source
-	Sqr::squareHelper(move->second.x, move->second.y)->piece = source;
+	source = &Sqr::squareHelper(move->first->x, move->first->y)->piece;
+
+	Piece* example = source;
 
 	// change source to target
-	Sqr::squareHelper(move->first->x, move->first->y)->piece = target;
+	source->color = target->color;
+	source->type = target->type;
+	source->user = target->user;
+
+	// change target to source
+	target->color = example->color;
+	target->type = example->type;
+	target->user = example->user;
+
 }
 
 void Engine::getEnginePieces()

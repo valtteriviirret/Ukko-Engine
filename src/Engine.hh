@@ -56,8 +56,8 @@ private:
     std::vector<Piece*> enginePieces;
     std::vector<Piece*> playerPieces;
 
-    Piece target;
-	Piece source;
+    Piece* target;
+	Piece* source;
 };
 
 #endif
