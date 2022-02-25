@@ -11,7 +11,7 @@ namespace Move
 	char nameY;
 	std::string promotion;
 
-	void castlingFunc(Piece* source, Piece& rook, bool player, bool queenSide)
+	void castlingFunc(Piece* source, Piece& rook, bool player, bool queenSide, bool real)
 	{
 		int y;
 		nameSource = "";
@@ -32,15 +32,21 @@ namespace Move
 		if(queenSide)
 		{
 			Pieces::emptySquare(0, y);
-			source->x -= 2;
-			rook.x += 3;
+			if(real)
+			{
+				source->x -= 2;
+				rook.x += 3;
+			}
 			name = "0-0-0";
 		}
 		else
 		{
 			Pieces::emptySquare(7, y);
-			source->x += 2;
-			rook.x -= 2;
+			if(real)
+			{
+				source->x += 2;
+				rook.x -= 2;
+			}
 			name = "0-0";
 		}
 
@@ -52,7 +58,7 @@ namespace Move
 	void readName() { std::cout << name << "\n"; }
 	std::string getName() { return name; }
 
-	void execute(Piece* source, Square target)
+	void execute(Piece* source, Square target, bool real)
 	{
 		name = "";
 		nameSource = "";
@@ -102,11 +108,11 @@ namespace Move
 
 				// queen side castle
 				if(source->x - 2 == target.x)
-					castlingFunc(source, Pieces::get(24), true, true);
+					castlingFunc(source, Pieces::get(24), true, true, real);
 
 				// king side castle
 				if(source->x + 2 == target.x)
-					castlingFunc(source, Pieces::get(25), true, false);
+					castlingFunc(source, Pieces::get(25), true, false, real);
 				
 			}
 
@@ -116,10 +122,10 @@ namespace Move
 				Global::engineKingMoved = true;
 
 				if(source->x - 2 == target.x)
-					castlingFunc(source, Pieces::get(8), false, true);
+					castlingFunc(source, Pieces::get(8), false, true, real);
 
 				if(source->x + 2 == target.x)
-					castlingFunc(source, Pieces::get(9), false, false);
+					castlingFunc(source, Pieces::get(9), false, false, real);
 
 			}
 			
@@ -131,17 +137,21 @@ namespace Move
 			if(source->user == PLAYER)
 			{
 				if(source->x == 0)
-					Global::playerQsideRookMoved = true;
+					if(real)
+						Global::playerQsideRookMoved = true;
 				if(source->x == 7)
-					Global::playerKsideRookMoved = true;
+					if(real)
+						Global::playerKsideRookMoved = true;
 			}
 
 			else
 			{
 				if(source->x == 0)
-					Global::engineQsideRookMoved = true;
+					if(real)
+						Global::engineQsideRookMoved = true;
 				if(source->x == 7)
-					Global::engineKsideRookMoved = true;
+					if(real)
+						Global::engineKsideRookMoved = true;
 
 			}
 		}
@@ -208,7 +218,8 @@ namespace Move
 				// engine always picks queen, at least for now
 				if(target.y == 7)
 				{
-					source->type = QUEEN;
+					if(real)
+						source->type = QUEEN;
 					
 					Piece* sqrOrig = &Sqr::squareHelper(target.x, target.y)->piece;
 					sqrOrig->type = QUEEN;
@@ -226,13 +237,15 @@ namespace Move
 				{
 					if(source->user == PLAYER)
 					{
-						Pieces::emptyPiece(target.x, (target.y + 1));
+						if(real)
+							Pieces::emptyPiece(target.x, (target.y + 1));
 						Pieces::emptySquare(target.x, (target.y + 1));
 					}
 				
 					else
 					{
-						Pieces::emptyPiece(target.x, (target.y - 1));
+						if(real)
+							Pieces::emptyPiece(target.x, (target.y - 1));
 						Pieces::emptySquare(target.x, (target.y - 1));
 					}
 				}
@@ -266,41 +279,38 @@ namespace Move
 		// capturing piece
 		if(target.piece.type != 6)
 		{
-			for(int i = 0; i < 32; i++)
-			{
-				if(Pieces::get(i).x == target.x && Pieces::get(i).y == target.y)
-				{
-					Piece* x = Pieces::getModify(i);
-					x->type = NONE;
-					x->color = UNDEFINED;
-					x->user = GHOST;
-				}
-			}
+			if(real)
+				Pieces::emptyPiece(target.x, target.y);
+			Pieces::emptySquare(target.x, target.y);
 		}
 
-		
 		// make the source square empty
 		Pieces::emptySquare(source->x, source->y);
 
 		// move the piece
-		source->x = target.x;
-		source->y = target.y;
+		if(real)
+		{
+			source->x = target.x;
+			source->y = target.y;
+		}
 
 		// update square
 		Sqr::squareHelper(source->x, source->y)->piece = *source;
 	
-		// make the notation
-		name = name + nameSource + " to " + nameX + nameY + promotion;
+		if(real)
+		{
+			// make the notation
+			name = name + nameSource + " to " + nameX + nameY + promotion;
 
-		// read info of the move in console
-		readName();
+			// read info of the move in console
+			readName();
 
-		// change turn
-		if(source->user == PLAYER)
-			Global::playerTurn = false;
-		else
-			Global::playerTurn = true;
-
+			// change turn
+			if(source->user == PLAYER)
+				Global::playerTurn = false;
+			else
+				Global::playerTurn = true;
+		}
 	}
 }
 

@@ -201,7 +201,7 @@ void Game::executePlayerMove(Square& sq)
 			if (originalSquare == &Sqr::getSquare(Pieces::get(j).x, Pieces::get(j).y))
 			{
 				// make the move
-				Move::execute(&Pieces::get(j), sq);
+				Move::execute(&Pieces::get(j), sq, true);
 
 				legalMoves.clear();
 				isPieceSelected = false;

@@ -56,8 +56,13 @@ private:
     std::vector<Piece*> enginePieces;
     std::vector<Piece*> playerPieces;
 
-    Piece* target;
-	Piece* source;
+    Square* target;
+	Square source;
+
+	void setOriginalPieces();
+	void getOriginalPieces();
+
+	Square oldPieces[8][8];
 };
 
 #endif
