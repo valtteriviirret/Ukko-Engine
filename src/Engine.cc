@@ -8,6 +8,8 @@ bool Engine::PlayMove()
 {
 	setOriginalPieces();
 
+	rounds = 2;
+
 	// clear existing stuff
 	clearEngine();
 	clearPlayer();
@@ -19,10 +21,10 @@ bool Engine::PlayMove()
 	{
 		clearEngine();
 
-		MinMax m = maxi(2);
+		MinMax m = maxi(rounds);
 
 		// set position back to normal
-		getOriginalPieces();
+		//getOriginalPieces();
 
 		Move::execute(Pieces::getReal(m._bestMove->first), m._bestMove->second, true);
 	
@@ -179,7 +181,8 @@ MinMax Engine::maxi(int depth)
 
 	for(int i = 0; i < (int)enginePairs.size(); i++)
 	{
-		getOriginalPieces();
+		if(depth == rounds && i != 0)
+			getOriginalPieces();
 
 		// make fake move
 		makeFakeMove(&enginePairs[i]);
@@ -263,7 +266,7 @@ double Engine::getValue(Square square)
 
 void Engine::makeFakeMove(std::pair<Piece*, Square>* move)
 {
-	Move::execute(move->first, oldPieces[move->second.x][move->second.y], false);
+	Move::execute(Pieces::getReal(move->first), oldPieces[move->second.x][move->second.y], false);
 }
 
 void Engine::getEnginePieces()
