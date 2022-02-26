@@ -60,6 +60,13 @@ namespace Pieces
 		s->user = GHOST;
 	}
 
+	void makeEmpty(Square* square)
+	{
+		square->piece.color = UNDEFINED;
+		square->piece.type = NONE;
+		square->piece.user = GHOST;
+	}
+
 	void init()
 	{
 		// 0-7 		ENGINE PAWNS

@@ -37,9 +37,6 @@ class Global
 		// check
 		static bool playerInCheck;
 		static bool engineInCheck;
-
-		void emptySquare(int x, int y);
-		void emptyPiece(int x, int y);
 };
 
 #endif

@@ -28,6 +28,8 @@ namespace Pieces
 	void emptyPiece(int x, int y); 
 
 	void emptySquare(int x, int y);
+
+	void makeEmpty(Square* square);
 }
 
 #endif

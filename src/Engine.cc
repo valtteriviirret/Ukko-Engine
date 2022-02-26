@@ -26,7 +26,7 @@ bool Engine::PlayMove()
 		// set position back to normal
 		//getOriginalPieces();
 
-		Move::execute(Pieces::getReal(m._bestMove->first), m._bestMove->second, true);
+		Move::execute(Pieces::getReal(m._bestMove->first), &m._bestMove->second, true);
 	
 		return true;
 	}
@@ -266,7 +266,7 @@ double Engine::getValue(Square square)
 
 void Engine::makeFakeMove(std::pair<Piece*, Square>* move)
 {
-	Move::execute(Pieces::getReal(move->first), oldPieces[move->second.x][move->second.y], false);
+	Move::execute(Pieces::getReal(move->first), &oldPieces[move->second.x][move->second.y], false);
 }
 
 void Engine::getEnginePieces()

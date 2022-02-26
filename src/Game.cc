@@ -188,7 +188,7 @@ void Game::playerPlayMove()
 	}
 }
 
-// TODO this could be prettier
+// TODO this is the worst code in the whole project
 void Game::executePlayerMove(Square& sq)
 {
 	// loop players pieces to find the correct one
@@ -201,7 +201,7 @@ void Game::executePlayerMove(Square& sq)
 			if (originalSquare == &Sqr::getSquare(Pieces::get(j).x, Pieces::get(j).y))
 			{
 				// make the move
-				Move::execute(&Pieces::get(j), sq, true);
+				Move::execute(&Pieces::get(j), Sqr::squareHelper(sq.x, sq.y), true);
 
 				legalMoves.clear();
 				isPieceSelected = false;
