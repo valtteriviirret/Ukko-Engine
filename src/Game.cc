@@ -139,22 +139,20 @@ bool Game::moveSetup()
 	playerPieces.clear();
 	playerMoves.clear();
 
-	// "raw pieces"
-	for(int i = 16; i < 32; i++)
-		playerPieces.push_back(Pieces::get(i));
+	// get squares of pieces
+	for(int i = 0; i < 8; i++)
+		for(int j = 0; j < 8; j++)
+			if(Sqr::squareHelper(i, j)->piece.user == PLAYER)
+				playerPieces.push_back(*Sqr::squareHelper(i, j));
 
 	// loop all pieces
 	for(auto& i : playerPieces)
 	{
-		// filter pieces
-		if(i.type != NONE && i.user == PLAYER)
-		{
-			// get all legal moves
-			std::vector<Square> temp = LegalMove::getLegal(i);
+		// get all legal moves
+		std::vector<Square> temp = LegalMove::getLegal(i.piece);
 
-			for(auto& j : temp)
-				playerMoves.push_back(j);
-		}
+		for(auto& j : temp)
+			playerMoves.push_back(j);
 	}
 
 	return !playerMoves.empty();
@@ -180,7 +178,7 @@ void Game::playerPlayMove()
 			for (auto& i : legalMoves)
             {
                 if (selectedSquare->x == i.x && selectedSquare->y == i.y)
-                    executePlayerMove(i);
+                    executePlayerMove(&i);
                 else
                     isPieceSelected = false;
             }
@@ -188,26 +186,18 @@ void Game::playerPlayMove()
 	}
 }
 
-// TODO this is the worst code in the whole project
-void Game::executePlayerMove(Square& sq)
+void Game::executePlayerMove(Square* sq)
 {
-	// loop players pieces to find the correct one
-	for (int j = 16; j < 32; j++)
+	for(auto& i : playerPieces)
 	{
-		// filter moves
-		if (Pieces::get(j).user == PLAYER && Pieces::get(j).type != NONE)
+		if(originalSquare->x == i.x && originalSquare->y == i.y)
 		{
-			// loop pieces and find correct one
-			if (originalSquare == &Sqr::getSquare(Pieces::get(j).x, Pieces::get(j).y))
-			{
-				// make the move
-				Move::execute(&Pieces::get(j), Sqr::squareHelper(sq.x, sq.y), true);
-
-				legalMoves.clear();
-				isPieceSelected = false;
-				updateConsole();
-				Global::playerTurn = false;
-			}
+			// make the move
+			Move::execute(Sqr::squareHelper(i.x, i.y), Sqr::squareHelper(sq->x, sq->y), true);
+			
+			legalMoves.clear();
+			isPieceSelected = false;
+			updateConsole();
 		}
 	}
 }
@@ -216,7 +206,7 @@ void Game::executePlayerMove(Square& sq)
 void Game::enginePlayMove()
 {
 	GameManager::update();
-	std::this_thread::sleep_for(std::chrono::milliseconds(300));
+	//std::this_thread::sleep_for(std::chrono::milliseconds(300));
 	engine.PlayMove();
 	updateConsole();
 }

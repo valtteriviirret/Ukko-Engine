@@ -13,7 +13,7 @@
 
 namespace Move
 {
-	void execute(Piece* source, Square* target, bool real);
+	void execute(Square* source, Square* target, bool real);
 	std::string getName();
 }
 

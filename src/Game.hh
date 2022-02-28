@@ -36,11 +36,11 @@ class Game
 		void eventHandler();
 		void resetGame();
 		void updateConsoleText(const std::string& text);
-		void executePlayerMove(Square& sq);
+		void executePlayerMove(Square* sq);
 
 		std::vector<Square> playerMoves;
 		std::vector<Square> legalMoves;
-		std::vector<Piece> playerPieces;
+		std::vector<Square> playerPieces;
 		
 		// console stuff
 		std::vector<Text*> console;

@@ -33,6 +33,19 @@ namespace Pieces
 		return nullptr;
 	}
 
+	Piece* getReal(Square* square)
+	{
+		for(int i = 0; i < 32; i++)
+		{
+			if(p[i].x == square->x && p[i].y == square->y)
+			{
+				return &p[i];
+			}
+		}
+
+		return nullptr;
+	}
+
 	Piece* getXY(int x, int y)
 	{
 		for(int i = 0; i < 32; i++)
@@ -65,6 +78,13 @@ namespace Pieces
 		square->piece.color = UNDEFINED;
 		square->piece.type = NONE;
 		square->piece.user = GHOST;
+	}
+
+	void makeEmpty(Piece* piece)
+	{
+		piece->color = UNDEFINED;
+		piece->type = NONE;
+		piece->user = GHOST;
 	}
 
 	void init()

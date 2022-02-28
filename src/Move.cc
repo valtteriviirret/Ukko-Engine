@@ -11,6 +11,10 @@ namespace Move
 	char nameY;
 	std::string promotion;
 
+	Piece* realSource = nullptr;
+	Piece* realTarget = nullptr;
+
+	/*
 	void castlingFunc(Piece* source, Piece& rook, bool player, bool queenSide, bool real)
 	{
 		int y;
@@ -54,17 +58,23 @@ namespace Move
 		Sqr::squareHelper(rook.x, rook.y)->piece = rook;
 		Sqr::squareHelper(source->x, source->y)->piece = *source;
 	}
+	*/
 
 	void readName() { std::cout << name << "\n"; }
 	std::string getName() { return name; }
 
-	void execute(Piece* source, Square* target, bool real)
+	void execute(Square* source, Square* target, bool real)
 	{
+		// get real piece
+		if(real)
+			realSource = Pieces::getReal(source);
+
+
 		name = "";
 		nameSource = "";
 		promotion = "";
 
-		switch(source->type)
+		switch(source->piece.type)
 		{
 			case NONE: break;
 			case PAWN: nameSource = "Pawn"; break;
@@ -99,10 +109,11 @@ namespace Move
 			case 7: nameY = '1'; break;
 		}
 
+		/*
 		// castling
-		if(source->type == KING)
+		if(source->piece.type == KING)
 		{
-			if(source->user == PLAYER)
+			if(source->piece.user == PLAYER)
 			{
 				Global::playerKingMoved = true;
 
@@ -128,11 +139,12 @@ namespace Move
 					castlingFunc(source, Pieces::get(9), false, false, real);
 			}
 		}
+		*/
 	
 		// if rook is moved, has to do with castling
-		if(source->type == ROOK)
+		if(source->piece.type == ROOK)
 		{
-			if(source->user == PLAYER)
+			if(source->piece.user == PLAYER)
 			{
 				if(source->x == 0)
 					if(real)
@@ -155,9 +167,9 @@ namespace Move
 
 		
 		// pawn promotion
-		if(source->type == PAWN)
+		if(source->piece.type == PAWN)
 		{
-			if(source->user == PLAYER)
+			if(source->piece.user == PLAYER)
 			{
 				// last row
 				if(target->y == 0)
@@ -173,30 +185,28 @@ namespace Move
 					{
 						std::cin >> choice;
 
-						//Piece* sqrOrig = &Sqr::squareHelper(target->x, target->y)->piece;
-
 						switch(choice)
 						{
 							case 'Q':
-								source->type = QUEEN;
+								source->piece.type = QUEEN;
 								target->piece.type = QUEEN;
 								promotion = 'Q';
 								choiceMade = true;
 								break;
 							case 'R':
-								source->type = ROOK;
+								source->piece.type = ROOK;
 								target->piece.type = ROOK;
 								promotion = 'R';
 								choiceMade = true;
 								break;
 							case 'B':
-								source->type = BISHOP;
+								source->piece.type = BISHOP;
 								target->piece.type = BISHOP;
 								promotion = 'B';
 								choiceMade = true;
 								break;
 							case 'N':
-								source->type = KNIGHT;
+								source->piece.type = KNIGHT;
 								target->piece.type = KNIGHT;
 								promotion = 'N';
 								choiceMade = true;
@@ -216,9 +226,8 @@ namespace Move
 				if(target->y == 7)
 				{
 					if(real)
-						source->type = QUEEN;
+						source->piece.type = QUEEN;
 					
-					//Piece* sqrOrig = &Sqr::squareHelper(target->x, target->y)->piece;
 					target->piece.type = QUEEN;
 					promotion = 'Q';
 				}
@@ -226,14 +235,15 @@ namespace Move
 		}
 
 		// TODO THIS
+		// this is bad
 		// en passant move
-		if(source->type == PAWN)
+		if(source->piece.type == PAWN)
 		{
 			if(Global::en_passant)
 			{
 				if(target->x == Global::en_passant->x && target->y == Global::en_passant->y)
 				{
-					if(source->user == PLAYER)
+					if(source->piece.user == PLAYER)
 					{
 						if(real)
 							Pieces::emptySquare(target->x, (target->y + 1));
@@ -253,9 +263,9 @@ namespace Move
 		// make en passant squares
 		//
 		//TODO fix this
-		if(source->type == PAWN)
+		if(source->piece.type == PAWN)
 		{
-			if(source->user == PLAYER)
+			if(source->piece.user == PLAYER)
 			{
 				if(source->y == 6 && target->y == 4)
 					Global::en_passant = Sqr::squareHelper(source->x, 5);
@@ -277,33 +287,28 @@ namespace Move
 		// REGULAR MOVE
 		
 		// capturing piece
-		if(target->piece.type != 6)
+		if(target->piece.type != NONE)
 		{
+			realTarget = Pieces::getReal(target);
+	
 			if(real)
-				Pieces::emptyPiece(target->x, target->y);
+				Pieces::makeEmpty(realTarget);
 
-			if(real)
-				Pieces::emptySquare(target->x, target->y);
-			else
-				Pieces::makeEmpty(target);
+			Pieces::makeEmpty(target);
 		}
 
-		// make the source square empty
-		if(real)
-			Pieces::emptySquare(source->x, source->y);
-		//else
-			//TODO
+		// source's and target's pieces change value
+		Square source2 = *source;
+		source->piece = target->piece;
+		target->piece = source2.piece;
 
 		// move the piece
 		if(real)
 		{
-			source->x = target->x;
-			source->y = target->y;
+			realSource->x = target->x;
+			realSource->y = target->y;
 		}
 
-		// update square
-		Sqr::squareHelper(source->x, source->y)->piece = *source;
-	
 		if(real)
 		{
 			// make the notation
@@ -313,7 +318,7 @@ namespace Move
 			readName();
 
 			// change turn
-			if(source->user == PLAYER)
+			if(source2.piece.user == PLAYER)
 				Global::playerTurn = false;
 			else
 				Global::playerTurn = true;

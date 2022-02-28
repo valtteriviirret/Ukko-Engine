@@ -18,6 +18,8 @@ namespace Pieces
 
 	Piece* getReal(Piece* piece);
 
+	Piece* getReal(Square* square);
+
 	Piece* getXY(int x, int y);
 
 	// set piece
@@ -30,6 +32,8 @@ namespace Pieces
 	void emptySquare(int x, int y);
 
 	void makeEmpty(Square* square);
+
+	void makeEmpty(Piece* piece);
 }
 
 #endif

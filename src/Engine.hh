@@ -23,14 +23,14 @@ private:
     // get all pieces
     void getEnginePieces();
     void getPlayerPieces();
-    std::vector<Piece*> enginePieces;
-    std::vector<Piece*> playerPieces;
+    std::vector<Square> enginePieces;
+    std::vector<Square> playerPieces;
 
     // get all possible moves
     void getEngineMoves();
     void getPlayerMoves();
-	std::vector<std::pair<Piece*, Square>> enginePairs;
-    std::vector<std::pair<Piece*, Square>> playerPairs;
+	std::vector<std::pair<Square, Square>> enginePairs;
+    std::vector<std::pair<Square, Square>> playerPairs;
 
     // get the best possible move
     MinMax engineBest();
@@ -50,7 +50,7 @@ private:
     MinMax maxi(int depth);
 
 	// fake move stuff
-    void makeFakeMove(std::pair<Piece*, Square>* move);
+    void makeFakeMove(std::pair<Square, Square>* move);
 	void setOriginalPieces();
 	void getOriginalPieces();
 	Square oldPieces[8][8];
