@@ -23,9 +23,6 @@ bool Engine::PlayMove()
 
 		MinMax m = maxi(rounds);
 
-		// set position back to normal
-		getOriginalPieces();
-
 		Move::execute(Sqr::squareHelper(m._bestMove->first.x, m._bestMove->first.y), 
 				Sqr::squareHelper(m._bestMove->second.x, m._bestMove->second.y), true);
 
@@ -129,12 +126,6 @@ void Engine::setOriginalPieces()
 			oldPieces[i][j] = Sqr::getSquare(i, j);
 }
 
-void Engine::getOriginalPieces()
-{
-	for(int i = 0; i < 8; i++)
-		for(int j = 0; j < 8; j++)
-			Sqr::squareHelper(i, j)->piece = oldPieces[i][j].piece;
-}
 
 /*
 int Engine::evaluate()
@@ -182,10 +173,10 @@ MinMax Engine::maxi(int depth)
 
 	for(int i = 0; i < (int)enginePairs.size(); i++)
 	{
-		getOriginalPieces();
+		setOriginalPieces();
 
 		// make fake move
-		makeFakeMove(&enginePairs[i]);
+		//makeFakeMove(&enginePairs[i]);
 
 		// call to min
 		MinMax move = mini(depth - 1);
@@ -215,7 +206,7 @@ MinMax Engine::mini(int depth)
 
 	for(int i = 0; i < (int)playerPairs.size(); i++)
 	{
-		makeFakeMove(&playerPairs[i]);
+		//makeFakeMove(&playerPairs[i]);
 		
 		MinMax move = maxi(depth - 1);
 		score = move._evaluation;
@@ -266,7 +257,8 @@ double Engine::getValue(Square square)
 
 void Engine::makeFakeMove(std::pair<Square, Square>* move)
 {
-	Move::execute(&move->first, &oldPieces[move->second.x][move->second.y], false);
+	//Move::execute(&oldPieces[move->first.x][move->first.y], &oldPieces[move->second.x][move->second.y], false);
+	Move::execute(&move->first, &move->second, false);
 }
 
 void Engine::getEnginePieces()

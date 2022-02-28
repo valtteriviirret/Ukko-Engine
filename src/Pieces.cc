@@ -27,7 +27,6 @@ namespace Pieces
 	{
 		for(int i = 0; i < 32; i++)
 			if(p[i].x == piece->x && p[i].y == piece->y)
-			//&& p[i].user == piece->user && p[i].type == piece->type)
 				return &p[i];
 
 		return nullptr;
@@ -36,12 +35,8 @@ namespace Pieces
 	Piece* getReal(Square* square)
 	{
 		for(int i = 0; i < 32; i++)
-		{
 			if(p[i].x == square->x && p[i].y == square->y)
-			{
 				return &p[i];
-			}
-		}
 
 		return nullptr;
 	}

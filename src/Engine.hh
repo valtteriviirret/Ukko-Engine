@@ -52,7 +52,6 @@ private:
 	// fake move stuff
     void makeFakeMove(std::pair<Square, Square>* move);
 	void setOriginalPieces();
-	void getOriginalPieces();
 	Square oldPieces[8][8];
 
 	// helper functions

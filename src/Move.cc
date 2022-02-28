@@ -302,15 +302,12 @@ namespace Move
 		source->piece = target->piece;
 		target->piece = source2.piece;
 
-		// move the piece
 		if(real)
 		{
+			// move the piece
 			realSource->x = target->x;
 			realSource->y = target->y;
-		}
 
-		if(real)
-		{
 			// make the notation
 			name = name + nameSource + " to " + nameX + nameY + promotion;
 
