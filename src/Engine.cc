@@ -23,6 +23,12 @@ bool Engine::PlayMove()
 
 		MinMax m = maxi(rounds);
 
+		/*
+		 *	We want to pass pointers from actual squares to Move.
+		 *	Hence this, since Sqr::squareHelper returns pointer to correct square.
+		 *	Both bestMove->first and second are just copies, either from oldPieces or LegalMoves.
+		 *
+		 */
 		Move::execute(Sqr::squareHelper(m._bestMove->first.x, m._bestMove->first.y), 
 				Sqr::squareHelper(m._bestMove->second.x, m._bestMove->second.y), true);
 
@@ -125,34 +131,6 @@ void Engine::setOriginalPieces()
 		for(int j = 0; j < 8; j++)
 			oldPieces[i][j] = Sqr::getSquare(i, j);
 }
-
-
-/*
-int Engine::evaluate()
-{
-    int selection = 0;
-    double score = 0;
-
-    for (int i = rand() % 16; i < (int)enginePairs.size(); i++)
-    {
-        Square initialPos = Sqr::getSquare(enginePairs.at(i).first->x, enginePairs.at(i).first->y);
-        Piece& initialPiece = enginePairs.at(i).second.piece;
-        Move::execute(enginePairs.at(i).first, enginePairs.at(i).second);
-        getMaterialBalance();
-
-        if (score < engineMaterial / playerMaterial)
-        {
-            selection = i;
-            score = engineMaterial / playerMaterial;
-        }
-
-        Move::execute(enginePairs.at(i).first, initialPos);
-        Sqr::squareHelper(enginePairs.at(i).second.x, enginePairs.at(i).second.y)->piece = initialPiece;
-    }
-
-    return selection;
-}
-*/
 
 void Engine::getMaterialBalance()
 {
@@ -257,8 +235,7 @@ double Engine::getValue(Square square)
 
 void Engine::makeFakeMove(std::pair<Square, Square>* move)
 {
-	//Move::execute(&oldPieces[move->first.x][move->first.y], &oldPieces[move->second.x][move->second.y], false);
-	Move::execute(&move->first, &move->second, false);
+	Move::execute(&move->first, &oldPieces[move->second.x][move->second.y], false);
 }
 
 void Engine::getEnginePieces()
