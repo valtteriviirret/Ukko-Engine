@@ -299,8 +299,16 @@ namespace Move
 
 		// source's and target's pieces change value
 		Square source2 = *source;
-		source->piece = target->piece;
-		target->piece = source2.piece;
+		Square target2 = *target;
+
+		source->piece.type = target2.piece.type;
+		source->piece.user = target2.piece.user;
+		source->piece.color = target2.piece.color;
+
+		target->piece.type = source2.piece.type;
+		target->piece.user = source2.piece.user;
+		target->piece.color = source2.piece.color;
+
 
 		if(real)
 		{
