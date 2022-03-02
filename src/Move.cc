@@ -67,46 +67,47 @@ namespace Move
 	{
 		// get real piece
 		if(real)
+		{
 			realSource = Pieces::getReal(source);
 
+			name = "";
+			nameSource = "";
+			promotion = "";
 
-		name = "";
-		nameSource = "";
-		promotion = "";
+			switch(source->piece.type)
+			{
+				case NONE: break;
+				case PAWN: nameSource = "Pawn"; break;
+				case ROOK: nameSource = "Rook"; break;
+				case KING: nameSource = "King"; break;
+				case QUEEN: nameSource = "Queen"; break;
+				case KNIGHT: nameSource = "Knight"; break;
+				case BISHOP: nameSource = "Bishop"; break;
+			}
 
-		switch(source->piece.type)
-		{
-			case NONE: break;
-			case PAWN: nameSource = "Pawn"; break;
-			case ROOK: nameSource = "Rook"; break;
-			case KING: nameSource = "King"; break;
-			case QUEEN: nameSource = "Queen"; break;
-			case KNIGHT: nameSource = "Knight"; break;
-			case BISHOP: nameSource = "Bishop"; break;
-		}
+			switch(target->x)
+			{
+				case 0: nameX = 'A'; break;
+				case 1: nameX = 'B'; break;
+				case 2: nameX = 'C'; break;
+				case 3: nameX = 'D'; break;
+				case 4: nameX = 'E'; break;
+				case 5: nameX = 'F'; break;
+				case 6: nameX = 'G'; break;
+				case 7: nameX = 'H'; break;
+			}
 
-		switch(target->x)
-		{
-			case 0: nameX = 'A'; break;
-			case 1: nameX = 'B'; break;
-			case 2: nameX = 'C'; break;
-			case 3: nameX = 'D'; break;
-			case 4: nameX = 'E'; break;
-			case 5: nameX = 'F'; break;
-			case 6: nameX = 'G'; break;
-			case 7: nameX = 'H'; break;
-		}
-
-		switch(target->y)
-		{
-			case 0: nameY = '8'; break;
-			case 1: nameY = '7'; break;
-			case 2: nameY = '6'; break;
-			case 3: nameY = '5'; break;
-			case 4: nameY = '4'; break;
-			case 5: nameY = '3'; break;
-			case 6: nameY = '2'; break;
-			case 7: nameY = '1'; break;
+			switch(target->y)
+			{
+				case 0: nameY = '8'; break;
+				case 1: nameY = '7'; break;
+				case 2: nameY = '6'; break;
+				case 3: nameY = '5'; break;
+				case 4: nameY = '4'; break;
+				case 5: nameY = '3'; break;
+				case 6: nameY = '2'; break;
+				case 7: nameY = '1'; break;
+			}
 		}
 
 		/*
@@ -234,54 +235,52 @@ namespace Move
 			}
 		}
 
-		// TODO THIS
-		// this is bad
-		// en passant move
-		if(source->piece.type == PAWN)
+		if(real)
 		{
-			if(Global::en_passant)
+			if(source->piece.type == PAWN)
 			{
-				if(target->x == Global::en_passant->x && target->y == Global::en_passant->y)
+				if(Global::en_passant)
 				{
-					if(source->piece.user == PLAYER)
+					if(target->x == Global::en_passant->x && target->y == Global::en_passant->y)
 					{
-						if(real)
+						if(source->piece.user == PLAYER)
+						{
+							if(real)
+								Pieces::emptySquare(target->x, (target->y + 1));
 							Pieces::emptySquare(target->x, (target->y + 1));
-						Pieces::emptySquare(target->x, (target->y + 1));
-					}
-				
-					else
-					{
-						if(real)
+						}
+					
+						else
+						{
+							if(real)
+								Pieces::emptySquare(target->x, (target->y - 1));
 							Pieces::emptySquare(target->x, (target->y - 1));
-						Pieces::emptySquare(target->x, (target->y - 1));
+						}
 					}
 				}
 			}
-		}
 
-		// make en passant squares
-		//
-		//TODO fix this
-		if(source->piece.type == PAWN)
-		{
-			if(source->piece.user == PLAYER)
+			// make en passant squares
+			if(source->piece.type == PAWN)
 			{
-				if(source->y == 6 && target->y == 4)
-					Global::en_passant = Sqr::squareHelper(source->x, 5);
+				if(source->piece.user == PLAYER)
+				{
+					if(source->y == 6 && target->y == 4)
+						Global::en_passant = Sqr::squareHelper(source->x, 5);
+					else
+						Global::en_passant = nullptr;
+				}
 				else
-					Global::en_passant = nullptr;
+				{
+					if(source->y == 1 && target->y == 3)
+						Global::en_passant = Sqr::squareHelper(source->x, 2);
+					else
+						Global::en_passant = nullptr;
+				}
 			}
 			else
-			{
-				if(source->y == 1 && target->y == 3)
-					Global::en_passant = Sqr::squareHelper(source->x, 2);
-				else
-					Global::en_passant = nullptr;
-			}
+				Global::en_passant = nullptr;
 		}
-		else
-			Global::en_passant = nullptr;
 
 
 		// REGULAR MOVE
@@ -297,37 +296,38 @@ namespace Move
 			Pieces::makeEmpty(target);
 		}
 
-		// source's and target's pieces change value
-		Square source2 = *source;
-		Square target2 = *target;
-
-		source->piece.type = target2.piece.type;
-		source->piece.user = target2.piece.user;
-		source->piece.color = target2.piece.color;
-
-		target->piece.type = source2.piece.type;
-		target->piece.user = source2.piece.user;
-		target->piece.color = source2.piece.color;
-
-
 		if(real)
 		{
-			// move the piece
-			realSource->x = target->x;
-			realSource->y = target->y;
 
-			// make the notation
-			name = name + nameSource + " to " + nameX + nameY + promotion;
+		// source's and target's pieces change value
+		Piece source2 = source->piece;
+		Piece target2 = target->piece;
 
-			// read info of the move in console
-			readName();
+		source->piece.type = target2.type;
+		source->piece.user = target2.user;
+		source->piece.color = target2.color;
 
-			// change turn
-			if(source2.piece.user == PLAYER)
-				Global::playerTurn = false;
-			else
-				Global::playerTurn = true;
+		target->piece.type = source2.type;
+		target->piece.user = source2.user;
+		target->piece.color = source2.color;
+	
+		// move the piece
+		realSource->x = target2.x;
+		realSource->y = target2.y;
+
+		// make the notation
+		name = name + nameSource + " to " + nameX + nameY + promotion;
+
+		// read info of the move in console
+		readName();
+
+		// change turn
+		if(source2.user == PLAYER)
+			Global::playerTurn = false;
+		else
+			Global::playerTurn = true;
 		}
+		
 	}
 }
 

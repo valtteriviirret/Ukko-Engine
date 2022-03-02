@@ -21,7 +21,11 @@ bool Engine::PlayMove()
 	{
 		clearEngine();
 
+		// perform minmax algorithm
 		MinMax m = maxi(rounds);
+
+		// set all squares back to normal
+		setOriginalPieces();
 
 		/*
 		 *	We want to pass pointers from actual squares to Move.
@@ -154,7 +158,7 @@ MinMax Engine::maxi(int depth)
 		setOriginalPieces();
 
 		// make fake move
-		//makeFakeMove(&enginePairs[i]);
+		makeFakeMove(&enginePairs[i]);
 
 		// call to min
 		MinMax move = mini(depth - 1);
@@ -184,7 +188,7 @@ MinMax Engine::mini(int depth)
 
 	for(int i = 0; i < (int)playerPairs.size(); i++)
 	{
-		//makeFakeMove(&playerPairs[i]);
+		makeFakeMove(&playerPairs[i]);
 		
 		MinMax move = maxi(depth - 1);
 		score = move._evaluation;
