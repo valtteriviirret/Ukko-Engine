@@ -305,12 +305,15 @@ namespace Move
 			}
 		}
 
+
+
 		Piece source2 = source->piece;
 		Piece target2 = target->piece;
 
 		// get target positions
 		int targetX = target->x;
 		int targetY = target->y;
+
 
 		source->piece.type = target2.type;
 		source->piece.user = target2.user;
@@ -320,27 +323,24 @@ namespace Move
 		target->piece.user = source2.user;
 		target->piece.color = source2.color;
 
-		// source and target change value
-		//source->piece = target2;
-		//target->piece = source2;
 
 		if(real)
 		{
-			// move the piece
-			realSource->x = targetX;
-			realSource->y = targetY;
+		// move the piece
+		realSource->x = targetX;
+		realSource->y = targetY;
 
-			// make the notation
-			name = name + nameSource + " to " + nameX + nameY + promotion;
+		// make the notation
+		name = name + nameSource + " to " + nameX + nameY + promotion;
 
-			// read info of the move in console
-			readName();
+		// read info of the move in console
+		readName();
 
-			// change turn
-			if(source2.user == PLAYER)
-				Global::playerTurn = false;
-			else
-				Global::playerTurn = true;
+		// change turn
+		if(source2.user == PLAYER)
+			Global::playerTurn = false;
+		else
+			Global::playerTurn = true;
 		}
 	}
 }

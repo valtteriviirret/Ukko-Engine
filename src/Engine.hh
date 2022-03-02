@@ -50,12 +50,10 @@ private:
     MinMax maxi(int depth);
 
 	// fake move stuff
-    void makeFakeMove(std::pair<Square, Square>* move);
+    void makeFakeMove(std::pair<Square, Square> move);
 	void setOriginalSquares();
 	void updateSquares();
 
-	//Square currentSquares[8][8];
-	//Square originalSquares[8][8];
 	std::array <std::array <Square, 8>, 8> currentSquares;
 	std::array <std::array <Square, 8>, 8> originalSquares;
 
