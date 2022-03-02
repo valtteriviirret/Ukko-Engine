@@ -143,94 +143,100 @@ namespace Move
 		*/
 	
 		// if rook is moved, has to do with castling
-		if(source->piece.type == ROOK)
+		if(real)
 		{
-			if(source->piece.user == PLAYER)
+			if(source->piece.type == ROOK)
 			{
-				if(source->x == 0)
-					if(real)
-						Global::playerQsideRookMoved = true;
-				if(source->x == 7)
-					if(real)
-						Global::playerKsideRookMoved = true;
-			}
+				if(source->piece.user == PLAYER)
+				{
+					if(source->x == 0)
+						if(real)
+							Global::playerQsideRookMoved = true;
+					if(source->x == 7)
+						if(real)
+							Global::playerKsideRookMoved = true;
+				}
 
-			else
-			{
-				if(source->x == 0)
-					if(real)
-						Global::engineQsideRookMoved = true;
-				if(source->x == 7)
-					if(real)
-						Global::engineKsideRookMoved = true;
+				else
+				{
+					if(source->x == 0)
+						if(real)
+							Global::engineQsideRookMoved = true;
+					if(source->x == 7)
+						if(real)
+							Global::engineKsideRookMoved = true;
+				}
 			}
 		}
 
-		
-		// pawn promotion
-		if(source->piece.type == PAWN)
+	
+		if(real)
 		{
-			if(source->piece.user == PLAYER)
+			// pawn promotion
+			if(source->piece.type == PAWN)
 			{
-				// last row
-				if(target->y == 0)
+				if(source->piece.user == PLAYER)
 				{
-					std::cout << "PLAYER PAWN GETS PROMOTED IN " << nameX << nameY << "\n";
-					std::cout << "CHOOSE PIECE:\n";
-					showPieces
-
-					bool choiceMade = false;
-					char choice;
-
-					while(!choiceMade)
+					// last row
+					if(target->y == 0)
 					{
-						std::cin >> choice;
+						std::cout << "PLAYER PAWN GETS PROMOTED IN " << nameX << nameY << "\n";
+						std::cout << "CHOOSE PIECE:\n";
+						showPieces
 
-						switch(choice)
+						bool choiceMade = false;
+						char choice;
+
+						while(!choiceMade)
 						{
-							case 'Q':
-								source->piece.type = QUEEN;
-								target->piece.type = QUEEN;
-								promotion = 'Q';
-								choiceMade = true;
-								break;
-							case 'R':
-								source->piece.type = ROOK;
-								target->piece.type = ROOK;
-								promotion = 'R';
-								choiceMade = true;
-								break;
-							case 'B':
-								source->piece.type = BISHOP;
-								target->piece.type = BISHOP;
-								promotion = 'B';
-								choiceMade = true;
-								break;
-							case 'N':
-								source->piece.type = KNIGHT;
-								target->piece.type = KNIGHT;
-								promotion = 'N';
-								choiceMade = true;
-								break;
-							default:
-								std::cout << "INCORRECT OPTION\nCHOOSE AGAIN!\n";
-								showPieces
-								break;
+							std::cin >> choice;
+
+							switch(choice)
+							{
+								case 'Q':
+									source->piece.type = QUEEN;
+									target->piece.type = QUEEN;
+									promotion = 'Q';
+									choiceMade = true;
+									break;
+								case 'R':
+									source->piece.type = ROOK;
+									target->piece.type = ROOK;
+									promotion = 'R';
+									choiceMade = true;
+									break;
+								case 'B':
+									source->piece.type = BISHOP;
+									target->piece.type = BISHOP;
+									promotion = 'B';
+									choiceMade = true;
+									break;
+								case 'N':
+									source->piece.type = KNIGHT;
+									target->piece.type = KNIGHT;
+									promotion = 'N';
+									choiceMade = true;
+									break;
+								default:
+									std::cout << "INCORRECT OPTION\nCHOOSE AGAIN!\n";
+									showPieces
+									break;
+							}
 						}
 					}
 				}
-			}
-			// source.user == ENGINE
-			else
-			{
-				// engine always picks queen, at least for now
-				if(target->y == 7)
+				// source.user == ENGINE
+				else
 				{
-					if(real)
-						source->piece.type = QUEEN;
-					
-					target->piece.type = QUEEN;
-					promotion = 'Q';
+					// engine always picks queen, at least for now
+					if(target->y == 7)
+					{
+						if(real)
+							source->piece.type = QUEEN;
+						
+						target->piece.type = QUEEN;
+						promotion = 'Q';
+					}
 				}
 			}
 		}
@@ -286,22 +292,25 @@ namespace Move
 		// REGULAR MOVE
 		
 		// capturing piece
-		if(target->piece.type != NONE)
-		{
-			realTarget = Pieces::getReal(target);
-	
-			if(real)
-				Pieces::makeEmpty(realTarget);
-
-			Pieces::makeEmpty(target);
-		}
-
 		if(real)
 		{
+			if(target->piece.type != NONE)
+			{
+				realTarget = Pieces::getReal(target);
+		
+				if(real)
+					Pieces::makeEmpty(realTarget);
 
-		// source's and target's pieces change value
+				Pieces::makeEmpty(target);
+			}
+		}
+
 		Piece source2 = source->piece;
 		Piece target2 = target->piece;
+
+		// get target positions
+		int targetX = target->x;
+		int targetY = target->y;
 
 		source->piece.type = target2.type;
 		source->piece.user = target2.user;
@@ -310,24 +319,29 @@ namespace Move
 		target->piece.type = source2.type;
 		target->piece.user = source2.user;
 		target->piece.color = source2.color;
-	
-		// move the piece
-		realSource->x = target2.x;
-		realSource->y = target2.y;
 
-		// make the notation
-		name = name + nameSource + " to " + nameX + nameY + promotion;
+		// source and target change value
+		//source->piece = target2;
+		//target->piece = source2;
 
-		// read info of the move in console
-		readName();
+		if(real)
+		{
+			// move the piece
+			realSource->x = targetX;
+			realSource->y = targetY;
 
-		// change turn
-		if(source2.user == PLAYER)
-			Global::playerTurn = false;
-		else
-			Global::playerTurn = true;
+			// make the notation
+			name = name + nameSource + " to " + nameX + nameY + promotion;
+
+			// read info of the move in console
+			readName();
+
+			// change turn
+			if(source2.user == PLAYER)
+				Global::playerTurn = false;
+			else
+				Global::playerTurn = true;
 		}
-		
 	}
 }
 

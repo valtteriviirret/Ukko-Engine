@@ -6,7 +6,7 @@ Engine::~Engine() = default;
 
 bool Engine::PlayMove()
 {
-	setOriginalPieces();
+	setOriginalSquares();
 
 	rounds = 2;
 
@@ -25,7 +25,7 @@ bool Engine::PlayMove()
 		MinMax m = maxi(rounds);
 
 		// set all squares back to normal
-		setOriginalPieces();
+		updateSquares();
 
 		/*
 		 *	We want to pass pointers from actual squares to Move.
@@ -129,11 +129,20 @@ double Engine::oldEvaluate()
 	return eval;
 }
 
-void Engine::setOriginalPieces()
+void Engine::setOriginalSquares()
 {
 	for(int i = 0; i < 8; i++)
 		for(int j = 0; j < 8; j++)
-			oldPieces[i][j] = Sqr::getSquare(i, j);
+			originalSquares[i][j] = Sqr::squareCopy(i, j);
+
+	updateSquares();
+}
+
+void Engine::updateSquares()
+{
+	for(int i = 0; i < 8; i++)
+		for(int j = 0; j < 8; j++)
+			currentSquares[i][j] = originalSquares[i][j];
 }
 
 void Engine::getMaterialBalance()
@@ -155,7 +164,7 @@ MinMax Engine::maxi(int depth)
 
 	for(int i = 0; i < (int)enginePairs.size(); i++)
 	{
-		setOriginalPieces();
+		updateSquares();
 
 		// make fake move
 		makeFakeMove(&enginePairs[i]);
@@ -210,11 +219,11 @@ double Engine::materialValue(bool player)
 	{
 		for(int j = 0; j < 8; j++)
 		{
-			if(player && Sqr::getSquare(i, j).piece.user == PLAYER)
-				n += getValue(Sqr::getSquare(i, j));
+			if(player && currentSquares[i][j].piece.user == PLAYER)
+				n += getValue(currentSquares[i][j]);
 
-			if((!player) && Sqr::getSquare(i, j).piece.user == ENGINE)
-				n += getValue(Sqr::getSquare(i, j));
+			if((!player) && currentSquares[i][j].piece.user == ENGINE)
+				n += getValue(currentSquares[i][j]);
 		}
 	}
 	
@@ -239,23 +248,23 @@ double Engine::getValue(Square square)
 
 void Engine::makeFakeMove(std::pair<Square, Square>* move)
 {
-	Move::execute(&move->first, &oldPieces[move->second.x][move->second.y], false);
+	Move::execute(&move->first, &currentSquares[move->second.x][move->second.y], false);
 }
 
 void Engine::getEnginePieces()
 {
 	for(int i = 0; i < 8; i++)
 		for(int j = 0; j < 8; j++)
-			if(oldPieces[i][j].piece.user == ENGINE)
-				enginePieces.push_back(oldPieces[i][j]);
+			if(currentSquares[i][j].piece.user == ENGINE)
+				enginePieces.push_back(currentSquares[i][j]);
 }
 
 void Engine::getPlayerPieces()
 {
 	for(int i = 0; i < 8; i++)
 		for(int j = 0; j < 8; j++)
-			if(oldPieces[i][j].piece.user == PLAYER)
-				playerPieces.push_back(oldPieces[i][j]);
+			if(currentSquares[i][j].piece.user == PLAYER)
+				playerPieces.push_back(currentSquares[i][j]);
 }
 
 void Engine::getEngineMoves()
