@@ -73,7 +73,7 @@ namespace Pieces
 		square->piece.color = UNDEFINED;
 		square->piece.type = NONE;
 		square->piece.user = GHOST;
-}
+	}
 
 	void makeEmpty(Piece* piece)
 	{
