@@ -3,7 +3,7 @@
 namespace Pieces
 {
 	// the pieces
-	static Piece p[64];
+	Piece p[64];
 
 	Piece& get(int n) { return p[n]; }
 

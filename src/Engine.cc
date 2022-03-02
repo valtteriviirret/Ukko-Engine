@@ -102,11 +102,13 @@ double Engine::oldEvaluate()
 	Piece* playerKing = nullptr;
 	
 	// FOR ENGINE
+	/*
 	for(int i = 0; i < 8; i++)
 		for(int j = 0; j < 8; j++)
 			if(Sqr::getSquare(i, j).piece.user == ENGINE)
 				if(Sqr::getSquare(i, j).piece.type == KING)
 					engineKing = &Sqr::getSquare(i, j).piece;
+	*/
 					
 	// POSITION
 	// OWN PIECES NEAR ++
@@ -131,18 +133,13 @@ double Engine::oldEvaluate()
 
 void Engine::setOriginalSquares()
 {
-	for(int i = 0; i < 8; i++)
-		for(int j = 0; j < 8; j++)
-			originalSquares[i][j] = Sqr::squareCopy(i, j);
-
+	originalSquares = Sqr::copy();
 	updateSquares();
 }
 
 void Engine::updateSquares()
 {
-	for(int i = 0; i < 8; i++)
-		for(int j = 0; j < 8; j++)
-			currentSquares[i][j] = originalSquares[i][j];
+	currentSquares = originalSquares;
 }
 
 void Engine::getMaterialBalance()

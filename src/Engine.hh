@@ -54,8 +54,10 @@ private:
 	void setOriginalSquares();
 	void updateSquares();
 
-	Square currentSquares[8][8];
-	Square originalSquares[8][8];
+	//Square currentSquares[8][8];
+	//Square originalSquares[8][8];
+	std::array <std::array <Square, 8>, 8> currentSquares;
+	std::array <std::array <Square, 8>, 8> originalSquares;
 
 	// helper functions
 	void clearEngine();
