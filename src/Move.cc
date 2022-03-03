@@ -11,8 +11,8 @@ namespace Move
 	char nameY;
 	std::string promotion;
 
-	Piece* realSource = nullptr;
 	Piece* realTarget = nullptr;
+	Piece* realSource = nullptr;
 
 	/*
 	void castlingFunc(Piece* source, Piece& rook, bool player, bool queenSide, bool real)
@@ -65,10 +65,14 @@ namespace Move
 
 	void execute(Square* source, Square* target, bool real)
 	{
+		// get pieces
+		Piece source2 = source->piece;
+		Piece target2 = target->piece;
+
 		// get real piece
 		if(real)
 		{
-			realSource = Pieces::getReal(source);
+			realSource = Pieces::getReal(&source2);
 
 			name = "";
 			nameSource = "";
@@ -290,52 +294,48 @@ namespace Move
 
 
 		// REGULAR MOVE
-		
+
 		// capturing piece
 		if(target->piece.type != NONE)
 		{
-			// make the square empty
-			Pieces::makeEmpty(target);
-
 			// remove real piece
 			if(real)
 			{
-				realTarget = Pieces::getReal(target);
-				Pieces::makeEmpty(realTarget);
+				realTarget = Pieces::getReal(&target2);
+				Pieces::makeEmptyPiece(realTarget);
 			}
+
+			// make the square empty
+			Pieces::makeEmptySquare(target);
+
 		}
 
-		Piece source2 = source->piece;
-		Piece target2 = target->piece;
-
-		// get target positions
-		int targetX = target2.x;
-		int targetY = target2.y;
-
 		// update source and target squares
-		source->piece.x = target2.x;
-		source->piece.y = target2.y;
-		target->piece.x = source2.x;
-		target->piece.y = source2.y;
+		source->piece.color = target2.color;
+		source->piece.type = target2.type;
+		source->piece.user = target2.user;
+
+		target->piece.color = source2.color;
+		target->piece.type = source2.type;
+		target->piece.user = source2.user;
 
 		if(real)
 		{
+			// move the piece
+			realSource->x = target2.x;
+			realSource->y = target2.y;
 
-		// move the piece
-		//realSource->x = target2.x;
-		//realSource->y = target2.y;
+			// make the notation
+			name = name + nameSource + " to " + nameX + nameY + promotion;
 
-		// make the notation
-		name = name + nameSource + " to " + nameX + nameY + promotion;
+			// read info of the move in console
+			readName();
 
-		// read info of the move in console
-		readName();
-
-		// change turn
-		if(source2.user == PLAYER)
-			Global::playerTurn = false;
-		else
-			Global::playerTurn = true;
+			// change turn
+			if(source2.user == PLAYER)
+				Global::playerTurn = false;
+			else
+				Global::playerTurn = true;
 		}
 	}
 }

@@ -31,9 +31,9 @@ namespace Pieces
 
 	void emptySquare(int x, int y);
 
-	void makeEmpty(Square* square);
+	void makeEmptySquare(Square* square);
 
-	void makeEmpty(Piece* piece);
+	void makeEmptyPiece(Piece* piece);
 }
 
 #endif

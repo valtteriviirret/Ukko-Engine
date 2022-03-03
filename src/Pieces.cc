@@ -68,14 +68,14 @@ namespace Pieces
 		s->user = GHOST;
 	}
 
-	void makeEmpty(Square* square)
+	void makeEmptySquare(Square* square)
 	{
 		square->piece.color = UNDEFINED;
 		square->piece.type = NONE;
 		square->piece.user = GHOST;
 	}
 
-	void makeEmpty(Piece* piece)
+	void makeEmptyPiece(Piece* piece)
 	{
 		piece->color = UNDEFINED;
 		piece->type = NONE;
