@@ -65,6 +65,7 @@ MinMax Engine::engineBest()
 		// update situation back to normal
 		currentSquares = engineTemp;
 
+		// make the fake move
 		makeFakeMove(enginePairs[i]);
 
 		// evaluate move
@@ -86,10 +87,16 @@ MinMax Engine::playerBest()
 
 	std::pair<Square, Square>* m = nullptr;
 
+	// get current situation
+	std::array <std::array <Square, 8>, 8> playerTemp = currentSquares;
+
 	double balance = oldEvaluate();
 
 	for(int i = 0; i < (int)playerPairs.size(); i++)
 	{
+		// update situtation to normal
+		currentSquares = playerTemp;
+
 		makeFakeMove(playerPairs[i]);
 
 		double a = oldEvaluate() + 0.01;
@@ -164,7 +171,7 @@ MinMax Engine::maxi(int depth)
 	getEngineMoves();
 
 	double score = 0;
-	double max = -10000.0;
+	double max = INT_MIN;
 	std::pair<Square, Square>* m = nullptr;
 
 	for(int i = 0; i < (int)enginePairs.size(); i++)
@@ -197,9 +204,10 @@ MinMax Engine::mini(int depth)
 	getPlayerMoves();
 
 	double score = 0;
-	double min = 10000.0;
+	double min = INT_MAX;
 	std::pair<Square, Square>* m = nullptr;
 
+	// get squares from current position
 	std::array <std::array <Square, 8>, 8> miniSquares = currentSquares;
 
 	for(int i = 0; i < (int)playerPairs.size(); i++)

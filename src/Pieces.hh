@@ -16,9 +16,9 @@ namespace Pieces
 
 	Piece* getModify(int n);
 
-	Piece* getReal(Piece* piece);
+	Piece* getRealFromPiece(Piece* piece);
 
-	Piece* getReal(Square* square);
+	Piece* getRealFromSquare(Square* square);
 
 	Piece* getXY(int x, int y);
 

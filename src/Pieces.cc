@@ -23,16 +23,16 @@ namespace Pieces
 		}
 	}
 
-	Piece* getReal(Piece* piece)
+	Piece* getRealFromPiece(Piece* piece)
 	{
-		for(int i = 0; i < 32; i++)
+		for(int i = 0; i < 64; i++)
 			if(p[i].x == piece->x && p[i].y == piece->y)
 				return &p[i];
 
 		return nullptr;
 	}
 
-	Piece* getReal(Square* square)
+	Piece* getRealFromSquare(Square* square)
 	{
 		for(int i = 0; i < 32; i++)
 			if(p[i].x == square->x && p[i].y == square->y)
@@ -43,7 +43,7 @@ namespace Pieces
 
 	Piece* getXY(int x, int y)
 	{
-		for(int i = 0; i < 32; i++)
+		for(int i = 0; i < 64; i++)
 			if(p[i].x == x && p[i].y == y)
 				return &p[i];
 
@@ -125,6 +125,7 @@ namespace Pieces
 		p[29] = { BISHOP, PlayerColor, 5, 7, PLAYER };
 		p[30] = { QUEEN, PlayerColor, 3, 7, PLAYER };
 		p[31] = { KING, PlayerColor, 4, 7, PLAYER };
+
 
 
 		// update squares
