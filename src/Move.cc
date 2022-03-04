@@ -13,61 +13,71 @@ namespace Move
 
 	Piece* realTarget = nullptr;
 	Piece* realSource = nullptr;
+	User ogUser;
 
-	/*
-	void castlingFunc(Piece* source, Piece& rook, bool player, bool queenSide, bool real)
+	void castlingFunc(Piece* rook, bool player, bool queenSide, bool real)
 	{
 		int y;
 		nameSource = "";
 
+
+		// I think the later will handle this
 		// make king's square empty
 		if(player)
 		{
-			Pieces::emptySquare(4, 7);
+			//Pieces::emptySquare(4, 7);
 			y = 7;
 		}
 		else
 		{
-			Pieces::emptySquare(4, 0);
+			//Pieces::emptySquare(4, 0);
 			y = 0;
 		}
 		
 		// make rook's square empty and move pieces
 		if(queenSide)
 		{
-			Pieces::emptySquare(0, y);
+			//Pieces::emptySquare(0, y);
 			if(real)
 			{
-				source->x -= 2;
-				rook.x += 3;
+				realSource->x -= 2;
+				rook->x += 3;
 			}
 			name = "0-0-0";
 		}
 		else
 		{
-			Pieces::emptyPiece(7, y);
+			//Pieces::emptyPiece(7, y);
 			if(real)
 			{
-				source->x += 2;
-				rook.x -= 2;
+				realSource->x += 2;
+				rook->x -= 2;
 			}
 			name = "0-0";
 		}
 
 		// update board
-		Sqr::squareHelper(rook.x, rook.y)->piece = rook;
-		Sqr::squareHelper(source->x, source->y)->piece = *source;
+		//Sqr::squareHelper(rook.x, rook.y)->piece = rook;
+		//Sqr::squareHelper(source->x, source->y)->piece = *source;
 	}
-	*/
+
 
 	void readName() { std::cout << name << "\n"; }
 	std::string getName() { return name; }
 
 	void execute(Square* source, Square* target, bool real)
 	{
-		User ogUser = source->piece.user;
+		if(real)
+		{
+			// get the user of the function
+			ogUser = source->piece.user;
 
-		// get real piece
+			// get real pieces
+			realSource = Pieces::getXY(source->x, source->y);
+			realTarget = Pieces::getXY(target->x, target->y);
+		}
+
+		// stuff for notation
 		if(real)
 		{
 			name = "";
@@ -110,7 +120,6 @@ namespace Move
 			}
 		}
 
-		/*
 		// castling
 		if(source->piece.type == KING)
 		{
@@ -119,12 +128,12 @@ namespace Move
 				Global::playerKingMoved = true;
 
 				// queen side castle
-				if(source->x - 2 == target->x)
-					castlingFunc(source, Pieces::get(24), true, true, real);
+				if(source->piece.x - 2 == target->piece.x)
+					castlingFunc(Pieces::getModify(24), true, true, real);
 
 				// king side castle
-				if(source->x + 2 == target->x)
-					castlingFunc(source, Pieces::get(25), true, false, real);
+				if(source->piece.x + 2 == target->piece.x)
+					castlingFunc(Pieces::getModify(25), true, false, real);
 				
 			}
 
@@ -134,13 +143,12 @@ namespace Move
 				Global::engineKingMoved = true;
 
 				if(source->x - 2 == target->x)
-					castlingFunc(source, Pieces::get(8), false, true, real);
+					castlingFunc(Pieces::getModify(8), false, true, real);
 
 				if(source->x + 2 == target->x)
-					castlingFunc(source, Pieces::get(9), false, false, real);
+					castlingFunc(Pieces::getModify(9), false, false, real);
 			}
 		}
-		*/
 	
 		// if rook is moved, has to do with castling
 		if(real)
@@ -150,26 +158,23 @@ namespace Move
 				if(source->piece.user == PLAYER)
 				{
 					if(source->x == 0)
-						if(real)
-							Global::playerQsideRookMoved = true;
+						Global::playerQsideRookMoved = true;
 					if(source->x == 7)
-						if(real)
-							Global::playerKsideRookMoved = true;
+						Global::playerKsideRookMoved = true;
 				}
 
 				else
 				{
 					if(source->x == 0)
-						if(real)
-							Global::engineQsideRookMoved = true;
+						Global::engineQsideRookMoved = true;
 					if(source->x == 7)
-						if(real)
-							Global::engineKsideRookMoved = true;
+						Global::engineKsideRookMoved = true;
 				}
 			}
 		}
 
 	
+		// pawn promotion for player
 		if(real)
 		{
 			// pawn promotion
@@ -195,25 +200,25 @@ namespace Move
 							{
 								case 'Q':
 									source->piece.type = QUEEN;
-									target->piece.type = QUEEN;
+									realSource->type = QUEEN;
 									promotion = 'Q';
 									choiceMade = true;
 									break;
 								case 'R':
 									source->piece.type = ROOK;
-									target->piece.type = ROOK;
+									realSource->type = ROOK;
 									promotion = 'R';
 									choiceMade = true;
 									break;
 								case 'B':
 									source->piece.type = BISHOP;
-									target->piece.type = BISHOP;
+									realSource->type = BISHOP;
 									promotion = 'B';
 									choiceMade = true;
 									break;
 								case 'N':
 									source->piece.type = KNIGHT;
-									target->piece.type = KNIGHT;
+									realSource->type = KNIGHT;
 									promotion = 'N';
 									choiceMade = true;
 									break;
@@ -225,22 +230,24 @@ namespace Move
 						}
 					}
 				}
-				// source.user == ENGINE
-				else
-				{
-					// engine always picks queen, at least for now
-					if(target->y == 7)
-					{
-						if(real)
-							source->piece.type = QUEEN;
-						
-						target->piece.type = QUEEN;
-						promotion = 'Q';
-					}
-				}
 			}
 		}
 
+		// pawn promotion for engine
+		if(source->piece.user == ENGINE)
+		{
+			if(target->y == 7)
+			{
+				if(real)
+				{
+					realSource->type = QUEEN;
+					promotion = 'Q';
+				}
+				source->piece.type = QUEEN;
+			}
+		}
+
+		// en passant only works with real moves
 		if(real)
 		{
 			if(source->piece.type == PAWN)
@@ -290,7 +297,6 @@ namespace Move
 
 
 		// REGULAR MOVE
-	
 
 		// capturing piece (making png invicible)
 		if(target->piece.type != NONE)
@@ -300,15 +306,13 @@ namespace Move
 		if(real)
 		{
 			// making movement with real pieces
-			realSource = Pieces::getXY(source->x, source->y);
-			realTarget = Pieces::getXY(target->x, target->y);
 			realSource->x = target->x;
 			realSource->y = target->y;
 			realTarget->x = source->x;
 			realTarget->y = source->y;
 		}
 
-		// update source and target square
+		// source and target change values
 		target->piece.color = source->piece.color;
 		target->piece.type = source->piece.type;
 		target->piece.user = source->piece.user;
@@ -316,7 +320,6 @@ namespace Move
 		source->piece.color = UNDEFINED;
 		source->piece.type = NONE;
 		source->piece.user = GHOST;
-	
 
 		if(real)
 		{
@@ -327,10 +330,7 @@ namespace Move
 			readName();
 
 			// change turn
-			if(ogUser == PLAYER)
-				Global::playerTurn = false;
-			else
-				Global::playerTurn = true;
+			Global::playerTurn = ogUser != PLAYER;
 		}
 	}
 }

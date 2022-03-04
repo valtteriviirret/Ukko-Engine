@@ -15,7 +15,7 @@ namespace GameManager
 			for(int j = 0; j < (int)v.size(); j++)
 			{
 				// see checks
-				if(v.at(j).piece.type == 5)
+				if(v.at(j).piece.type == KING)
 				{
 					Global::playerInCheck = true;
 					Global::playerCanCastleQ = false;
@@ -59,7 +59,7 @@ namespace GameManager
 			for(int j = 0; j < (int)v.size(); j++)
 			{
 				// see checks
-				if(v.at(j).piece.type == 5)
+				if(v.at(j).piece.type == KING)
 				{
 					Global::engineInCheck = true;
 					Global::engineCanCastleK = false;

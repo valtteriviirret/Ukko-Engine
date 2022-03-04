@@ -82,7 +82,10 @@ namespace LegalMove
 
 				// can castle
 				else
+				{
+					std::cout << "added castling square";
 					sqrs.push_back(*Sqr::squareHelper(p.x + 2 * n, p.y));
+				}
 			}
 		}
 	}
