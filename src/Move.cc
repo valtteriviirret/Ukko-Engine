@@ -149,6 +149,8 @@ namespace Move
 					castlingFunc(Pieces::getModify(9), false, false, real);
 			}
 		}
+
+
 	
 		// if rook is moved, has to do with castling
 		if(real)

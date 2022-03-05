@@ -71,6 +71,9 @@ MinMax Engine::engineBest()
 		// evaluate move
 		double a = oldEvaluate() + 0.01;
 
+		// test
+		std::cout << a - balance;
+
 		if(a > balance)
 		{
 			m = &enginePairs[i];
@@ -111,27 +114,33 @@ MinMax Engine::playerBest()
 	return MinMax(balance, m);
 }
 
+Piece* Engine::getKing(bool player)
+{
+	// get the user
+	User user = player ? PLAYER : ENGINE;
+
+	// get the piece of the king
+	for(int i = 0; i < 8; i++)
+		for(int j = 0; j < 8; j++)
+			if(currentSquares[i][j].piece.user == user)
+				if(currentSquares[i][j].piece.type == KING)
+					return &currentSquares[i][j].piece;
+	return nullptr;
+}
+
+
+
 double Engine::oldEvaluate()
 {
 	// king multiplier
-	
-	Piece* engineKing = nullptr;
-	Piece* playerKing = nullptr;
-	
-	// FOR ENGINE
-	/*
-	for(int i = 0; i < 8; i++)
-		for(int j = 0; j < 8; j++)
-			if(Sqr::getSquare(i, j).piece.user == ENGINE)
-				if(Sqr::getSquare(i, j).piece.type == KING)
-					engineKing = &Sqr::getSquare(i, j).piece;
-	*/
-					
+	// WORKS!!!
+	engineKing = getKing(false);
+	playerKing = getKing(true);
+
+
 	// POSITION
 	// OWN PIECES NEAR ++
 	// ENEMY PIECES NEAR --
-	
-	
 	
 	
 	// center multiplier

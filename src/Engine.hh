@@ -44,6 +44,11 @@ private:
     static double getValue(Square square);
 	double engineMaterial;
     double playerMaterial;
+	Piece* getKing(bool player);
+
+	// get the place of the king
+	Piece* engineKing = nullptr;
+	Piece* playerKing = nullptr;
 
     // minmax
     MinMax mini(int depth);
@@ -60,7 +65,7 @@ private:
 	// helper functions
 	void clearEngine();
     void clearPlayer();
-
+	
 	int rounds;
 	
 };
