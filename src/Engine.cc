@@ -71,9 +71,6 @@ MinMax Engine::engineBest()
 		// evaluate move
 		double a = oldEvaluate() + 0.01;
 
-		// test
-		std::cout << a - balance;
-
 		if(a > balance)
 		{
 			m = &enginePairs[i];
@@ -103,6 +100,8 @@ MinMax Engine::playerBest()
 		makeFakeMove(playerPairs[i]);
 
 		double a = oldEvaluate() + 0.01;
+
+		std::cout << balance;
 
 		if(a > balance)
 		{
