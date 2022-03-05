@@ -6,6 +6,7 @@
 #include "Pieces.hh"
 #include "SquareManager.hh"
 #include "Global.hh"
+#include "SquareCopy.hh"
 #include <iostream>
 #include <string>
 

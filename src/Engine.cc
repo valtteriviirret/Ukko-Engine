@@ -25,7 +25,7 @@ bool Engine::PlayMove()
 		MinMax m = maxi(rounds);
 
 		// set all squares back to normal
-		updateSquares();
+		squaresToOriginal();
 
 		/*
 		 *	We want to pass pointers from actual squares to Move.
@@ -63,7 +63,7 @@ MinMax Engine::engineBest()
 	for(int i = 0; i < (int)enginePairs.size(); i++)
 	{
 		// update situation back to normal
-		currentSquares = engineTemp;
+		setCurrentSquares(engineTemp);
 
 		// make the fake move
 		makeFakeMove(enginePairs[i]);
@@ -95,7 +95,7 @@ MinMax Engine::playerBest()
 	for(int i = 0; i < (int)playerPairs.size(); i++)
 	{
 		// update situtation to normal
-		currentSquares = playerTemp;
+		setCurrentSquares(playerTemp);
 
 		makeFakeMove(playerPairs[i]);
 
@@ -157,12 +157,15 @@ double Engine::oldEvaluate()
 void Engine::setOriginalSquares()
 {
 	originalSquares = Sqr::copy();
-	updateSquares();
+	squaresToOriginal();
 }
 
-void Engine::updateSquares()
+void Engine::squaresToOriginal() { currentSquares = originalSquares; }
+
+void Engine::setCurrentSquares(std::array <std::array <Square, 8>, 8> sqr)
 {
-	currentSquares = originalSquares;
+	currentSquares = sqr;
+	SquareCopy::update(sqr);
 }
 
 void Engine::getMaterialBalance()
@@ -184,7 +187,7 @@ MinMax Engine::maxi(int depth)
 
 	for(int i = 0; i < (int)enginePairs.size(); i++)
 	{
-		updateSquares();
+		squaresToOriginal();
 
 		// make fake move
 		makeFakeMove(enginePairs[i]);
@@ -220,7 +223,7 @@ MinMax Engine::mini(int depth)
 
 	for(int i = 0; i < (int)playerPairs.size(); i++)
 	{
-		currentSquares = miniSquares;
+		setCurrentSquares(miniSquares);
 
 		makeFakeMove(playerPairs[i]);
 		

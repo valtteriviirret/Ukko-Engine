@@ -17,46 +17,47 @@ namespace Move
 
 	void castlingFunc(Piece* rook, bool player, bool queenSide, bool real)
 	{
-		int y;
-		nameSource = "";
+		if(real)
+		{
+			int y;
+			nameSource = "";
 
-		// make the king square empty
-		if(player)
-		{
-			Pieces::emptySquare(4, 7);
-			y = 7;
-		}
-		else
-		{
-			Pieces::emptySquare(4, 0);
-			y = 0;
-		}
-		
-		// make rook's square empty and move pieces
-		if(queenSide)
-		{
-			Pieces::emptySquare(0, y);
-			if(real)
+			// make the king square empty
+			if(player)
 			{
+				Pieces::emptySquare(4, 7);
+				y = 7;
+			}
+			else
+			{
+				Pieces::emptySquare(4, 0);
+				y = 0;
+			}
+			
+			// make rook's square empty and move pieces
+			if(queenSide)
+			{
+				Pieces::emptySquare(0, y);
 				realSource->x -= 2;
 				rook->x += 3;
+				name = "0-0-0";
 			}
-			name = "0-0-0";
+			else
+			{
+				Pieces::emptySquare(7, y);
+				realSource->x += 2;
+				rook->x -= 2;
+				name = "0-0";
+			}
+
+			// update board
+			Sqr::squareHelper(rook->x, rook->y)->piece = *rook;
+			Sqr::squareHelper(realSource->x, realSource->y)->piece = *realSource;
 		}
 		else
 		{
-			Pieces::emptySquare(7, y);
-			if(real)
-			{
-				realSource->x += 2;
-				rook->x -= 2;
-			}
-			name = "0-0";
+			// SquareCopy::getSquares();
 		}
-
-		// update board
-		Sqr::squareHelper(rook->x, rook->y)->piece = *rook;
-		Sqr::squareHelper(realSource->x, realSource->y)->piece = *realSource;
 	}
 
 
@@ -301,10 +302,15 @@ namespace Move
 
 		// REGULAR MOVE
 
-		// capturing piece (making png invicible)
+		// capturing piece
+		// TODO I think this does not work
 		if(target->piece.type != NONE)
+		{
 			if(real)
-				Pieces::emptyPiece(target->x, target->y);
+				Pieces::makeEmptyPiece(realTarget);
+			
+			Pieces::makeEmptySquare(target);
+		}
 
 		if(real)
 		{

@@ -8,6 +8,7 @@
 #include "Move.hh"
 #include "SquareManager.hh"
 #include "MinMax.hh"
+#include "SquareCopy.hh"
 #include <vector>
 #include <iostream>
 #include <map>
@@ -41,7 +42,7 @@ private:
     int evaluate();
 	double oldEvaluate();
     double materialValue(bool player);
-    static double getValue(Square square);
+    double getValue(Square square);
 	double engineMaterial;
     double playerMaterial;
 	Piece* getKing(bool player);
@@ -57,7 +58,8 @@ private:
 	// fake move stuff
     void makeFakeMove(std::pair<Square, Square> move);
 	void setOriginalSquares();
-	void updateSquares();
+	void squaresToOriginal();
+	void setCurrentSquares(std::array <std::array <Square, 8>, 8> currentSquares);
 
 	std::array <std::array <Square, 8>, 8> currentSquares;
 	std::array <std::array <Square, 8>, 8> originalSquares;
