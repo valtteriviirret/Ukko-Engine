@@ -309,6 +309,7 @@ namespace Move
 			if(real)
 				Pieces::makeEmptyPiece(realTarget);
 			
+			// maybe this idk
 			Pieces::makeEmptySquare(target);
 		}
 

@@ -18,7 +18,7 @@ Game::Game()
 	Pieces::init();
 	
 	// white starts game
-	Settings::PlayerColor == WHITE ? Global::playerTurn = true : Global::playerTurn = false;
+	Global::playerTurn = Settings::PlayerColor == WHITE;
 }
 
 Game::~Game()
