@@ -15,10 +15,10 @@ namespace Pieces
 		{
 			if(get(i).x == x && get(i).y == y)
 			{
-				Piece* x = &p[i];
-				x->color = piece.color;
-				x->type = piece.type;
-				x->user = piece.user;
+				Piece* temp = &p[i];
+				temp->color = piece.color;
+				temp->type = piece.type;
+				temp->user = piece.user;
 			}
 		}
 	}

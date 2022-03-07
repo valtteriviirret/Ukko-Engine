@@ -37,6 +37,8 @@ class Global
 		// check
 		static bool playerInCheck;
 		static bool engineInCheck;
+
+		static bool inPromotion;
 };
 
 #endif
