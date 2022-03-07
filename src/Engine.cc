@@ -29,7 +29,7 @@ bool Engine::PlayMove()
 
 		/*
 		 *	We want to pass pointers from actual squares to Move.
-		 *	Hence this, since Sqr::squareHelper returns pointer to correct square.
+		 *	We do this, since Sqr::squareHelper returns pointer to correct square.
 		 *	Both bestMove->first and second are just copies, either from oldPieces or LegalMoves.
 		 *
 		 */
@@ -160,7 +160,11 @@ void Engine::setOriginalSquares()
 	squaresToOriginal();
 }
 
-void Engine::squaresToOriginal() { currentSquares = originalSquares; }
+void Engine::squaresToOriginal() 
+{
+	currentSquares = originalSquares; 
+	setCurrentSquares(currentSquares);
+}
 
 void Engine::setCurrentSquares(std::array <std::array <Square, 8>, 8> sqr)
 {
@@ -274,11 +278,10 @@ double Engine::getValue(Square square)
 	return n;
 }
 
-void Engine::makeFakeMove(std::pair<Square, Square> move)
-{
-	Move::execute(&move.first, &move.second, false);
-}
+// make a fake move
+void Engine::makeFakeMove(std::pair<Square, Square> move) { Move::execute(&move.first, &move.second, false); }
 
+// get squares of the pieces based in copies of the squares
 void Engine::getEnginePieces()
 {
 	for(int i = 0; i < 8; i++)
