@@ -322,7 +322,15 @@ namespace Move
 			realTarget->y = source->y;
 		}
 
+
+		Piece x = source->piece;
+		source->piece.x = target->piece.x;
+		source->piece.y = target->piece.y;
+		target->piece.x = x.x;
+		target->piece.y = x.y;
+
 		// source and target change values
+		/*
 		target->piece.color = source->piece.color;
 		target->piece.type = source->piece.type;
 		target->piece.user = source->piece.user;
@@ -330,6 +338,7 @@ namespace Move
 		source->piece.color = UNDEFINED;
 		source->piece.type = NONE;
 		source->piece.user = GHOST;
+		*/
 
 		if(real)
 		{
