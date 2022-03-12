@@ -1,4 +1,4 @@
-# Ukko Chess Engine v0.3 beta
+# Ukko Chess Engine v1.2 beta
 
 #### Changes:
 - Most major bugs fixed including "ghost pieces".
