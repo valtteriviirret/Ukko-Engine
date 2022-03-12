@@ -1,7 +1,6 @@
 # Ukko Chess Engine v1.1 alpha
 
 #### Changes:
-- More agressive AI.
 - Most major bugs fixed including "ghost pieces".
 
 #### TODO:
@@ -11,5 +10,5 @@
 - Proper defeat when player loses.
 
 #### Known issues:
-- Occasional SIGSEGV crashes.
-- Game does not end when player is in checkmate.
+- Poor performance
+- Stupid AI
