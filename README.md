@@ -1,12 +1,5 @@
-# Ukko Chess Engine v1.2 beta
+# Ukko Engine
 
-#### Changes:
-- Most major bugs fixed including "ghost pieces".
+Chess engine still in progress
 
-#### TODO:
-- Better AI
-- Improve performance
 
-#### Known issues:
-- Poor performance
-- Stupid AI
